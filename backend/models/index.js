@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
-const connection = new Sequelize("ecommercefirst", "root", "110golfp.", {
+const connection = new Sequelize("ecommercefirst", "root", "root", {
   host: "localhost",
   dialect: "mysql",
 });
@@ -16,10 +16,10 @@ connection
   db.User=require("./user.model")(connection,DataTypes)
   db.Category=require("./category.model")(connection,DataTypes)
   db.Products=require("./products.model")(connection,DataTypes)
-  // connection
-  // .sync({ alter: true })
-  // .then(() => console.log("tables are created"))
-  // .catch((err) => {
-  //   throw err;
-  // });
+  connection
+  .sync({ alter: true })
+  .then(() => console.log("tables are created"))
+  .catch((err) => {
+    throw err;
+  });
   module.exports=db
