@@ -128,7 +128,38 @@ function Main() {
       </div>
     </nav>
 <h3> list of product  </h3>
+<div>
+    <ul>
+        <li>
+            <img src="" alt="" />
+        </li>
 
+        <li>
+            <h4>name</h4>
+        </li>
+        
+        <li>
+            <p>description</p>
+        </li>
+        <li>
+            <h4>price</h4>
+
+        </li>
+        <li>
+            <h4>stock</h4>
+            
+        </li>
+    </ul>
+    <CiShoppingCart 
+    // onClick={() => addToCart()} 
+    size={25} className="me-3" />
+    <CiHeart
+    //  onClick={() => addToWishlist()} 
+     size={25} className="me-3" />
+
+
+
+</div>
 
 
     </div>
