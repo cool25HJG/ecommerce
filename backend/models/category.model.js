@@ -1,4 +1,5 @@
-const Category = sequelize.define("Category", {
+module.exports = (connection, DataTypes) => {
+const Category = connection.define("Category", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -17,4 +18,6 @@ const Category = sequelize.define("Category", {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
-});
+})
+return Category
+}
