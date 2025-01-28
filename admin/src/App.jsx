@@ -1,12 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
-import {BrowserRouter 
-  as Router,Routes, Route
-} from "react-router-dom";
-// import main from './components/main.jsx'
-// import login from './components/login.jsx'
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -25,23 +20,7 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <div>
-      <Router>
-      <Routes>
-         {/* client */}
-        <Route path="/" element={<main/>} />
-        <Route path="/login" element={<login/>}/>
-        <Route path="/cart" element={<cart/>}/>
-        <Route path="/Wishlist" element={<wishlist/>}/>
-       {/* seller */}
-        <Route path="/listofproduct" element={<listofproduct/>}/>
-        <Route path="/add" element={<addproduct/>}/>
-        <Route path="/update" element={<updateproduct/>}/>
-        <Route path="/delete" element={<delete/>}/>
-      </Routes>
-      </Router>
-    </div>
-
+ 
 
 
         {/* <p>
