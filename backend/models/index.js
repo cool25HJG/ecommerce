@@ -18,11 +18,11 @@ connection
   db.Products=require("./products.model")(connection,DataTypes)
   db.Commande=require("./commande.model")(connection,DataTypes)
   db.OrderItem=require("./orderitems.model")(connection,DataTypes)
-  db.User.hasMany(db.Products, { foreignKey: "sellerId" });
-db.Products.belongsTo(db.User, { foreignKey: "sellerId" }); 
-db.User.hasMany(db.Commande, { foreignKey: "clientId" }); 
+  db.User.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", foreignKey: "sellerId" });
+db.Products.belongsTo(db.User, {  foreignKey: "sellerId" }); 
+db.User.hasMany(db.Commande, {onDelete:"CASCADE" , onUpdate:"CASCADE", foreignKey: "clientId" }); 
 db.Commande.belongsTo(db.User, { foreignKey: "clientId" }); 
-db.Category.hasMany(db.Products, { foreignKey: "categoryId" }); 
+db.Category.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", foreignKey: "categoryId" }); 
 db.Products.belongsTo(db.Category, { foreignKey: "categoryId" }); 
 db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
  db.Products.belongsToMany(db.Commande, { through: db.OrderItem }); 
