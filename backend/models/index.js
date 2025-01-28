@@ -26,10 +26,12 @@ db.Category.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", fore
 db.Products.belongsTo(db.Category, { foreignKey: "categoryId" }); 
 db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
  db.Products.belongsToMany(db.Commande, { through: db.OrderItem }); 
-  connection
-  .sync({ force: true })
-  .then(() => console.log("tables are created"))
-  .catch((err) => {
-    throw err;
-  });
+
+
+  // connection
+  // .sync({ force: true })
+  // .then(() => console.log("tables are created"))
+  // .catch((err) => {
+  //   throw err;
+  // });
   module.exports=db
