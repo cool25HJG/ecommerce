@@ -2,6 +2,8 @@
 import './App.css'
 // import axios from 'axios'
 import Main from './components/main'
+import Login from './components/login';
+
 import {BrowserRouter 
   as Router,Routes, Route
 } from "react-router-dom";
@@ -25,7 +27,7 @@ function App() {
 
          {/* client */}
        
-        <Route path="/login" element={<login/>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/cart" element={<cart/>}/>
         <Route path="/Wishlist" element={<wishlist/>}/>
         
