@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
-
-const connection = new Sequelize("ecommercefirst", "root", "root", {
-  host: "localhost",
+require("dotenv").config()
+const connection = new Sequelize(process.env.DATABASE, process.env.USER, process.env.PASSWORD, {
+  host: process.env.HOST,
   dialect: "mysql",
 });
 connection
@@ -26,10 +26,10 @@ db.Category.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", fore
 db.Products.belongsTo(db.Category, { foreignKey: "categoryId" }); 
 db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
  db.Products.belongsToMany(db.Commande, { through: db.OrderItem }); 
-  connection
-  .sync({ force: true })
-  .then(() => console.log("tables are created"))
-  .catch((err) => {
-    throw err;
-  });
+  // connection
+  // .sync({ force: true })
+  // .then(() => console.log("tables are created"))
+  // .catch((err) => {
+  //   throw err;
+  // });
   module.exports=db
