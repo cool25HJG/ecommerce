@@ -68,6 +68,7 @@ module.exports = {
     try {
       const { id } = req.params;
       await User.destroy({ where: { id } });
+      res.status(200).send("deleted")
     } catch (error) {
       console.error("user deleted", error);
       res.status(500).json({ message: "Server error" });
@@ -80,6 +81,7 @@ module.exports = {
       await User.update({name,email,password,role},{
         where : {id}
       })
+      res.status(200).send("updated")
     } catch (error) {
       console.error("user updated", error);
       res.status(500).json({ message: "Server error" });
@@ -88,11 +90,11 @@ module.exports = {
   },
   getAllUser : async (req,res) => {
     try {
-      const users = await User.getAll()
+      const users = await User.findAll()
       res.status(200).send(users)
     } catch (error) {
       console.error("users not found", error);
-      res.status(500).json({ message: "Server error" });
+     
     }
     
   }

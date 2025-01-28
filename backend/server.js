@@ -17,9 +17,10 @@ app.use('/protected', protectedRoutes);
 const Category = require("./routes/Category.routes");
 const Products = require("./routes/Products.routes");
 const Commande = require("./routes/Commande.routes");
+const User = require("./routes/User.routes")
 
 
-
+app.use("/api/user",User)
 app.use("/api/Category", Category);
 app.use("/api/Products", Products);
 app.use("/api/Commande", Commande);
