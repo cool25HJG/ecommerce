@@ -1,4 +1,5 @@
-const OrderItem = sequelize.define("OrderItem", {
+module.exports = (connection, DataTypes) => {
+const OrderItem = connection.define("OrderItem", {
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -8,4 +9,6 @@ const OrderItem = sequelize.define("OrderItem", {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-  });
+  })
+  return OrderItem
+}

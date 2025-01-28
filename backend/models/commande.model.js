@@ -1,4 +1,5 @@
-const Commande = sequelize.define("Commande", {
+module.exports = (connection, DataTypes) => {
+const Commande = connection.define("Commande", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -20,4 +21,6 @@ const Commande = sequelize.define("Commande", {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-  });
+  })
+  return Commande
+}
