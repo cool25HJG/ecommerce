@@ -1,167 +1,94 @@
-import 
-// React,
- { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
+
 
 function Main() {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
-    <div> 
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow">
-      <div className="container">
-        {/* Logo */}
-        <a className="navbar-brand" href="/">
-          <img
-            src="/images/logo.png" // Replace with your logo's path
-            alt="Logo"
-            style={{ height: "40px" }}
-          />
-        </a>
+    <div>
+      <nav className="navbar">
+        <div className="navbar-container">
+          {/* Left: Logo and Links */}
+          <div className="navbar-left">
+            <a className="navbar-brand" href="/">
+              <img src="/images/logo.png" alt="Logo" className="navbar-logo" />
+            </a>
+            <ul className="navbar-links">
+              <li>
+                <a href="/">Home</a>
+              </li>
+              <li>
+                <a href="/products">Products</a>
+              </li>
+              <li>
+                <a href="/about">About</a>
+              </li>
+              <li>
+                <a href="/contact">Contact</a>
+              </li>
+            </ul>
+          </div>
 
-        {/* Navbar Links and Content */}
-        <div className="collapse navbar-collapse" id="navbarNav">
-          {/* Left Side (Nav Links) */}
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/products">
-                Products
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/about">
-                About
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/contact">
-                Contact
-              </a>
-            </li>
-          </ul>
+          {/* Center: Search Bar */}
+          <div className="navbar-center">
+            <form className="navbar-search">
+              <input
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                className="search-input"
+              />
+            </form>
+          </div>
 
-          {/* Center (Search Bar) */}
-          <form className="d-flex mx-auto" style={{ maxWidth: "400px" }}>
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
+          {/* Right: Icons */}
+          <div className="navbar-right">
+            <CiShoppingCart
+              onClick={() => navigate("/cart")}
+              size={25}
+              className="icon"
             />
-          </form>
-
-          {/* Right Side (Icons) */}
-          <div className="d-flex align-items-center">
-            <CiShoppingCart onClick={() => navigate("/cart")} size={25} className="me-3" />
-            <CiHeart onClick={() => navigate("/wishlist")} size={25} className="me-3" />
-
-            {/* Dropdown for User */}
+            <CiHeart
+              onClick={() => navigate("/wishlist")}
+              size={25}
+              className="icon"
+            />
             <div
-              className="dropdown"
+              className="icon dropdown"
               onMouseEnter={() => setShowDropdown(true)}
               onMouseLeave={() => setShowDropdown(false)}
-              style={{ position: "relative" }}
             >
               <CiUser size={25} />
-              {/* will change if if the user is loged in 
-              not exactly like this 
-
-  {showDropdown && (
-                <div
-                  className="dropdown-menu show"
-                  style={{
-                    position: "absolute",
-                    top: "100%",
-                    right: 0,
-                    zIndex: 1000,
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <button
-                    className="dropdown-item"
-                    onClick={() => navigate("/profile")}
-                  >
-                    mange my accoute
-                  </button>
-                <button
-                    className="dropdown-item"
-                    onClick={() => navigate("/login")}
-                  >
-                    log out 
-                  </button>
-                </div>
-
-
-              */}
               {showDropdown && (
-                <div
-                  className="dropdown-menu show"
-                  style={{
-                    position: "absolute",
-                    top: "100%",
-                    right: 0,
-                    zIndex: 1000,
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                    borderRadius: "5px",
-                  }}
-                >
+                <div className="dropdown-menu">
                   <button
                     className="dropdown-item"
                     onClick={() => navigate("/login")}
                   >
                     Log In
                   </button>
-                
                 </div>
               )}
             </div>
           </div>
         </div>
+      </nav>
+
+      <h3>List of All Products</h3>
+      <div className="column">
+        <div key={""} className="product-card">
+          <img src="" alt="" />
+          <h4>Name</h4>
+          <p>Description</p>
+          <h4>Price</h4>
+          <h4>Stock</h4>
+          <CiShoppingCart size={25} className="me-3" />
+          <CiHeart size={25} className="me-3" />
+        </div>
       </div>
-    </nav>
-<h3> list of product  </h3>
-<div>
-    <ul>
-        <li>
-            <img src="" alt="" />
-        </li>
-
-        <li>
-            <h4>name</h4>
-        </li>
-        
-        <li>
-            <p>description</p>
-        </li>
-        <li>
-            <h4>price</h4>
-
-        </li>
-        <li>
-            <h4>stock</h4>
-            
-        </li>
-    </ul>
-    <CiShoppingCart 
-    // onClick={() => addToCart()} 
-    size={25} className="me-3" />
-    <CiHeart
-    //  onClick={() => addToWishlist()} 
-     size={25} className="me-3" />
-
-
-
-</div>
-
-
     </div>
   );
 }

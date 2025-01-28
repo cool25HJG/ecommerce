@@ -1,35 +1,24 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
+// import React from 'react'
+// import { useNavigate } from 'react-router-dom';
 
 function listOfProduct() {
-const navigate=useNavigate()
+// const navigate=useNavigate()
 
 
   return (
     <div> 
 <h3> list of product  </h3>
-<div>
-    <ul>
-        <li>
+<div className="column">
+     {/* {5555555.map(() => ( */}
+<div key={""} className="product-card">
+
             <img src="" alt="" />
-        </li>
-
-        <li>
             <h4>name</h4>
-        </li>
-        
-        <li>
             <p>description</p>
-        </li>
-        <li>
             <h4>price</h4>
-
-        </li>
-        <li>
             <h4>stock</h4>
             
-        </li>
-    </ul>
+      
     <button onClick={()=>{}}>Update</button>
     <button onClick={()=>{}}>Delete</button>
 
@@ -37,7 +26,7 @@ const navigate=useNavigate()
 
 </div>
 
-
+</div>
     </div>
   );
 }
