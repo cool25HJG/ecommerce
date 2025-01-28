@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
-const connection = new Sequelize("ecommercefirst", "root", "110golfp.", {
+const connection = new Sequelize("ecommercefirst", "root", "root", {
   host: "localhost",
   dialect: "mysql",
 });
@@ -22,14 +22,14 @@ connection
 db.Products.belongsTo(db.User, { foreignKey: "sellerId" }); 
 db.User.hasMany(db.Commande, { foreignKey: "clientId" }); 
 db.Commande.belongsTo(db.User, { foreignKey: "clientId" }); 
-Category.hasMany(db.Products, { foreignKey: "categoryId" }); 
-db.Products.belongsTo(Category, { foreignKey: "categoryId" }); 
-db.Commande.belongsToMany(db.Products, { through: OrderItem });
- db.Products.belongsToMany(db.Commande, { through: OrderItem }); 
-  // connection
-  // .sync({ force: true })
-  // .then(() => console.log("tables are created"))
-  // .catch((err) => {
-  //   throw err;
-  // });
+db.Category.hasMany(db.Products, { foreignKey: "categoryId" }); 
+db.Products.belongsTo(db.Category, { foreignKey: "categoryId" }); 
+db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
+ db.Products.belongsToMany(db.Commande, { through: db.OrderItem }); 
+  connection
+  .sync({ force: true })
+  .then(() => console.log("tables are created"))
+  .catch((err) => {
+    throw err;
+  });
   module.exports=db
