@@ -1,4 +1,5 @@
-const Product = sequelize.define("Product", {
+module.exports = (connection, DataTypes) => {
+const Products = connection.define("Product", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -32,4 +33,6 @@ const Product = sequelize.define("Product", {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
-});
+})
+return Products;
+  }
