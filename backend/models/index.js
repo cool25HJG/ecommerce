@@ -1,7 +1,7 @@
-const { Sequelize, DataTypes } = require("sequelize");
-
-const connection = new Sequelize("ecommercefirst", "root", "root", {
-  host: "localhost",
+const { Sequelize, DataTypes } = require("sequelize")
+require("dotenv").config()
+const connection = new Sequelize(process.env.DATABASE, process.env.USER, process.env.PASSWORD, {
+  host: process.env.HOST,
   dialect: "mysql",
 });
 connection
