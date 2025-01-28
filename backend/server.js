@@ -19,12 +19,13 @@ const Products = require("./routes/Products.routes");
 const Commande = require("./routes/Commande.routes");
 const User = require("./routes/User.routes")
 
+const addOrderItem = require("./routes/order.routes");
 
 app.use("/api/user",User)
 app.use("/api/Category", Category);
 app.use("/api/Products", Products);
 app.use("/api/Commande", Commande);
-
+app.use("/api/order", addOrderItem);
 app.listen(PORT, () => {
     console.log(`Server listening at http://localhost:${PORT}`);
   });

@@ -18,6 +18,7 @@ connection
   db.Products=require("./products.model")(connection,DataTypes)
   db.Commande=require("./commande.model")(connection,DataTypes)
   db.OrderItem=require("./orderitems.model")(connection,DataTypes)
+  
   db.User.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", foreignKey: "sellerId" });
 db.Products.belongsTo(db.User, {  foreignKey: "sellerId" }); 
 db.User.hasMany(db.Commande, {onDelete:"CASCADE" , onUpdate:"CASCADE", foreignKey: "clientId" }); 
