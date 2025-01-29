@@ -1,13 +1,13 @@
 import React from 'react'
 
-function Sidebar() {
+function Sidebar({changeView}) {
   return (
     <div>
-   <div class="sidebar">
-  <a class="active" href="#home">Home</a>
-  <a href="#news">News</a>
-  <a href="#contact">Contact</a>
-  <a href="#about">About</a>
+   <div className="sidebar">
+  <a className="active" href="#home">Admin Dashbord</a>
+  <a href="#user" onClick={()=>changeView("user")}>List Users</a>
+  <a href="#product" onClick={()=>changeView("product")}>List Product</a>
+  <a href="#categories" onClick={()=>changeView("categories")}>List Categories</a>
 </div>
     </div>
   )
