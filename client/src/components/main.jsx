@@ -14,7 +14,7 @@ function Main() {
           {/* Left: Logo and Links */}
           <div className="navbar-left">
             <a className="navbar-brand" href="/">
-              <img src="/images/logo.png" alt="Logo" className="navbar-logo" />
+              <img src="" alt="Logo" className="navbar-logo" />
             </a>
             <ul className="navbar-links">
               <li>

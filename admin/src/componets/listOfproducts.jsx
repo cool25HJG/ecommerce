@@ -4,7 +4,7 @@ const listofproducts= () => {
   return (
 
         <div>
-        <h3>List of client</h3>
+        <h3>List of Products</h3>
         <div className="column">
           
       {/* {5555555.map((product) => ( */}

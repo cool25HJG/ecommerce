@@ -9,7 +9,7 @@ const listofclients= () => {
         <h3>List of client</h3>
         <div className="column">
           
-      {/* {5555555.map((product) => ( */}
+      {/* {5555555.map(() => ( */}
         <div key={""} className="product-card">
           <h4>name</h4>
           <img src={"00"} alt={"00"} />
