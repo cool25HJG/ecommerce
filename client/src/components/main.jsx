@@ -93,7 +93,7 @@ function Main() {
       <div className="container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <h3>Categories</h3>
+        <h3>Categories :</h3>
 
         <ul>
           {/* {categories.map((category, index) => ( */}
