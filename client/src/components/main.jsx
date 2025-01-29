@@ -7,7 +7,9 @@ import Cart from "./cart";
 
 function Main() {
   const navigate = useNavigate();
-  const { addToCart } = useContext(CartContext);
+  const cart  = useContext(CartContext);
+  console.log(cart , "caaart");
+  
   const [showDropdown, setShowDropdown] = useState(false);
   const [data, setData] = useState([]);
   const [currentProd, setCurrentProd] = useState(null);
@@ -146,7 +148,7 @@ function Main() {
                 <h4>{el.price}</h4>
                 <h4>{el.stock}</h4>
                 <CiShoppingCart
-                  onClick={() => addToCart(el)}
+                  onClick={() => cart.addToCart(el)}
                   size={25}
                   className="me-3"
                 />
