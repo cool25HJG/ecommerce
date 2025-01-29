@@ -4,13 +4,13 @@ const PORT=4000
 const cors=require("cors")
 const db=require("./models/index")
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/authRoutes');
+
 const protectedRoutes = require('./routes/protectedRoutes');
 
 app.use(cors())
 app.use(express.json())
 // Public routes for registration and login
-app.use('/auth', authRoutes);
+
 
 // Protected routes (only accessible with a valid JWT)
 app.use('/protected', protectedRoutes);
