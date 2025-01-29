@@ -7,17 +7,17 @@ module.exports = {
     const { name, email, password, role } = req.body;
 
     try {
-      // Check if the email already exists
+      
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
         return res.status(400).json({ message: "Email already exists" });
       }
 
-      // Hash the password before saving the user
+ 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      // Create new user
+     
       const user = await User.create({
         name,
         email,
@@ -25,7 +25,7 @@ module.exports = {
         role,
       });
 
-      // Create JWT token
+
 
       res.status(201).json({ message: "User created successfully", user });
     } catch (error) {
@@ -34,24 +34,23 @@ module.exports = {
     }
   },
 
-  // Login and return JWT
+
   login: async (req, res) => {
     const { email, password } = req.body;
 
     try {
-      // Find user by email
+
       const user = await User.findOne({ where: { email } });
       if (!user) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
 
-      // Compare entered password with hashed password
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
 
-      // Generate a JWT token
+
       const token = jwt.sign(
         { id: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET,
