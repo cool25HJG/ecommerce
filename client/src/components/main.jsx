@@ -1,11 +1,30 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
-
+import axios from "axios"
 
 function Main() {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+ 
+    const [data, setData] = useState([]);
+    const fetchData = () => {
+        axios
+          .get("http://localhost:4000/api/Products/")
+          .then((resp) => setData(resp.data))
+          .catch((error) => console.log(error));
+      };
+
+useEffect(()=>{fetchData()},[])
+console.log(data);
+
+
+
+
+
+
+
+
 
   return (
     <div>
@@ -76,21 +95,26 @@ function Main() {
           </div>
         </div>
       </nav>
-
-      <h3>List of All Products</h3>
-      <div className="column">
-        <div key={""} className="product-card">
-          <img src="" alt="" />
-          <h4>Name</h4>
-          <p>Description</p>
-          <h4>Price</h4>
-          <h4>Stock</h4>
-          <CiShoppingCart size={25} className="me-3" />
-          <CiHeart size={25} className="me-3" />
-        </div>
-      </div>
+      <div>
+        
+        {data.map((el)=>(
+            <div key={el.id}>
+          <div  className="column">
+            <div style={{border: "2px solid blue", padding: "10px",  marginBottom: "20px", background: "lightblue", padding: "10px" }}  key={""} className="product-card">
+              <img style={{width:"200px"}} src={el.imageUrl} alt="" />
+              <h4>{el.name}</h4>
+              <p>{el.description}</p>
+              <h4>{el.price}</h4>
+              <h4>{el.stock}</h4>
+              <CiShoppingCart size={25} className="me-3" />
+              <CiHeart size={25} className="me-3" />
+              </div>
+              </div>  
+              </div>
+            ))}
+    </div>
     </div>
   );
 }
 
-export default Main;
+export default Main
