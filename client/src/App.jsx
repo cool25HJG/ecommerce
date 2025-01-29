@@ -3,6 +3,7 @@ import './App.css'
 // import axios from 'axios'
 import Main from './components/main'
 import Login from './components/login';
+import List from './components/listProduct.Client'
 import Register from './components/Register';
 import listOfProduct from './components/seller/listofproduct';
 import {BrowserRouter 
@@ -42,7 +43,7 @@ const fetch = async () => {
        <Route path="/login" element={<Login/>}/>
        <Route path='/register' element={<Register/>}/>
 
-
+       <Route path="/list" element={<List/>}/>
 
          {/* client */}
        
