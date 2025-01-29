@@ -75,8 +75,8 @@ function Login() {
           />
           <button type="submit" disabled={loading}>
             {loading ? <span className="loading-spinner"></span> : "Login"}
-        </button>
-      </form>
+          </button>
+        </form>
         <p className="forgot-password" onClick={() => navigate("/forgot-password")}>
           Forgot Password?
         </p>
