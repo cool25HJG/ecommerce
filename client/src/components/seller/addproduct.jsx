@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from 'axios'
+
 
 export default function Addproduct() {
     const [name, setname] = useState("");
