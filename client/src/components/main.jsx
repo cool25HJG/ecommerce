@@ -1,12 +1,23 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import Detaile from "./detailes";
+=======
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
+import axios from "axios";
+import { CartContext } from "./CartContext";
+import Cart from "./cart";
+>>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
 
 function Main() {
   const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
   const [showDropdown, setShowDropdown] = useState(false);
+<<<<<<< HEAD
   const [currentSlide, setCurrentSlide] = useState(0);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -37,6 +48,37 @@ function Main() {
   useEffect(() => {
     fetchData();
   }, []);
+=======
+  const [data, setData] = useState([]);
+  const [currentProd, setCurrentProd] = useState(null);
+
+  const setCurrent = (current) => {
+    setCurrentProd(current);
+  };
+
+  const fetchData = () => {
+    axios
+      .get("http://localhost:4000/api/Products/")
+      .then((resp) => setData(resp.data))
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    { image: "", text: "Discover the latest trends!", button: "Shop Now" },
+    { image: "", text: "Upgrade your home essentials", button: "Explore" },
+    { image: "", text: "Find the best deals", button: "Check Offers" },
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+>>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
 
   return (
     <div>
@@ -82,6 +124,7 @@ function Main() {
 
       {/* Main Content */}
       <div className="container">
+<<<<<<< HEAD
         {/* Sidebar */}
         <aside className="sidebar">
           <h3>Categories:</h3>
@@ -93,10 +136,22 @@ function Main() {
         </aside>
 
         {/* Slider */}
+=======
+        <aside className="sidebar">
+          <h3>Categories :</h3>
+          <ul>
+            {/* {categories.map((category, index) => ( */}
+            {/* // <li key={index}>{category.name}</li> */}
+            {/* ))} */}
+          </ul>
+        </aside>
+
+>>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
         <div className="slider-container">
           <div className="slide">
             <img src={slides[currentSlide].image} alt="Slide" />
             <div className="slide-text">{slides[currentSlide].text}</div>
+<<<<<<< HEAD
             <button className="slide-button" onClick={nextSlide}>{slides[currentSlide].button}</button>
           </div>
         </div>
@@ -125,8 +180,50 @@ function Main() {
         ))}
       </div>
     </div>
+=======
+            <button className="slide-button" onClick={nextSlide}>
+              {slides[currentSlide].button}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div>
+        {data.map((el) => (
+          <div key={el.id}>
+            <div className="column">
+              <div
+                style={{
+                  border: "2px solid blue",
+                  padding: "10px",
+                  marginBottom: "20px",
+                  background: "lightblue",
+                }}
+                key={""}
+                className="product-card"
+              >
+                <img style={{ width: "200px" }} src={el.imageUrl} alt="" />
+                <h4>{el.name}</h4>
+                <p>{el.description}</p>
+                <h4>{el.price}</h4>
+                <h4>{el.stock}</h4>
+                <CiShoppingCart
+                  onClick={() => addToCart(el)}
+                  size={25}
+                  className="me-3"
+                />
+                <CiHeart size={25} className="me-3" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+>>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
     </div>
   );
 }
 
+<<<<<<< HEAD
 export default Main;
+=======
+export default Main;
+>>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
