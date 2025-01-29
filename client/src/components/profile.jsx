@@ -3,25 +3,22 @@ import React, { useState } from "react";
 
 
 
-function Detaile() {
+function Profile() {
     // const navigate=useNavigate()
     // const {state}=useLocation()
     // console.log(state)
     // const product=state?.product
-    console.log(product)
+    // console.log(product)
   return (
     <div>
       
-      <img src={product.imageUrl} alt="product-image" />
-            <h4>name: {product.name}</h4>
-            <p>description:  {product.description}</p>
-            <h4>price: {product.price}</h4>
-            <h4>stock: {product.stock} </h4>
-   
+     <h2> name : { User.name}</h2>
+     <h4> email : { User.email}</h4>
+     <h4> role: { User.email}</h4>
 
-
+      <button>close</button>
       </div>
       
   )
 }
-export default Detaile;
+export default  Profile;

@@ -1,11 +1,12 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 import './App.css'
-// import axios from 'axios'
+import axios from 'axios'
 import Main from './components/main'
 import Login from './components/login';
-import List from './components/listProduct.Client'
+// import List from './components/listProduct.Client'
 import Register from './components/Register';
-import listOfProduct from './components/seller/listofproduct';
+import Detaile from './components/detailes';
+// import ListOfProduct from './components/seller/listofproduct.jsx';
 import {BrowserRouter 
   as Router,Routes, Route
 } from "react-router-dom";
@@ -38,12 +39,13 @@ const fetch = async () => {
       <Routes>
      {/* for both */}
      <Route path="/" element={<Main/>} />
-       <Route path="/detailes" element={<productDetailes/>}/>
-       <Route path="/profile" element={<profile/>}/>
+       <Route path="/detailes" element={<Detaile/>}/>
+
+       {/* <Route path="/profile" element={<profile/>}/> */}
        <Route path="/login" element={<Login/>}/>
        <Route path='/register' element={<Register/>}/>
 
-       <Route path="/list" element={<List/>}/>
+       {/* <Route path="/list" element={<List/>}/> */}
 
          {/* client */}
        
