@@ -3,7 +3,7 @@ import './App.css'
 // import axios from 'axios'
 import Main from './components/main'
 import Login from './components/login';
-
+import List from './components/listProduct.Client'
 import {BrowserRouter 
   as Router,Routes, Route
 } from "react-router-dom";
@@ -23,7 +23,7 @@ function App() {
      <Route path="/" element={<Main/>} />
        <Route path="/detailes" element={<productDetailes/>}/>
        <Route path="/profile" element={<profile/>}/>
-
+       <Route path="/list" element={<List/>}/>
 
          {/* client */}
        
