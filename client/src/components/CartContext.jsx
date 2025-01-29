@@ -12,10 +12,8 @@ export const CartProvider = ({ children }) => {
       const existingProduct = prevCart.find(item => item.id === product.id);
       
       if (existingProduct) {
-        // If product exists, increase the quantity
-        return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
+        // If product exists, do nothing or update quantity if needed
+        return prevCart; // or handle differently if needed
       } else {
         // If product does not exist, add it with quantity 1
         return [...prevCart, { ...product, quantity: 1 }];
@@ -23,11 +21,17 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromCart = (productId) => {
+  const updateQuantity = (productId, quantity) => {
     setCart((prevCart) =>
       prevCart.map(item =>
-        item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
-      ).filter(item => item.quantity > 0)
+        item.id === productId ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const removeFromCart = (productId) => {
+    setCart((prevCart) =>
+      prevCart.filter(item => item.id !== productId)
     );
   };
 
@@ -36,7 +40,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, getTotal }}>
+    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, getTotal }}>
       {children}
     </CartContext.Provider>
   );

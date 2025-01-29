@@ -3,7 +3,7 @@ import './App.css';
 import Main from './components/Main';
 import Login from './components/Login';
 import Register from './components/Register';
-import ListOfProduct from './components/seller/ListOfProduct';
+// import ListOfProduct from './components/seller/ListOfProduct';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
