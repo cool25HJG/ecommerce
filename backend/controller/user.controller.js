@@ -4,6 +4,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authenticateJWT = require("../middleware/authMiddleware");
 
+let refreshTokens = {
+  users: {},
+  sellers: {}
+};
+
 const generateAccessToken = (user) => {
   return jwt.sign(
     { id: user.id, email: user.email, role: user.role },
@@ -14,13 +19,11 @@ const generateAccessToken = (user) => {
 
 const generateRefreshToken = (user) => {
   return jwt.sign(
-    { id: user.id },
+    { id: user.id, role: user.role }, // Include role in refresh token
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: "7d" }
   );
 };
-
-let refreshTokens = {}
 
 const register = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -47,9 +50,25 @@ const login = async (req, res) => {
     
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-    refreshTokens[user.id] = refreshToken;
+
+    // Store refresh token based on user role
+    if (user.role === 'seller') {
+      refreshTokens.sellers[user.id] = refreshToken;
+    } else {
+      refreshTokens.users[user.id] = refreshToken;
+    }
     
-    res.json({ message: "Login successful", accessToken, refreshToken, user });
+    res.json({ 
+      message: "Login successful", 
+      accessToken, 
+      refreshToken, 
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ message: "Server error" });
@@ -58,15 +77,35 @@ const login = async (req, res) => {
 
 const refreshToken = (req, res) => {
   const { refreshToken } = req.body;
-  if (!refreshToken) return res.status(401).json({ message: "Refresh token is required" });
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Refresh token is required" });
+  }
 
-  jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
-    if (err || refreshTokens[decoded.id] !== refreshToken) {
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    const { id, role } = decoded;
+
+    // Check if refresh token exists in appropriate storage
+    const storedToken = role === 'seller' 
+      ? refreshTokens.sellers[id] 
+      : refreshTokens.users[id];
+
+    if (!storedToken || storedToken !== refreshToken) {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
-    const newAccessToken = generateAccessToken({ id: decoded.id, email: decoded.email, role: decoded.role });
-    res.json({ accessToken: newAccessToken });
-  });
+
+    // Generate new access token
+    const user = { id, role };
+    const newAccessToken = generateAccessToken(user);
+
+    res.json({ 
+      accessToken: newAccessToken,
+      message: "Token refreshed successfully"
+    });
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    res.status(403).json({ message: "Invalid refresh token" });
+  }
 };
 
 const getCurrentUser = async (req, res) => {
@@ -81,11 +120,19 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+
 const logout = (req, res) => {
-  const { userId } = req.body;
-  delete refreshTokens[userId];
+  const { userId, role } = req.body;
+  
+  if (role === 'seller') {
+    delete refreshTokens.sellers[userId];
+  } else {
+    delete refreshTokens.users[userId];
+  }
+  
   res.status(200).json({ message: "Logged out successfully" });
 };
+
 const deleteUser= async (req, res) => {
   try {
     const { id } = req.params;
