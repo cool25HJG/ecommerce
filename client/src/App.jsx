@@ -3,7 +3,8 @@ import './App.css'
 // import axios from 'axios'
 import Main from './components/main'
 import Login from './components/login';
-import List from './components/listProduct.Client'import Register from './components/Register';
+import List from './components/listProduct.Client'
+import Register from './components/Register';
 
 import {BrowserRouter 
   as Router,Routes, Route
