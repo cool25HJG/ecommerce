@@ -1,37 +1,21 @@
-// import { useState } from 'react'
-import './App.css'
-import {BrowserRouter 
-  as Router,Routes, Route
-} from "react-router-dom";
-import Dashboard from './componets/dashbored';
-// import axios from "axios";
+import { useState } from "react";
+import "./App.css";
+import ListOfProducts from "./commponents/ListOfProducts";
+import ListOfUsers from "./commponents/ListOfUsers";
+import Navbar from "./commponents/Navbar.jsx";
+import Sidebar from "./commponents/Sidebar.jsx";
 function App() {
-
-
+  const [View, setView] = useState("product");
+  const changeView = (view) => {
+    setView(view);
+  };
   return (
-    <>
-      
-      <Router>
-      <Routes>
-         
-        <Route path="/" element={<Dashboard/>} />
-        <Route path="/listofclients" element={<listofclients/>}/>
-        <Route path="listofsellers" element={<listofsellers/>}/>
-        <Route path="listofproducts" element={<listofproducts/>}/>
-        <Route path="listofcategories" element={<listofcategories/>}/>
-
-        <Route path="addcategoy" element={<addcategoy/>}/>
-        {/* other rootes for product and client and sellers and maybe update product   */}
-        {/* and view users profile */}
-      </Routes>
-      </Router>
-   
-
-
-
-      
-    </>
-  )
+    <div>
+     <Navbar changeView={changeView} />
+      <Sidebar />
+      <div>{View === "product" ? <ListOfProducts /> : <ListOfUsers />}</div>
+    </div>
+  );
 }
 
-export default App
+export default App;

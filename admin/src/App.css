@@ -1,186 +1,56 @@
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-}
-
-/* Dashboard Container */
-.dashboard-container {
-  display: flex;
-}
-
-/* Main Navbar */
-.main-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1030;
-  background-color: #383a3d;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px 20px;
-}
-
-.nav-list {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  list-style-type: none;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-}
-
-.nav-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.nav-search {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.nav-search input.form-control {
-
-  width: 400px;
-  border-radius: 20px;
-  padding: 0.5rem 1rem;
-  border: 1px solid #ddd;
-}
-
-.nav-user {
-  position: relative;
-  cursor: pointer;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: #d9c3c3;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem;
-}
-
-.dropdown-item {
-  background: none;
-  border: none;
-  width: 90px;
-  text-align: left;
-  color:black;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.dropdown-item:hover {
-  background: #f8f9fa;
-  color: #000000;
-}
-
-/* Sidebar Navigation */
-.side-nav {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  width: 200px;
-  height: calc(100vh - 70px);
-  color: #ddd;
-  background-color: #383a3d;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  overflow-y: auto;
-}
-
-.side-nav-list {
-  list-style-type: none;
-}
-
-.side-nav-item {
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  color: #e1dddd;
-  transition: background 0.3s, color 0.3s;
-}
-
-.side-nav-item:hover {
-  background-color: #8b1bd6;
-  color: #000000;
-}
-
-/* Page Content */
-.page-content {
-  margin-left: 200px;
-  margin-top: 70px;
-  padding: 20px;
-}
-
-/* Product Card Layout */
-.column {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px; /* Space between cards */
-  padding: 20px;
-}
-
-.product-card {
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  text-align: center;
-  padding: 15px;
-  max-width: 300px;
-  margin: auto;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.product-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.product-card h4 {
-  margin: 10px 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.product-card p {
-  font-size: 14px;
-  color: #555;
-  margin: 5px 0;
-}
-
-.product-card button {
-  margin: 10px 5px;
-  padding: 8px 12px;
-  font-size: 14px;
-  background-color: #ae00ff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.product-card button:hover {
-  background-color: #6200b3;
-}
-
+/* The side navigation menu */
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  /* Sidebar links */
+  .sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+  }
+  
+  /* Active/current link */
+  .sidebar a.active {
+    background-color: #04AA6D;
+    color: white;
+  }
+  
+  /* Links on mouse-over */
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+  
+  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+  div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 1000px;
+  }
+  
+  /* On screens that are less than 700px wide, make the sidebar into a topbar */
+  @media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+  }
+  
+  /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+  @media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }

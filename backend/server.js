@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require("express");
 const app = express();
 const PORT = 4000;
@@ -6,11 +7,25 @@ const db = require("./models/index");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const protectedRoutes = require("./routes/protectedRoutes");
+=======
+const express=require("express")
+const app=express()
+const PORT=4000
+const cors=require("cors")
+const db=require("./models/index")
+const dotenv = require('dotenv');
+
+const protectedRoutes = require('./routes/protectedRoutes');
+>>>>>>> 7eb97aa485296322522337d7f245d1900ceedbf5
 
 app.use(cors());
 app.use(express.json());
 // Public routes for registration and login
+<<<<<<< HEAD
 app.use("/auth", authRoutes);
+=======
+
+>>>>>>> 7eb97aa485296322522337d7f245d1900ceedbf5
 
 // Protected routes (only accessible with a valid JWT)
 app.use("/protected", protectedRoutes);
