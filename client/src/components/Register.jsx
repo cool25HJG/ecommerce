@@ -25,7 +25,7 @@ function Register() {
     dispatch(registerStart());
 
     try {
-      const response = await axios.post("http://localhost:4000/auth/register", formData);
+      const response = await axios.post("http://localhost:4000/api/user/register", formData);
       dispatch(registerSuccess(response.data));
       navigate("/login"); // Redirect to login after successful registration
     } catch (error) {
