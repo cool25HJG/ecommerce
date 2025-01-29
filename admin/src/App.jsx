@@ -24,14 +24,18 @@ function App() {
   useEffect(()=>{
     fetchUsers()
   },[])
-  
+  const updateUser = (id,body)=>{
+    axios.put(`http://localhost:4000/api/user/${id}`,body)
+    .then(()=>console.log("updated"))
+    .catch((err)=>console.error("err updating",err))
+  }
   return (
     <div>
      <Navbar changeView={changeView} />
       <Sidebar changeView={changeView} />
       
       <div className="viewdiv">
-      {View === "product" ? <ListOfProducts /> : <ListOfUsers  users={users}  DeleteUser={DeleteUser} />}</div>
+      {View === "product" ? <ListOfProducts /> : <ListOfUsers  updateUser={updateUser} users={users}  DeleteUser={DeleteUser} />}</div>
     </div>
   );
 }

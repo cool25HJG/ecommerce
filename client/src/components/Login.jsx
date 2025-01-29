@@ -1,23 +1,73 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import "./Login.css";
+
+function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, loading } = useSelector((state) => state.auth);
+
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState('');
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    dispatch({ type: "AUTH_START" });
 
     try {
-      // Here you would typically make an API call to your backend
-      // const response = await loginUser(formData);
-      console.log('Login attempt with:', formData);
-    } catch (err) {
-      setError('Invalid email or password');
+      const response = await axios.post("http://localhost:4000/api/user/login", formData);
+      const { accessToken, refreshToken, user } = response.data;
+
+      if (!user) {
+        throw new Error("User data is missing in the response");
+      }
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
+
+      // Redirect based on role
+      if (user.role === "admin") {
+        window.location.href = "http://localhost:5173/";
+      } else if (user.role === "seller") {
+        navigate("/");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      dispatch({
+        type: "AUTH_FAIL",
+        payload: error.response?.data?.message || "Authentication failed",
+      });
+      }
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
+
+      // Redirect based on role
+      if (user.role === "admin") {
+        window.location.href = "http://localhost:5173/";
+      } else if (user.role === "seller") {
+        navigate("/");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      dispatch({
+        type: "AUTH_FAIL",
+        payload: error.response?.data?.message || "Authentication failed",
+      });
     }
   };
 

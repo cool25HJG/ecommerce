@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-function ListOfUsers({users,DeleteUser}) {
-  console.log("hello from user",users)
+function ListOfUsers({users,DeleteUser,updateUser}) {
+  const [name,setname]=useState("")
+  const [Email,setEmail]=useState("")
+  const [Role,setRole]=useState("")
+  const [show,setshow]=useState(0)
+  const toggle =(action)=>{
+    
+
+  }
   return (
     <div>
       <table className="table">
