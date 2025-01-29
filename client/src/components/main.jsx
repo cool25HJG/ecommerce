@@ -6,24 +6,18 @@ import axios from "axios"
 function Main() {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
- 
-    const [data, setData] = useState([]);
-    const fetchData = () => {
-        axios
-          .get("http://localhost:4000/api/Products/")
-          .then((resp) => setData(resp.data))
-          .catch((error) => console.log(error));
-      };
-
-useEffect(()=>{fetchData()},[])
-console.log(data);
 
 
-
-
-
-
-
+    const [currentSlide, setCurrentSlide] = useState(0);
+  
+    const slides = [
+      { image: "", text: "Discover the latest trends!", button: "Shop Now" },
+      { image: "", text: "Upgrade your home essentials", button: "Explore" },
+      { image: "", text: "Find the best deals", button: "Check Offers" },
+    ];
+    const nextSlide = () => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    };
 
 
   return (
@@ -95,24 +89,33 @@ console.log(data);
           </div>
         </div>
       </nav>
-      <div>
-        
-        {data.map((el)=>(
-            <div key={el.id}>
-          <div  className="column">
-            <div style={{border: "2px solid blue", padding: "10px",  marginBottom: "20px", background: "lightblue", padding: "10px" }}  key={""} className="product-card">
-              <img style={{width:"200px"}} src={el.imageUrl} alt="" />
-              <h4>{el.name}</h4>
-              <p>{el.description}</p>
-              <h4>{el.price}</h4>
-              <h4>{el.stock}</h4>
-              <CiShoppingCart size={25} className="me-3" />
-              <CiHeart size={25} className="me-3" />
-              </div>
-              </div>  
-              </div>
-            ))}
+
+      <div className="container">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <h3>Categories :</h3>
+
+        <ul>
+          {/* {categories.map((category, index) => ( */}
+            {/* // <li key={index}>{category.name}</li> */}
+            
+          {/* ))} */}
+        </ul>
+      </aside>
+
+      {/* Slider Section */}
+      <div className="slider-container">
+        <div className="slide">
+          <img src={slides[currentSlide].image} alt="Slide" />
+          <div className="slide-text">{slides[currentSlide].text}</div>
+          <button className="slide-button" onClick={nextSlide}>{slides[currentSlide].button}</button>
+        </div>
+      </div>
     </div>
+
+
+
+
     </div>
   );
 }
