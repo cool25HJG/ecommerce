@@ -16,7 +16,7 @@ function App() {
     <>
       
 
-       <div>
+       <div >
       <Router>
       <Routes>
      {/* for both */}
