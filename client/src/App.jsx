@@ -3,7 +3,10 @@ import './App.css';
 import Main from './components/Main';
 import Login from './components/Login';
 import Register from './components/Register';
-// import ListOfProduct from './components/seller/ListOfProduct';
+import Listofproducts from './components/seller/Listofproducts';
+import Updateproduct from './components/seller/updateproduct';
+import Addproduct from './components/seller/addproduct';
+import MainSeller from './components/seller/MainSeller';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
@@ -36,11 +39,12 @@ function App() {
           <Route path='/register' element={<Register />} />
           {/* <Route path="/list" element={<List />} /> */}
           <Route path="/cart" element={<Cart />} /> {/* Render Cart component for /cart route */}
-          {/* <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/listofproduct" element={<ListOfProduct />} />
-          <Route path="/add" element={<AddProduct />} />
-          <Route path="/update" element={<UpdateProduct />} />
-          <Route path="/delete" element={<Delete />} /> */}
+          {/* <Route path="/wishlist" element={<Wishlist />} /> */}
+
+          <Route path="/listofproduct" element={<Listofproducts />}/>
+        <Route path="/add" element={<Addproduct fetch={fetch}/>}/>
+        <Route path="/update" element={<Updateproduct fetch={fetch}/>}/>
+        <Route path="/main/seller" element={<MainSeller product={product} fetch={fetch}/> } />
         </Routes>
       </Router>
     </CartProvider>
