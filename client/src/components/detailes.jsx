@@ -13,8 +13,6 @@ function Detaile() {
       .catch((error) => console.log(error));
   }, [id]);
 
-  if (!product) return <p>Loading...</p>;
-
   return (
     <div>
       <h2>Product Details</h2>
