@@ -49,26 +49,26 @@ function Login() {
         payload: error.response?.data?.message || "Authentication failed",
       });
       }
+  };
 
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+  return (
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Login</h2>
+        {error && <div className="error-message">{error}</div>}
+        
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
-
-      // Redirect based on role
-      if (user.role === "admin") {
-        window.location.href = "http://localhost:5173/";
-      } else if (user.role === "seller") {
-        navigate("/");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      dispatch({
-        type: "AUTH_FAIL",
-        payload: error.response?.data?.message || "Authentication failed",
-      });
-    }
   };
 
   return (

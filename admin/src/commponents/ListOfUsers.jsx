@@ -6,7 +6,11 @@ function ListOfUsers({users,DeleteUser,updateUser}) {
   const [Role,setRole]=useState("")
   const [show,setshow]=useState(0)
   const toggle =(action)=>{
-    
+    if(show === action){
+      setshow(0)
+    } else {
+      setshow(action)
+    }
 
   }
   return (
