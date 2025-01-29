@@ -13,7 +13,6 @@ import MainSeller from './components/seller/MainSeller';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
-import axios from "axios"
 function App() {
  
     const [product, setproduct] = useState([]);
