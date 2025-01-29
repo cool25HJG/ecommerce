@@ -15,17 +15,7 @@ const Dashboard = () => {
           {/* Left: Dashboard Title */}
           <li className="nav-item nav-title">Dashboard</li>
 
-          {/* Center: Search Bar */}
-          <li className="nav-item nav-search">
-            <form>
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </form>
-          </li>
+      
 
           {/* Right: User Icon with Dropdown */}
           <li
@@ -36,12 +26,14 @@ const Dashboard = () => {
             <CiUser size={25} />
             {showDropdown && (
               <div className="dropdown-menu">
+                <button className="dropdown-item" > Profile</button>
                 <button
                   className="dropdown-item"
                   onClick={() => navigate("/logout")}
                 >
                   Log Out
                 </button>
+                
               </div>
             )}
           </li>
@@ -55,13 +47,7 @@ const Dashboard = () => {
             className="side-nav-item"
             onClick={() => navigate("/clients")}
           >
-            List of All Clients
-          </li>
-          <li
-            className="side-nav-item"
-            onClick={() => navigate("/sellers")}
-          >
-            List of All Sellers
+            List of All Users
           </li>
           <li
             className="side-nav-item"
@@ -75,12 +61,7 @@ const Dashboard = () => {
           >
             List of Categories
           </li>
-          <li
-            className="side-nav-item"
-            onClick={() => navigate("/add-category")}
-          >
-            Add a Category
-          </li>
+          
         </ul>
       </aside>
 
