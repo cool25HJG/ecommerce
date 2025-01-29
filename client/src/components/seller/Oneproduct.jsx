@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Delete() {
+export default function Oneproduct() {
   return (
     <div>
       

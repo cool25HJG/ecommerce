@@ -1,9 +1,19 @@
-// import React from 'react'
+import React, { useState } from "react";
 // import { useNavigate } from 'react-router-dom';
 
 function listOfProduct() {
 // const navigate=useNavigate()
-
+    const [Product, setProduct] = useState([]);
+    
+    const getallproduct = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/Products/");
+        console.log(response.data);
+        setProduct(response.data);
+      } catch (error) {
+        throw error;
+      }
+    };
 
   return (
     <div> 
