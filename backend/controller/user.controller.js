@@ -57,7 +57,8 @@ module.exports = {
         { expiresIn: process.env.JWT_EXPIRATION }
       );
 
-      res.json({ message: "Login successful", token });
+      res.json({ message: "Login successful", token, user });
+
     } catch (error) {
       console.error("Error logging in:", error);
       res.status(500).json({ message: "Server error" });
