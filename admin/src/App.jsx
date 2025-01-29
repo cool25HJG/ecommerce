@@ -10,10 +10,11 @@ function App() {
     setView(view);
   };
   return (
-    <div>
+    <div className="maindiv">
      <Navbar changeView={changeView} />
+      
       <Sidebar />
-      <div>{View === "product" ? <ListOfProducts /> : <ListOfUsers />}</div>
+      <div className="viewdiv">{View === "product" ? <ListOfProducts /> : <ListOfUsers />}</div>
     </div>
   );
 }
