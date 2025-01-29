@@ -1,11 +1,15 @@
 import React, { useState } from "react";
+import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-export default function Oneproduct(product) {
+export default function Oneproduct({product,fetch}) {
+    console.log("pro",product);
+    
     const navigate=useNavigate()
     
     const handleDelete = async (id) => {
         try {
           const response = await axios.delete(`http://localhost:4000/api/Products/${id}`);
+          fetch()
         } catch (error) {
           throw error;
         }
