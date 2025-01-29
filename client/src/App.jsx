@@ -6,7 +6,10 @@ import Login from './components/login';
 import Detaile from './components/detailes';
 // import List from './components/listProduct.Client'
 import Register from './components/Register';
-// import ListOfProduct from './components/seller/ListOfProduct';
+import Listofproducts from './components/seller/Listofproducts';
+import Updateproduct from './components/seller/updateproduct';
+import Addproduct from './components/seller/addproduct';
+import MainSeller from './components/seller/MainSeller';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
@@ -32,31 +35,21 @@ function App() {
   return (
     <CartProvider>
       <Router>
-      <Routes>
-     {/* for both */}
-     <Route path="/" element={<Main/>} />
-       <Route path="/detailes" element={<Detaile/>}/>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          {/* <Route path="/detailes" element={<ProductDetails />} /> */}
+          {/* <Route path="/profile" element={<Profile />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          {/* <Route path="/list" element={<List />} /> */}
+          <Route path="/cart" element={<Cart />} /> {/* Render Cart component for /cart route */}
+          {/* <Route path="/wishlist" element={<Wishlist />} /> */}
 
-       {/* <Route path="/profile" element={<profile/>}/> */}
-       <Route path="/login" element={<Login/>}/>
-       <Route path='/register' element={<Register/>}/>
-
-       {/* <Route path="/list" element={<List/>}/> */}
-
-         {/* client */}
-       
-        
-        <Route path="/cart" element={<cart/>}/>
-        <Route path="/Wishlist" element={<wishlist/>}/>
-        
-       {/* seller */}
-        <Route path="/listofproduct" element={<Listofproducts />}/>
+          <Route path="/listofproduct" element={<Listofproducts />}/>
         <Route path="/add" element={<Addproduct fetch={fetch}/>}/>
         <Route path="/update" element={<Updateproduct fetch={fetch}/>}/>
-        <Route path="/delete" element={<delete/>}/>
         <Route path="/main/seller" element={<MainSeller product={product} fetch={fetch}/> } />
-    
-      </Routes>
+        </Routes>
       </Router>
     </CartProvider>
   );

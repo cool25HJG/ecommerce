@@ -1,54 +1,14 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
-import axios from "axios";
-import Detaile from "./detailes";
-=======
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
 import Cart from "./cart";
->>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
 
 function Main() {
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
   const [showDropdown, setShowDropdown] = useState(false);
-<<<<<<< HEAD
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-
-  // Sample slides (replace with real images)
-  const slides = [
-    { image: "https://via.placeholder.com/600x300", text: "Discover the latest trends!", button: "Shop Now" },
-    { image: "https://via.placeholder.com/600x300", text: "Upgrade your home essentials", button: "Explore" },
-    { image: "https://via.placeholder.com/600x300", text: "Find the best deals", button: "Check Offers" },
-  ];
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  // Fetch Products & Categories from API
-  const fetchData = async () => {
-    try {
-      const productsResponse = await axios.get("http://localhost:4000/api/Products");
-      setProducts(productsResponse.data);
-      const categoriesResponse = await axios.get("http://localhost:4000/api/Category");
-      setCategories(categoriesResponse.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-=======
   const [data, setData] = useState([]);
   const [currentProd, setCurrentProd] = useState(null);
 
@@ -78,7 +38,6 @@ function Main() {
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
->>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
 
   return (
     <div>
@@ -124,19 +83,6 @@ function Main() {
 
       {/* Main Content */}
       <div className="container">
-<<<<<<< HEAD
-        {/* Sidebar */}
-        <aside className="sidebar">
-          <h3>Categories:</h3>
-          <ul>
-            {categories.map((category, index) => (
-              <li key={index}>{category.name}</li>
-            ))}
-          </ul>
-        </aside>
-
-        {/* Slider */}
-=======
         <aside className="sidebar">
           <h3>Categories :</h3>
           <ul>
@@ -146,41 +92,10 @@ function Main() {
           </ul>
         </aside>
 
->>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
         <div className="slider-container">
           <div className="slide">
             <img src={slides[currentSlide].image} alt="Slide" />
             <div className="slide-text">{slides[currentSlide].text}</div>
-<<<<<<< HEAD
-            <button className="slide-button" onClick={nextSlide}>{slides[currentSlide].button}</button>
-          </div>
-        </div>
-      </div>
-
-      {/* Product List */}
-      <div>
-      <h2>Product List</h2>
-      <div className="product-list">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="product-card"
-            style={{ border: "2px solid blue", padding: "10px", marginBottom: "20px", background: "lightblue" }}
-            // Navigate to the details page
-          >
-            <img   style={{ width: "200px" }} src={product.imageUrl} alt={product.name} />
-            <h4>{product.name}</h4>
-            <p>{product.description}</p>
-            <h4>Price: {product.price} $</h4>
-            <h4>Stock: {product.stock}</h4>
-            <button  onClick={() => navigate(`/detailes/${product.id}`)} >view more detailes</button>
-            <CiShoppingCart size={25} className="me-3" />
-            <CiHeart size={25} className="me-3" />
-          </div>
-        ))}
-      </div>
-    </div>
-=======
             <button className="slide-button" onClick={nextSlide}>
               {slides[currentSlide].button}
             </button>
@@ -217,13 +132,8 @@ function Main() {
           </div>
         ))}
       </div>
->>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
     </div>
   );
 }
 
-<<<<<<< HEAD
 export default Main;
-=======
-export default Main;
->>>>>>> 69a920c63e236c447fc36697a1c71c7a46aa2fee
