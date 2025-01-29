@@ -12,12 +12,11 @@ export default function Addproduct() {
     const handleAddproduct = async (product) => {
         try {
           const response = await axios.post("http://localhost:4000/api/Products/",product);
-        //   fetch();
         } catch (error) {
           throw error;
         }
       }
-
+    
   return (
     <div>
         <div>

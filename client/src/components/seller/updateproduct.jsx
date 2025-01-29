@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import axios from 'axios'
+import { useLocation } from 'react-router'
 
 function Updateproduct() {
+    const {state}=useLocation()
+    const product=state?.product
+    console.log("product",product)
         const [name, setname] = useState("");
         const [description, setdescription] = useState("");
         const [price, setprice] = useState("");
         const [stock, setstock] = useState("");
         const [imageUrl, setimageUrl] = useState("");
 
-        const handleUpdateproduct = async (id, {name,description,price,stock,imageUrl}) => {
+        const handleUpdateproduct = async ({name,description,price,stock,imageUrl}) => {
             try {
-              const response = await axios.put(`http://localhost:4000/api/Products/${id}`,{name,description,price,stock,imageUrl})
+              const response = await axios.put(`http://localhost:4000/api/Products/${product.id}`,{name,description,price,stock,imageUrl})
             } catch (error) {
               throw error;
             }

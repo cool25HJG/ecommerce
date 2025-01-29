@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function Oneproduct(product) {
-    const [Currentproduct , setCurrentproduct] = useState(null);
-    const getCurrentproduct = (id)=>{
-        setCurrentproduct(id)
-    }
+    const navigate=useNavigate()
+    
+    const handleDelete = async (id) => {
+        try {
+          const response = await axios.delete(`http://localhost:4000/api/Products/${id}`);
+        } catch (error) {
+          throw error;
+        }
+      };
+
   return (
     <div>
       <h3> list of product  </h3>
@@ -17,11 +23,8 @@ export default function Oneproduct(product) {
             <h4>{product.price}</h4>
             <h4>{product.stock}</h4>
             
-      
-    <button onClick={()=>{}}>Update</button>
-    <button onClick={()=>{}}>Delete</button>
-
-
+    <button onClick={()=>navigate("/update",{state:{product:product}})}>Update</button>
+    <button onClick={()=>{handleDelete(product.id)}}>Delete</button>
 
 </div>
 
