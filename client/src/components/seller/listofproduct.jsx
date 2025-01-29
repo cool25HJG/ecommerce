@@ -1,32 +1,37 @@
-// import React from 'react'
+import React, { useState } from "react";
+import axios from 'axios'
 // import { useNavigate } from 'react-router-dom';
 
 function listOfProduct() {
 // const navigate=useNavigate()
 
 
+
+// const [product, setproduct] = useState([]);
+
+// const getallproduct = async () => {
+//   try {
+//     const response = await axios.get("http://localhost:4000/api/Products/");
+//     console.log(response.data);
+//     setproduct(response.data);
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
   return (
     <div> 
-<h3> list of product  </h3>
-<div className="column">
-     {/* {5555555.map(() => ( */}
-<div key={""} className="product-card">
+{      product.map((el) => {
+                      return  (
+                      <div key={el.id}>
+                      <Oneproduct
+                      product={product}
+                      />  
+                    </div>
+                    )
+      })}
 
-            <img src="" alt="" />
-            <h4>name</h4>
-            <p>description</p>
-            <h4>price</h4>
-            <h4>stock</h4>
-            
-      
-    <button onClick={()=>{}}>Update</button>
-    <button onClick={()=>{}}>Delete</button>
-
-
-
-</div>
-
-</div>
+  
     </div>
   );
 }

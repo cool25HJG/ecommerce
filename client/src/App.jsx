@@ -5,7 +5,7 @@ import Main from './components/main'
 import Login from './components/login';
 import List from './components/listProduct.Client'
 import Register from './components/Register';
-
+import listOfProduct from './components/seller/listofproduct';
 import {BrowserRouter 
   as Router,Routes, Route
 } from "react-router-dom";
@@ -14,6 +14,21 @@ import {BrowserRouter
 function App() {
   // const [count, setCount] = useState(0)
 
+  const [product, setproduct] = useState([]);
+
+const fetch = async () => {
+  try {
+    const response = await axios.get("http://localhost:4000/api/Products/");
+    console.log(response.data);
+    setproduct(response.data);
+  } catch (error) {
+    throw error;
+  }
+
+  useEffect(() => {
+    fetch();
+  }, []);
+};
   return (
     <>
       
