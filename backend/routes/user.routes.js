@@ -1,7 +1,19 @@
 const express = require('express');
-const { getAllUser, deleteUser, updateUser } = require('../controller/user.controller');
-const Router = express.Router()
-Router.put('/:id',updateUser)
-Router.delete('/:id',deleteUser)
-Router.get('/',getAllUser)
-module.exports = Router
+const { register, login, refreshToken, getCurrentUser, logout, deleteUser, updateUser, getAllUser } = require("../controller/user.controller");
+const authenticateJWT = require("../middleware/authMiddleware");
+
+const router = express.Router();
+
+// Authentication routes
+router.post('/register', register);
+router.post('/login', login);
+router.post('/refresh-token', refreshToken);
+router.get('/current-user', authenticateJWT, getCurrentUser);
+router.post('/logout', authenticateJWT, logout);
+
+// User management routes
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
+router.get('/',getAllUser);
+
+module.exports = router;
