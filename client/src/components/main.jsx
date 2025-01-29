@@ -7,6 +7,19 @@ function Main() {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
 
+
+    const [currentSlide, setCurrentSlide] = useState(0);
+  
+    const slides = [
+      { image: "", text: "Discover the latest trends!", button: "Shop Now" },
+      { image: "", text: "Upgrade your home essentials", button: "Explore" },
+      { image: "", text: "Find the best deals", button: "Check Offers" },
+    ];
+    const nextSlide = () => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    };
+
+
   return (
     <div>
       <nav className="navbar">
@@ -77,18 +90,32 @@ function Main() {
         </div>
       </nav>
 
-      <h3>List of All Products</h3>
-      <div className="column">
-        <div key={""} className="product-card">
-          <img src="" alt="" />
-          <h4>Name</h4>
-          <p>Description</p>
-          <h4>Price</h4>
-          <h4>Stock</h4>
-          <CiShoppingCart size={25} className="me-3" />
-          <CiHeart size={25} className="me-3" />
+      <div className="container">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <h3>Categories</h3>
+
+        <ul>
+          {/* {categories.map((category, index) => ( */}
+            {/* // <li key={index}>{category.name}</li> */}
+            
+          {/* ))} */}
+        </ul>
+      </aside>
+
+      {/* Slider Section */}
+      <div className="slider-container">
+        <div className="slide">
+          <img src={slides[currentSlide].image} alt="Slide" />
+          <div className="slide-text">{slides[currentSlide].text}</div>
+          <button className="slide-button" onClick={nextSlide}>{slides[currentSlide].button}</button>
         </div>
       </div>
+    </div>
+
+
+
+
     </div>
   );
 }

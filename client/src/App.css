@@ -244,6 +244,31 @@ body {
 } */
 
 
+.sidebar {
+  width: 200px;
+  background: #252627;
+  color :#ddd
+  padding: 20px;
+}
+
+.slider-container {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.slide img {
+  width: 100%;
+  max-width: 600px;
+}
+
+.slide-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: rgb(51, 50, 50);
+  border: none;
+  cursor: pointer;
+}
 
 
  
