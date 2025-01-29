@@ -11,21 +11,27 @@ function App() {
   const changeView = (view) => {
     setView(view);
   };
-  const fetch = ()=>{
-  axios.get("")
+  const fetchUsers = ()=>{
+  axios.get("http://localhost:4000/api/user")
   .then((res)=>{setusers(res.data)})
   }
+  const DeleteUser = (id)=>{
+    axios.delete(`http://localhost:4000/api/user/${id}`)
+    .then(()=>{console.log("deleted")
+    })
+    .catch((err)=>{console.err("err delete",err)})
+  }
   useEffect(()=>{
-    fetch()
+    fetchUsers()
   },[])
-  console.log("data",data)
+  
   return (
     <div>
      <Navbar changeView={changeView} />
       <Sidebar changeView={changeView} />
       
       <div className="viewdiv">
-      {View === "product" ? <ListOfProducts /> : <ListOfUsers />}</div>
+      {View === "product" ? <ListOfProducts /> : <ListOfUsers  users={users}  DeleteUser={DeleteUser} />}</div>
     </div>
   );
 }

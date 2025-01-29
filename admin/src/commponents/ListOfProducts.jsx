@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
 function ListOfProducts() {
   return (
     <div>
-      hello from product list hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh jjjj
+      hello
     </div>
-  )
+  );
 }
 
-export default ListOfProducts
+export default ListOfProducts;

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
-
+import axios from "axios"
 
 function Main() {
   const navigate = useNavigate();
@@ -120,4 +120,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Main
