@@ -12,8 +12,8 @@ router.get('/current-user', authenticateJWT, getCurrentUser);
 router.post('/logout', authenticateJWT, logout);
 
 // User management routes
-router.put('/:id', authenticateJWT, updateUser);
-router.delete('/:id', authenticateJWT, deleteUser);
-router.get('/', authenticateJWT, getAllUser);
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
+router.get('/',getAllUser);
 
 module.exports = router;
