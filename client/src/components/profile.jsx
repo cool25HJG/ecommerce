@@ -7,7 +7,7 @@ function Detaile() {
     // const navigate=useNavigate()
     // const {state}=useLocation()
     // console.log(state)
-    const product=state?.product
+    // const product=state?.product
     console.log(product)
   return (
     <div>
