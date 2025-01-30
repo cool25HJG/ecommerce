@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, refreshToken, getCurrentUser, logout, deleteUser, updateUser, getAllUser } = require("../controller/user.controller");
+const { register, login, refreshToken, getOneUser, logout, deleteUser, updateUser, getAllUser } = require("../controller/user.controller");
 const authenticateJWT = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
 router.post('/refresh-token', refreshToken);
-router.get('/current-user', authenticateJWT, getCurrentUser);
+router.get('/:id',  getOneUser);
 router.post('/logout', authenticateJWT, logout);
 
 // User management routes
