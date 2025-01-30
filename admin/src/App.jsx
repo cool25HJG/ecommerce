@@ -48,11 +48,7 @@ function App() {
     })
     .catch((err)=>{console.err("err delete",err)})
   }
-  useEffect(()=>{
-    fetchUsers()
-    fetchProducts()
-    fetchCategory()
-  },[])
+ 
   const updateUser = (id,body)=>{
     axios.put(`http://localhost:4000/api/user/${id}`,body)
     .then(()=>console.log("updated"))
@@ -68,13 +64,23 @@ function App() {
     .then(()=>console.log("updated"))
     .catch((err)=>console.error("err updating",err))
   }
+  const addCategory = (body)=>{
+    axios.post("http://localhost:4000/api/Category",body)
+    .then(()=>console.log("added"))
+    .catch((err)=>console.log("error adding cat"))
+  }
+  useEffect(()=>{
+    fetchUsers()
+    fetchProducts()
+    fetchCategory()
+  },[])
   return (
     <div>
      <Navbar changeView={changeView} />
       <Sidebar changeView={changeView} />
       
       <div className="viewdiv">
-      {View === "product" ? <ListOfProducts updateProducts={updateProducts} DeleteProducts={DeleteProducts} product={product} /> : View === "user" ?<ListOfUsers  updateUser={updateUser} users={users}  DeleteUser={DeleteUser} />: <ListOfCategory category={category}   updateCategory={updateCategory} DeleteCategory={DeleteCategory}  />}</div>
+      {View === "product" ? <ListOfProducts updateProducts={updateProducts} DeleteProducts={DeleteProducts} product={product} /> : View === "user" ?<ListOfUsers  updateUser={updateUser} users={users}  DeleteUser={DeleteUser} />: <ListOfCategory category={category}   updateCategory={updateCategory} DeleteCategory={DeleteCategory} addCategory={addCategory} />}</div>
     </div>
   );
 }
