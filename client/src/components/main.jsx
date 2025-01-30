@@ -29,17 +29,18 @@ function Main() {
       .catch((error) => console.log(error));
   };
 
-  // const fetchCategories = () => {
-  //   axios
-  //     .get("http://localhost:4000/api/Category/")
-  //     .then((resp) => setCategories(resp.data))
-  //     .catch((error) => console.log(error));
-  // };
+  const fetchCategories = () => {
+    axios
+      .get("http://localhost:4000/api/Category/")
+      .then((resp) => setCategories(resp.data))
+      .catch((error) => console.log(error));
+  };
 
-  // useEffect(() => {
-  //   fetchData();
-  //   fetchCategories();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+    fetchCategories();
+  }, []);
+console.log("data",data);
 
   const [currentSlide, setCurrentSlide] = useState(0);
 

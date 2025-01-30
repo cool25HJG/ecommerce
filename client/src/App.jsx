@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
 import Main from './components/main'
-import Login from './components/Login1';
+import Login from './components/Login';
 import Detaile from './components/detailes';
 // import List from './components/listProduct.Client'
 import Register from './components/Register';
@@ -33,9 +33,9 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    fetch();
-  }, []);
+  // useEffect(() => {
+  //   fetch();
+  // }, []);
 
   return (
     <CartProvider>
