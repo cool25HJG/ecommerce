@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
 import Main from './components/main'
-import Login from './components/login';
+import Login from './components/Login.jsx';
 import Detaile from './components/detailes';
 // import List from './components/listProduct.Client'
 import Register from './components/Register';
