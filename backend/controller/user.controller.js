@@ -27,13 +27,13 @@ const generateRefreshToken = (user) => {
 };
 
 const register = async (req, res) => {
-  const {  email, password,firstName,lastName,phoneNumber, role } = req.body;
+  const {  email, password,firstName,lastName,phoneNumber, role,image,adresse } = req.body;
   try {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({  email, password: hashedPassword, role,firstName,lastName,phoneNumber });
+    const user = await User.create({  email, password: hashedPassword, role,firstName,lastName,phoneNumber,image,adresse });
     res.status(201).json({ message: "User created successfully", user });
   } catch (error) {
     console.error("Error registering user:", error);
@@ -145,7 +145,7 @@ const deleteUser= async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, phoneNumber, password, role } = req.body;
+    const { firstName, lastName, email, phoneNumber, password, role,image,adresse} = req.body;
 
     // Find the user by ID
     const user = await User.findOne({ where: { id } });
@@ -168,6 +168,8 @@ const updateUser = async (req, res) => {
         phoneNumber: phoneNumber || user.phoneNumber,
         password: hashedPassword, // Use the hashed password
         role: role || user.role,
+        image:image||user.image,
+        adresse:adresse||user.adresse
       },
       {
         where: { id },

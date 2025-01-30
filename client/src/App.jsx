@@ -33,9 +33,9 @@ function App() {
     }
   };
 
-  // useEffect(() => {
-  //   fetch();
-  // }, []);
+  useEffect(() => {
+    fetch();
+  }, []);
 
   return (
     <CartProvider>
@@ -53,7 +53,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
 
           <Route path="/listofproduct" element={<Listofproducts />}/>
-        <Route path="/add" element={<Addproduct fetch={fetch}/>}/>
+        <Route path="/main/seller/add" element={<Addproduct fetch={fetch}/>}/>
         <Route path="/update" element={<Updateproduct fetch={fetch}/>}/>
         <Route path="/main/seller" element={<MainSeller product={product} fetch={fetch}/> } />
         </Routes>
