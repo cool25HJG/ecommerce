@@ -69,26 +69,6 @@ function Login() {
           />
         </div>
 
-  };
-
-  return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <h2>Login</h2>
-        {error && <div className="error-message">{error}</div>}
-        
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
