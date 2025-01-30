@@ -18,6 +18,8 @@ import Profile from './components/detailes';
 import List from "./components/listProduct.Client"
 import Wishlist from "./components/Wishlist"
 import UpdateProduct from "./components/seller/updateproduct"
+import PaymentForm from './components/PaymentForm';
+
 function App() {
   const [product, setProduct] = useState([]);
 
@@ -40,7 +42,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
-
+          <Route path="/payment" element={<PaymentForm />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/detailes" element={<ProductDetails />} />
            <Route path="/profile" element={<Profile />}/> 
