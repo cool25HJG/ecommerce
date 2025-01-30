@@ -35,7 +35,8 @@ const Products = connection.define("Product", {
   },
   isFavorite:{
     type:DataTypes.BOOLEAN,
-    allowNull:false
+    allowNull:false,
+    defaultValue:false
   }
 })
 return Products;
