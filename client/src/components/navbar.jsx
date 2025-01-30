@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const dropdownRef = useRef(null);
+  const timeoutRef = useRef(null);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -15,6 +19,58 @@ function Navbar() {
   const handleHomeClick = () => {
     setSearchQuery("");
     navigate("/", { state: { searchQuery: "" } });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    window.location.reload();
+  };
+
+  const startCloseTimer = () => {
+    timeoutRef.current = setTimeout(() => {
+      setShowDropdown(false);
+    }, 1000);
+  };
+
+  const clearCloseTimer = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    clearCloseTimer();
+    setShowDropdown(true);
+  };
+
+  const handleMouseLeave = () => {
+    startCloseTimer();
+  };
+
+  const getDropdownItems = () => {
+    if (!user) {
+      return [
+        { label: "Log In", action: () => navigate("/login") }
+      ];
+    }
+
+    if (user.role === "seller") {
+      return [
+        { label: "Manage My Account", action: () => navigate("/profile") },
+        { label: "My Products", action: () => navigate("/seller/products") },
+        { label: "My Orders", action: () => navigate("/seller/orders") },
+        { label: "My Reviews", action: () => navigate("/seller/reviews") },
+        { label: "Logout", action: handleLogout }
+      ];
+    }
+
+    return [
+      { label: "Manage My Account", action: () => navigate("/profile") },
+      { label: "My Orders", action: () => navigate("/orders") },
+      { label: "My Reviews", action: () => navigate("/reviews") },
+      { label: "Logout", action: handleLogout }
+    ];
   };
 
   return (
@@ -58,24 +114,31 @@ function Navbar() {
           />
           <div
             className="icon dropdown"
-            onMouseEnter={() => setShowDropdown(true)}
-            onMouseLeave={() => setShowDropdown(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            ref={dropdownRef}
           >
             <CiUser size={25} />
             {showDropdown && (
-              <div className="dropdown-menu">
-                <button
-                  className="dropdown-item"
-                  onClick={() => navigate("/login")}
-                >
-                  Log In
-                </button>
-                <button
-                  className="dropdown-item"
-                  onClick={() => navigate("/profile")}
-                >
-                  Manage My Account
-                </button>
+              <div 
+                className="dropdown-menu"
+                onClick={(e) => e.stopPropagation()}
+                onMouseEnter={clearCloseTimer}
+                onMouseLeave={startCloseTimer}
+              >
+                {getDropdownItems().map((item, index) => (
+                  <button
+                    key={index}
+                    className="dropdown-item"
+                    onClick={() => {
+                      item.action();
+                      setShowDropdown(false);
+                      clearCloseTimer();
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </div>
             )}
           </div>

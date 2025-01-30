@@ -123,12 +123,21 @@ body {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #000000;
+  background-color: rgb(4, 2, 2);
   border: 1px solid #333;
   border-radius: 8px;
   padding: 5px;
   margin-top: 5px;
   min-width: 200px;
+  z-index: 1000;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.dropdown-menu.hiding {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .dropdown-item {
@@ -376,6 +385,7 @@ body {
 .qr-code img {
   width: 120px;
   height: 120px;
+  border-radius: 10px;
 }
 
 .app-buttons {
@@ -678,7 +688,6 @@ svg:hover {
 .load-more-button:hover {
   background: #8c0404;
 }
-
 
 
 

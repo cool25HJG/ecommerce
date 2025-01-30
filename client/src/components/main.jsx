@@ -131,25 +131,17 @@ function Main() {
           </div>
           
           {searchQuery ? (
-            <>
-              <h2>Search Results for "{searchQuery}"</h2>
-              <p>({filteredProducts.length} Products found)</p>
-              {filteredProducts.length > visibleProducts && (
-                <button onClick={loadMore} className="load-more-button">
-                  See More
-                </button>
-              )}
-            </>
+            filteredProducts.length > visibleProducts && (
+              <button onClick={loadMore} className="load-more-button">
+                See More
+              </button>
+            )
           ) : (
-            <>
-              <h2>All Products</h2>
-              <p>({data.length} Products available)</p>
-              {data.length > visibleProducts && (
-                <button onClick={loadMore} className="load-more-button">
-                  See More
-                </button>
-              )}
-            </>
+            data.length > visibleProducts && (
+              <button onClick={loadMore} className="load-more-button">
+                See More
+              </button>
+            )
           )}
         </div>
       </div>
