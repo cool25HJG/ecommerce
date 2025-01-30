@@ -41,6 +41,14 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    image:{
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    adresse:{
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
   });
   
     
