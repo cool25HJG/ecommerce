@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize")
 require("dotenv").config()
 const connection = new Sequelize(process.env.DATABASE, process.env.USER, process.env.PASSWORD, {
   host: process.env.HOST,
