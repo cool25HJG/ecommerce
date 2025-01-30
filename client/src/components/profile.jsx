@@ -146,7 +146,6 @@ function Profile() {
               name="firstName"
               value={updateForm.firstName}
 
-
               onChange={handleChange}
               required
             />
