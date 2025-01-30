@@ -86,7 +86,7 @@ function ListOfUsers({users,DeleteUser,updateUser}) {
 </svg></button>
             </td>}
             {show===el.id && <td>
-              <button type='button' className='btn btn-outline-success' onClick={()=>updateUser()}>Update</button>
+              <button type='button' className='btn btn-outline-success' onClick={()=>updateUser(el.id,{firstName:firstName,lastName:lastName,phoneNumber:phoneNumber,role:role,email:email})}>Update</button>
               </td>}
             
           </tr>
