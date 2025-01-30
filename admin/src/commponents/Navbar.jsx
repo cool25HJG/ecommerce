@@ -15,6 +15,7 @@ function Navbar({changeView}) {
           <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Admin
           </a>
+          
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="#">Action</a></li>
             <li><a className="dropdown-item" href="#">Another action</a></li>
@@ -22,8 +23,8 @@ function Navbar({changeView}) {
             <li><a className="dropdown-item" href="#">Log out</a></li>
           </ul>
         </li>
-        
       </ul>
+
       <form className="d-flex" role="search">
         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
         <button className="btn btn-outline-light" type="submit">Search</button>
