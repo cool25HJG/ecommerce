@@ -33,9 +33,9 @@ function App() {
     }
   };
 
-  // useEffect(() => {
-  //   fetch();
-  // }, []);
+  useEffect(() => {
+    fetch();
+  }, []);
 
   return (
     <CartProvider>

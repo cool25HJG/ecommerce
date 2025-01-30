@@ -1,9 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import axios from "axios";
 
 const Cart = () => {
-  const { cart, updateQuantity, removeFromCart, getTotal } = useContext(CartContext);
+  const { orderItems, updateQuantity, removeFromCart, getTotal, user } = useContext(CartContext);
+  const [isProcessing, setIsProcessing] = useState(false); // State to manage "Buy" button status
+console.log("user",user);
+console.log("orderItems",orderItems)
+
 
   const handleQuantityChange = (productId, quantity) => {
     if (quantity > 0) {
@@ -13,65 +17,77 @@ const Cart = () => {
     }
   };
 
-  const handleBuy = async () => {
+  const handleBuy = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior if inside a form
+
+    // Prevent multiple submissions
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     const totalAmount = getTotal();
-    const orderId = `order-${Date.now()}`;
 
     try {
       // Create a new commande in the backend
-      await axios.post('http://localhost:4000/api/Commande/', {
+      const commandeResponse = await axios.post('http://localhost:4000/api/Commande/', {
+        clientId: user.id, // Use the actual user ID from context
+        items: orderItems,
+        status: 'pending',
         totalPrice: totalAmount,
       });
 
+      const newCommande = commandeResponse.data.newCommande;
+
       // Initiate payment
-      const response = await axios.post('http://localhost:4000/create-payment', {
+      const paymentResponse = await axios.post('http://localhost:4000/create-payment', {
         amount: totalAmount,
         currency: 'TND',
-        description: 'testtt',
-        firstName: 'Ghassen',
-        lastName: 'kharrr',
-        phoneNumber: '99466666',
-        email: 'houssem@gmail.com',
-        orderId: orderId
+        description: 'User buy item',
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber,
+        email: user.email,
+        orderId: newCommande.id
       });
 
-      const { payUrl } = response.data;
+      const { payUrl } = paymentResponse.data;
 
       // Redirect to the payment URL
       window.location.href = payUrl;
     } catch (error) {
       console.error('Error during payment:', error);
       alert('Failed to initiate payment. Please try again.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   return (
     <div className="cart">
       <h2>Cart</h2>
-      {cart.length === 0 ? (
+      {orderItems.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
         <div>
           <ul>
-            {cart.map((item) => (
-              <li key={item.id}>
-                <img src={item.imageUrl} alt={item.name} style={{ width: "50px" }} />
-                <h4>{item.name}</h4>
+            {orderItems.map((item) => (
+              <li key={item.productId}>
+                <img src={item.product.imageUrl} alt={item.product.name} style={{ width: "50px" }} />
+                <h4>{item.product.name}</h4>
                 <p>Price: {item.price}</p>
                 <p>Quantity: 
                   <input 
                     type="number" 
                     value={item.quantity} 
-                    onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))} 
+                    onChange={(e) => handleQuantityChange(item.productId, parseInt(e.target.value))} 
                     min="1"
                   />
                 </p>
-                <button onClick={() => removeFromCart(item.id)}>Remove</button>
+                <button onClick={() => removeFromCart(item.productId)}>Remove</button>
               </li>
             ))}
           </ul>
           <h3>Total: {getTotal()}</h3>
-          <button onClick={handleBuy}>Buy</button>
+          <button onClick={handleBuy} disabled={isProcessing}>Buy</button>
         </div>
       )}
     </div>

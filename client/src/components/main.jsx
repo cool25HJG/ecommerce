@@ -3,24 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
-import Cart from "./cart";
-import Detailes from "./detailes"
 
 function Main() {
   const navigate = useNavigate();
-  const cart  = useContext(CartContext);
-  console.log(cart , "caaart");
-  
+  const { addToCart } = useContext(CartContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentProd, setCurrentProd] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(12);
-
-  const setCurrent = (current) => {
-    setCurrentProd(current);
-  };
 
   const fetchData = () => {
     axios
@@ -40,7 +31,6 @@ function Main() {
     fetchData();
     fetchCategories();
   }, []);
-console.log("data",data);
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -110,23 +100,14 @@ console.log("data",data);
               <CiUser size={25} />
               {showDropdown && (
                 <div className="dropdown-menu">
-                  
-                    <button className="dropdown-item" onClick={() => navigate("/login")}>
-                      Log In
-                    </button>
-                  
-                
-                      <button className="dropdown-item" onClick={() => navigate("/profile")}>
-                        Manage My Account
-                      </button>
-                      {/* <button className="dropdown-item" onClick={handleLogout}>
-                        Log Out
-                      </button> */}
-                    
-               
+                  <button className="dropdown-item" onClick={() => navigate("/login")}>
+                    Log In
+                  </button>
+                  <button className="dropdown-item" onClick={() => navigate("/profile")}>
+                    Manage My Account
+                  </button>
                 </div>
               )}
-             
             </div>
           </div>
         </div>
@@ -146,7 +127,6 @@ console.log("data",data);
 
         <div className="main-content">
           {searchQuery ? (
-            // Show filtered products with count
             <>
               <h2>Search Results for "{searchQuery}"</h2>
               <p>({filteredProducts.length} Products found)</p>
@@ -171,11 +151,11 @@ console.log("data",data);
                       <h4>{el.stock}</h4>
                       <button onClick={() => navigate(`/detaile/${el.id}`)}>view more details</button>
                       <CiShoppingCart
-                        onClick={() => cart.addToCart(el)}
+                        onClick={() => addToCart(el)}
                         size={25}
                         className="me-3"
                       />
-                      <CiHeart size={25} className="me-3" onClick={() => cart.addToWishlist(el)}/>
+                      <CiHeart size={25} className="me-3" onClick={() => addToWishlist(el)}/>
                     </div>
                   </div>
                 </div>
@@ -192,7 +172,6 @@ console.log("data",data);
               )}
             </>
           ) : (
-            // Show all products with count
             <>
               <h2>All Products</h2>
               <p>({data.length} Products available)</p>
@@ -217,11 +196,11 @@ console.log("data",data);
                       <h4>{el.stock}</h4>
                       <button onClick={() => navigate(`/detaile/${el.id}`)}>view more details</button>
                       <CiShoppingCart
-                        onClick={() => cart.addToCart(el)}
+                        onClick={() => addToCart(el)}
                         size={25}
                         className="me-3"
                       />
-                      <CiHeart size={25} className="me-3" onClick={() => cart.addToWishlist(el)}/>
+                      <CiHeart size={25} className="me-3" onClick={() => addToWishlist(el)}/>
                     </div>
                   </div>
                 </div>
