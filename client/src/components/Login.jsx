@@ -48,7 +48,7 @@ function Login() {
         type: "AUTH_FAIL",
         payload: error.response?.data?.message || "Authentication failed",
       });
-      }
+    }
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
@@ -73,38 +73,37 @@ function Login() {
 
   return (
     <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <h2>Login</h2>
+      <div className="login-box">
+        <h2>Welcome Back</h2>
         {error && <div className="error-message">{error}</div>}
-        
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
+        <form onSubmit={handleSubmit}>
           <input
             type="email"
-            id="email"
             name="email"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
           <input
             type="password"
-            id="password"
             name="password"
+            placeholder="Password"
             value={formData.password}
             onChange={handleChange}
             required
           />
-        </div>
-
-        <button type="submit" className="login-button">
-          Login
-        </button>
-      </form>
+          <button type="submit" disabled={loading}>
+            {loading ? <span className="loading-spinner"></span> : "Login"}
+          </button>
+        </form>
+        <p className="forgot-password" onClick={() => navigate("/forgot-password")}>
+          Forgot Password?
+        </p>
+        <p className="toggle-form" onClick={() => navigate("/register")}>
+          Don't have an account? Sign up
+        </p>
+      </div>
     </div>
   );
 }
