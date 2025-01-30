@@ -4,6 +4,7 @@ import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
 import Cart from "./cart";
+import Detailes from "./detailes"
 
 function Main() {
   const navigate = useNavigate();
@@ -124,6 +125,7 @@ function Main() {
                
                 </div>
               )}
+             
             </div>
           </div>
         </div>

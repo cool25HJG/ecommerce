@@ -5,9 +5,17 @@ module.exports = (connection, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    firstName: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    lastName:{
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    phoneNumber:{
+    type: DataTypes.FLOAT,
+    allowNull: false,
     },
     email: {
       type: DataTypes.STRING,

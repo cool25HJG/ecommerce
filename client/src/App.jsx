@@ -39,7 +39,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
-
           <Route path="/cart" element={<Cart />} />
           <Route path="/detaile/:id" element={<Detaile />} />
            <Route path="/profile" element={<Profile />}/> 
