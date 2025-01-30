@@ -16,11 +16,10 @@ function Profile() {
     email: "",
     phoneNumber: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [error, setError] = useState("");
 
-  // Fetch user data
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -33,11 +32,11 @@ function Profile() {
     const decoded = jwtDecode(token); // Use jwtDecode here
     const userId = decoded.id;
 
-    // Fetch user details using the getOneUser route
-    axios.get(`http://localhost:4000/api/user/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
+    axios
+      .get(`http://localhost:4000/api/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
         setUser(response.data);
         setUpdateForm({
 
@@ -47,10 +46,10 @@ function Profile() {
           phoneNumber: response.data.phoneNumber,
 
           password: "",
-          confirmPassword: ""
+          confirmPassword: "",
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching user data:", error);
         if (error.response?.status === 401) {
           localStorage.removeItem("accessToken");
@@ -59,12 +58,14 @@ function Profile() {
       });
   }, [navigate]);
 
+
   const handleChange = (e) => {
     setUpdateForm({
       ...updateForm,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -81,7 +82,6 @@ function Profile() {
       const decoded = jwtDecode(token); // Use jwtDecode here
       const userId = decoded.id;
 
-      // Update user details using the updateUser route
       const response = await axios.put(
         `http://localhost:4000/api/user/${userId}`,
         {
@@ -89,15 +89,14 @@ function Profile() {
           lastName: updateForm.lastName,
           email: updateForm.email,
           phoneNumber: updateForm.phoneNumber,
-          password: updateForm.password || undefined, // Only send password if it's changed
-          role: user.role
+          password: updateForm.password || undefined, 
+          role: user.role,
         },
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      // Update the user state with the new data
       setUser({
         ...user,
         firstName: updateForm.firstName,
@@ -113,6 +112,7 @@ function Profile() {
     }
   };
 
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -121,9 +121,9 @@ function Profile() {
     <div className="profile-container">
       <h2>My Profile</h2>
       {error && <div className="error-message">{error}</div>}
-      
+
       {!isEditing ? (
-        // View Mode
+
         <div className="profile-info">
 
           <h3>First Name: {user.firstName}</h3>
@@ -135,7 +135,7 @@ function Profile() {
           <button onClick={() => navigate("/")}>Back to Home</button>
         </div>
       ) : (
-        // Edit Mode
+
         <form onSubmit={handleUpdate} className="profile-form">
           <div className="form-group">
             <label>First Name:</label>
@@ -210,7 +210,9 @@ function Profile() {
 
           <div className="button-group">
             <button type="submit">Save Changes</button>
-            <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+            <button type="button" onClick={() => setIsEditing(false)}>
+              Cancel
+            </button>
           </div>
         </form>
       )}
