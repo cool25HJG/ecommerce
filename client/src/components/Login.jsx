@@ -37,7 +37,7 @@ function Login() {
 
       // Redirect based on role
       if (user.role === "admin") {
-        window.location.href = "http://localhost:5173/";
+        window.location.href = "http://localhost:5174";
       } else if (user.role === "seller") {
         navigate("/");
       } else {
@@ -49,26 +49,6 @@ function Login() {
         payload: error.response?.data?.message || "Authentication failed",
       });
       }
-
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
-
-      // Redirect based on role
-      if (user.role === "admin") {
-        window.location.href = "http://localhost:5173/";
-      } else if (user.role === "seller") {
-        navigate("/");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      dispatch({
-        type: "AUTH_FAIL",
-        payload: error.response?.data?.message || "Authentication failed",
-      });
-    }
   };
 
   return (
@@ -104,6 +84,9 @@ function Login() {
         <button type="submit" className="login-button">
           Login
         </button>
+       <div>
+        <p onClick={()=>navigate("/register")}>you dont have an account? register</p>
+       </div>
       </form>
     </div>
   );
