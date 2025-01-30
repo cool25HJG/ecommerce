@@ -20,7 +20,7 @@ function App() {
  
 
     const [product, setProduct] = useState([]);
-=======
+
 
   const fetch = async () => {
     try {

@@ -77,7 +77,7 @@ function App() {
   return (
     <div>
      <Navbar changeView={changeView} />
-      <Sidebar changeView={changeView} />
+      <Sidebar changeView={changeView}  addCategory={addCategory}  />
       
       <div className="viewdiv">
       {View === "product" ? <ListOfProducts updateProducts={updateProducts} DeleteProducts={DeleteProducts} product={product} /> : View === "user" ?<ListOfUsers  updateUser={updateUser} users={users}  DeleteUser={DeleteUser} />: <ListOfCategory category={category}   updateCategory={updateCategory} DeleteCategory={DeleteCategory} addCategory={addCategory} />}</div>
