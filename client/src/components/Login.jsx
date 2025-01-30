@@ -84,6 +84,9 @@ function Login() {
         <button type="submit" className="login-button">
           Login
         </button>
+       <div>
+        <p onClick={()=>navigate("/register")}>you dont have an account? register</p>
+       </div>
       </form>
     </div>
   );
