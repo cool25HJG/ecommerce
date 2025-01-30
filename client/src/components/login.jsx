@@ -48,7 +48,7 @@ function Login() {
         type: "AUTH_FAIL",
         payload: error.response?.data?.message || "Authentication failed",
       });
-      }
+    }
   };
 
   return (
@@ -83,11 +83,11 @@ function Login() {
 
         <button type="submit" className="login-button">
           Login
-        </button>
+          </button>
        <div>
         <p onClick={()=>navigate("/register")}>you dont have an account? register</p>
        </div>
-      </form>
+        </form>
     </div>
   );
 }
