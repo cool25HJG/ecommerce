@@ -89,8 +89,6 @@ function Profile() {
           lastName: updateForm.lastName,
           email: updateForm.email,
           phoneNumber: updateForm.phoneNumber,
-
-
           password: updateForm.password || undefined, // Only send password if it's changed
           role: user.role
         },
