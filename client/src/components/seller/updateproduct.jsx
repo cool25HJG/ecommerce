@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios'
 import { useLocation } from 'react-router'
 import { useNavigate } from "react-router-dom";
-function Updateproduct({fetch}) {
+function Updateproduct() {
      const navigate=useNavigate()
     const {state}=useLocation()
     const product=state?.product
@@ -17,7 +17,7 @@ function Updateproduct({fetch}) {
             try {
               const response = await axios.put(`http://localhost:4000/api/Products/${product.id}`,{name,description,price,stock,imageUrl})
               navigate("/main/seller")
-              fetch()
+             
             } catch (error) {
               throw error;
             }

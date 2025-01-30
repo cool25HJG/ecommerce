@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+
 import Oneproduct from "./Oneproduct";
-function Listofproducts({product,fetch}) {
+
+function Listofproducts({product}) {
+ 
 
 
 
