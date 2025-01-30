@@ -37,27 +37,7 @@ function Login() {
 
       // Redirect based on role
       if (user.role === "admin") {
-        window.location.href = "http://localhost:5173/";
-      } else if (user.role === "seller") {
-        navigate("/");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      dispatch({
-        type: "AUTH_FAIL",
-        payload: error.response?.data?.message || "Authentication failed",
-      });
-    }
-
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
-
-      // Redirect based on role
-      if (user.role === "admin") {
-        window.location.href = "http://localhost:5173/";
+        window.location.href = "http://localhost:5174";
       } else if (user.role === "seller") {
         navigate("/");
       } else {
@@ -73,37 +53,41 @@ function Login() {
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <h2>Welcome Back</h2>
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Login</h2>
         {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
+        
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
           <input
             type="email"
+            id="email"
             name="email"
-            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             required
           />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
           <input
             type="password"
+            id="password"
             name="password"
-            placeholder="Password"
             value={formData.password}
             onChange={handleChange}
             required
           />
-          <button type="submit" disabled={loading}>
-            {loading ? <span className="loading-spinner"></span> : "Login"}
+        </div>
+
+        <button type="submit" className="login-button">
+          Login
           </button>
+       <div>
+        <p onClick={()=>navigate("/register")}>you dont have an account? register</p>
+       </div>
         </form>
-        <p className="forgot-password" onClick={() => navigate("/forgot-password")}>
-          Forgot Password?
-        </p>
-        <p className="toggle-form" onClick={() => navigate("/register")}>
-          Don't have an account? Sign up
-        </p>
-      </div>
     </div>
   );
 }
