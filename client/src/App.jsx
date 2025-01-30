@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import Main from './components/Main';
-import Login from './components/Login';
+import Login from "./components/Login"
 import Register from './components/Register';
 import Listofproducts from './components/seller/Listofproducts';
 import Updateproduct from './components/seller/updateproduct';
