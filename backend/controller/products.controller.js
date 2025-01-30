@@ -30,7 +30,7 @@ module.exports = {
     try {
       const { id } = req.params;
       const {name,description,price,stock,imageUrl}=req.body
-      const product=await Products.findeOne({where:{id:id}})
+      const product=await Products.findOne({where:{id:id}})
       if(!product){
       res.status(404).send({message:"product is not found"})
       }
@@ -45,6 +45,7 @@ module.exports = {
       });
       res.status(201).send({ message: "Product is updated successfully", updated });
     } catch (error) {
+      console.log(error,"from update")
       throw error;
     }
   },

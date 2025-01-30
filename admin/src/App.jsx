@@ -65,7 +65,7 @@ function App() {
   }
   const updateProducts = (id,body)=>{
     axios.put(`http://localhost:4000/api/Products/${id}`,body)
-    .then(()=>{console.log("updated")
+    .then(()=>{console.log("updated"),
       fetchProducts()})
     .catch((err)=>console.error("err updating",err))
   }

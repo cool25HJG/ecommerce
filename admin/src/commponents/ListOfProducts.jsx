@@ -96,7 +96,7 @@ function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
 </svg></button>
             </td>}
             {show===el.id && <td>
-              <button type='button' className='btn btn-outline-success' onClick={()=>{updateProducts(el.id,{name:name,description:description,price:price,sellerId:sellerId,stock:stock,categoryId:categoryId}),changeView("product")}}>Update</button>
+              <button type='button' className='btn btn-outline-success' onClick={()=>{updateProducts(el.id,{name:name,description:description,price:price,sellerId:sellerId,stock:stock,categoryId:categoryId}),changeView("product"),toggle(el.id)}}>Update</button>
               </td>}
             
           </tr>
