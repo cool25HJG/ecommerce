@@ -15,6 +15,7 @@ function Main() {
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentProd, setCurrentProd] = useState(null);
+  const [visibleProducts, setVisibleProducts] = useState(12);
 
   const setCurrent = (current) => {
     setCurrentProd(current);
@@ -56,15 +57,9 @@ function Main() {
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Add function to handle logout
-  // const handleLogout = () => {
-  //   localStorage.removeItem("accessToken");
-  //   localStorage.removeItem("refreshToken");
-  //   navigate("/login");
-  // };
-
-  // // Get user from localStorage
-  // const user = JSON.parse(localStorage.getItem("user"));
+  const loadMore = () => {
+    setVisibleProducts(prev => prev + 12);
+  };
 
   // Add this helper function at the top of your component
   const truncateText = (text, maxLength) => {
@@ -138,6 +133,7 @@ function Main() {
       <div className="container">
         <aside className="sidebar">
           <h3>Categories:</h3>
+          <p>({categories.length} Categories)</p>
           <ul>
             {categories.map((category) => (
               <li key={category.id}>{category.name}</li>
@@ -145,89 +141,96 @@ function Main() {
           </ul>
         </aside>
 
-        <div className="slider-container">
-          <div className="slide">
-            <img src={slides[currentSlide].image} alt="Slide" />
-            <div className="slide-text">{slides[currentSlide].text}</div>
-            <button className="slide-button" onClick={nextSlide}>
-              {slides[currentSlide].button}
-            </button>
-          </div>
-        </div>
-      </div>
-      <div>
-        {searchQuery ? (
-          // Show filtered products only when there's a search query
-          <>
-            {filteredProducts.map((el) => (
-              <div key={el.id}>
-                <div className="column">
-                  <div
-                    style={{
-                      border: "2px solid blue",
-                      padding: "10px",
-                      marginBottom: "20px",
-                      background: "lightblue",
-                    }}
-                    className="product-card"
-                  >
-                    <img style={{ width: "200px" }} src={el.imageUrl} alt="" />
-                    <h4>{el.name}</h4>
-                    <p onClick={() => navigate(`/detaile/${el.id}`)} style={{ cursor: 'pointer' }}>
-                      {truncateText(el.description, 20)}
-                    </p>
-                    <h4>{el.price}</h4>
-                    <h4>{el.stock}</h4>
-                    <button onClick={() => navigate(`/detaile/${el.id}`)}>view more details</button>
-                    <CiShoppingCart
-                      onClick={() => cart.addToCart(el)}
-                      size={25}
-                      className="me-3"
-                    />
-                    <CiHeart size={25} className="me-3" onClick={() => cart.addToWishlist(el)}/>
+        <div className="main-content">
+          {searchQuery ? (
+            // Show filtered products with count
+            <>
+              <h2>Search Results for "{searchQuery}"</h2>
+              <p>({filteredProducts.length} Products found)</p>
+              {filteredProducts.slice(0, visibleProducts).map((el) => (
+                <div key={el.id}>
+                  <div className="column">
+                    <div
+                      style={{
+                        border: "2px solid blue",
+                        padding: "10px",
+                        marginBottom: "20px",
+                        background: "lightblue",
+                      }}
+                      className="product-card"
+                    >
+                      <img style={{ width: "200px" }} src={el.imageUrl} alt="" />
+                      <h4>{el.name}</h4>
+                      <p onClick={() => navigate(`/detaile/${el.id}`)} style={{ cursor: 'pointer' }}>
+                        {truncateText(el.description, 20)}
+                      </p>
+                      <h4>{el.price}$</h4>
+                      <h4>{el.stock}</h4>
+                      <button onClick={() => navigate(`/detaile/${el.id}`)}>view more details</button>
+                      <CiShoppingCart
+                        onClick={() => cart.addToCart(el)}
+                        size={25}
+                        className="me-3"
+                      />
+                      <CiHeart size={25} className="me-3" onClick={() => cart.addToWishlist(el)}/>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-            {filteredProducts.length === 0 && (
-              <div className="no-results">
-                <p>No products found matching "{searchQuery}"</p>
-              </div>
-            )}
-          </>
-        ) : (
-          // Show all products when there's no search query
-          data.map((el) => (
-            <div key={el.id}>
-              <div className="column">
-                <div
-                  style={{
-                    border: "2px solid blue",
-                    padding: "10px",
-                    marginBottom: "20px",
-                    background: "lightblue",
-                  }}
-                  className="product-card"
-                >
-                  <img style={{ width: "200px" }} src={el.imageUrl} alt="" />
-                  <h4>{el.name}</h4>
-                  <p onClick={() => navigate(`/detaile/${el.id}`)} style={{ cursor: 'pointer' }}>
-                    {truncateText(el.description, 20)}
-                  </p>
-                  <h4>{el.price}</h4>
-                  <h4>{el.stock}</h4>
-                  <button onClick={() => navigate(`/detaile/${el.id}`)}>view more details</button>
-                  <CiShoppingCart
-                    onClick={() => cart.addToCart(el)}
-                    size={25}
-                    className="me-3"
-                  />
-                  <CiHeart size={25} className="me-3" onClick={() => cart.addToWishlist(el)}/>
+              ))}
+              {filteredProducts.length === 0 && (
+                <div className="no-results">
+                  <p>No products found matching "{searchQuery}"</p>
                 </div>
-              </div>
-            </div>
-          ))
-        )}
+              )}
+              {filteredProducts.length > visibleProducts && (
+                <button onClick={loadMore} className="load-more-button">
+                  See More
+                </button>
+              )}
+            </>
+          ) : (
+            // Show all products with count
+            <>
+              <h2>All Products</h2>
+              <p>({data.length} Products available)</p>
+              {data.slice(0, visibleProducts).map((el) => (
+                <div key={el.id}>
+                  <div className="column">
+                    <div
+                      style={{
+                        border: "2px solid blue",
+                        padding: "10px",
+                        marginBottom: "20px",
+                        background: "lightblue",
+                      }}
+                      className="product-card"
+                    >
+                      <img style={{ width: "200px" }} src={el.imageUrl} alt="" />
+                      <h4>{el.name}</h4>
+                      <p onClick={() => navigate(`/detaile/${el.id}`)} style={{ cursor: 'pointer' }}>
+                        {truncateText(el.description, 20)}
+                      </p>
+                      <h4>{el.price}</h4>
+                      <h4>{el.stock}</h4>
+                      <button onClick={() => navigate(`/detaile/${el.id}`)}>view more details</button>
+                      <CiShoppingCart
+                        onClick={() => cart.addToCart(el)}
+                        size={25}
+                        className="me-3"
+                      />
+                      <CiHeart size={25} className="me-3" onClick={() => cart.addToWishlist(el)}/>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {data.length > visibleProducts && (
+                <button onClick={loadMore} className="load-more-button">
+                  See More
+                </button>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
