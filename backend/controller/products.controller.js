@@ -1,58 +1,58 @@
-const {Products}=require("../models/index")
-module.exports={
- getAllProducts : async (req, res) => {
-      try {
-        const Productss = await Products.findAll();
-        res.send(Productss);
-      } catch (error) {
-        throw error;
-      }
-},
-addProducts: async (req, res) => {
-  try {
-    const body= req.body;
-    const newProducts = await Products.create(body);
-    res.status(201).send({ message: "Products is created successfully", newProducts });
-  } catch (error) {
-    throw error;
-  }
-},
-  updateProducts: async (req, res) => {
+const { Products, User, Category } = require("../models/index");
+
+module.exports = {
+  getAllProducts: async (req, res) => {
     try {
-      const {name,description,price,stock,imageUrl,createdAt,updatedAt}  = req.body;
-      const body  = req.body;
-      if (!body ){
-        res
-          .status(401)
-          .send({ message: "body are  not send" });
-      }
-      const { id } = req.params;
-      const updated = await Products.update( {name,description,price,stock,imageUrl,createdAt,updatedAt} 
-       ,
-        {   where: { id: id }
-           
-        }
-      );
-      res.status(201).send({ message: "Products is updated successfully", updated });
+      const products = await Products.findAll({
+        include: [
+          { model: User, as: 'seller' },
+          { model: Category }
+        ]
+      });
+      res.send(products);
     } catch (error) {
       throw error;
     }
   },
-deleteProducts: async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!id) {
-      res.status(401).send({ message: "id is not send" });
+  
+  addProducts: async (req, res) => {
+    try {
+      const body = req.body;
+      const newProduct = await Products.create(body);
+      res.status(201).send({ message: "Product is created successfully", newProduct });
+    } catch (error) {
+      throw error;
     }
-    await Products.destroy({
-      where :{
-       id: id 
   },
-})
-    res.send({ message: "Products is deleted successfully" });
-  } 
-  catch (error) {
-    throw error;
+  
+  updateProducts: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const body = req.body;
+      if (!body) {
+        res.status(401).send({ message: "Body is not sent" });
+      }
+      const updated = await Products.update(body, {
+        where: { id: id }
+      });
+      res.status(201).send({ message: "Product is updated successfully", updated });
+    } catch (error) {
+      throw error;
+    }
+  },
+  
+  deleteProducts: async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(401).send({ message: "ID is not sent" });
+      }
+      await Products.destroy({
+        where: { id: id }
+      });
+      res.send({ message: "Product is deleted successfully" });
+    } catch (error) {
+      throw error;
+    }
   }
-},
-}
+};

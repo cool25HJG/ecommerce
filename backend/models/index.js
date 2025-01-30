@@ -27,7 +27,10 @@ db.Category.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", fore
 db.Products.belongsTo(db.Category, { foreignKey: "categoryId" }); 
 db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
  db.Products.belongsToMany(db.Commande, { through: db.OrderItem }); 
-
+ db.OrderItem.belongsTo(db.Products);
+ db.OrderItem.belongsTo(db.Commande);
+ db.Products.hasMany(db.OrderItem);
+ db.Commande.hasMany(db.OrderItem);
 
   // connection
   // .sync({ force: true })
