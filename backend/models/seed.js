@@ -68,7 +68,7 @@ const seedData = async () => {
           description: 'Powerful laptop for work and gaming',
           price: 1200.00,
           stock: 10,
-          imageUrl: 'https://example.com/laptop.jpg',
+          imageUrl: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.ubuy.tn%2Ffr%2Fproduct%2F1FD3TJHS-microsoft-surface-laptop-4-13-5-touch-screen-amd-ryzen-5-surface-edition-8gb-memory-256gb-solid-stat&psig=AOvVaw0hi0Ioth4YqU_ye_Rkk_Sa&ust=1738309806813000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOj0juf6nIsDFQAAAAAdAAAAABAQ',
           createdAt: new Date(),
           updatedAt: new Date(),
           categoryId: 1, // Electronics category
@@ -80,7 +80,7 @@ const seedData = async () => {
           description: 'High-quality noise-canceling headphones',
           price: 150.00,
           stock: 25,
-          imageUrl: 'https://example.com/headphones.jpg',
+          imageUrl: 'https://m.media-amazon.com/images/I/41tp0JPPlmL.jpg',
           createdAt: new Date(),
           updatedAt: new Date(),
           categoryId: 1, // Electronics category
@@ -92,7 +92,7 @@ const seedData = async () => {
           description: 'Latest model with advanced features',
           price: 800.00,
           stock: 15,
-          imageUrl: 'https://example.com/smartphone.jpg',
+          imageUrl: 'https://tunisiatech.tn/11373-large_default/smartphone-smartec-x23-2go-32go-noir.jpg',
           createdAt: new Date(),
           updatedAt: new Date(),
           categoryId: 1, // Electronics category
@@ -104,7 +104,7 @@ const seedData = async () => {
           description: 'Comprehensive guide to Python programming',
           price: 50.00,
           stock: 50,
-          imageUrl: 'https://example.com/python-book.jpg',
+          imageUrl: 'https://bpbonline.com/cdn/shop/products/Prog_in_Python_800x.jpg?v=1735891289',
           createdAt: new Date(),
           updatedAt: new Date(),
           categoryId: 2, // Books category
@@ -116,7 +116,7 @@ const seedData = async () => {
           description: 'Comfortable cotton t-shirt',
           price: 20.00,
           stock: 100,
-          imageUrl: 'https://example.com/t-shirt.jpg',
+          imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSCTSzQRvo_zfW_nLifUbbOmsQcHS_9WxQCw&s',
           createdAt: new Date(),
           updatedAt: new Date(),
           categoryId: 3, // Clothing category
@@ -128,7 +128,7 @@ const seedData = async () => {
           description: 'Lightweight running shoes',
           price: 80.00,
           stock: 30,
-          imageUrl: 'https://example.com/running-shoes.jpg',
+          imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZs5JHBNl4d0v4ZzgIALq6ZDM0IKnBpyZWBQ&s',
           createdAt: new Date(),
           updatedAt: new Date(),
           categoryId: 4, // Sports category
@@ -169,8 +169,8 @@ const seedData = async () => {
           price: 1200.00,
           createdAt: new Date(),
           updatedAt: new Date(),
-          commandeId: 1, // Order with ID 1
-          productId: 1   // Laptop (product with ID 1)
+          CommandeId: 1, // Order with ID 1
+          ProductId: 1   // Laptop (product with ID 1)
         },
         {
           quantity: 1,
