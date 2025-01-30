@@ -40,6 +40,7 @@ function Main() {
     fetchData();
     fetchCategories();
   }, []);
+console.log("data",data);
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
