@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const { Products, User, Category } = require("../models/index");
 
 module.exports = {
@@ -28,11 +29,18 @@ module.exports = {
   updateProducts: async (req, res) => {
     try {
       const { id } = req.params;
-      const body = req.body;
-      if (!body) {
-        res.status(401).send({ message: "Body is not sent" });
+      const {name,description,price,stock,imageUrl}=req.body
+      const product=await Products.findeOne({where:{id:id}})
+      if(!product){
+      res.status(404).send({message:"product is not found"})
       }
-      const updated = await Products.update(body, {
+      const updated = await Products.update({
+        name:name||product.name,
+        description:description||product.description,
+        price:price||product.price,
+        stock:stock||product.stock,
+        imageUrl:imageUrl||product.imageUrl
+      }, {
         where: { id: id }
       });
       res.status(201).send({ message: "Product is updated successfully", updated });
@@ -40,7 +48,25 @@ module.exports = {
       throw error;
     }
   },
-  
+  toggleProduct: async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(401).send({ message: "id is not send" });
+      }
+      const oneproduct = await Todo.findeOne({where:{id:id}});
+      if (!oneproduct) {
+        return res
+          .status(401)
+          .send({ message: "product doesn't exist in database" });
+      }
+
+      const updated = await Todo.update({isFavorite:!oneproduct.isFavorite},{where:{id:id}})
+      res.send({ message: "todo upadated", updated: updated });
+    } catch (error) {
+      throw error;
+    }
+  },
   deleteProducts: async (req, res) => {
     try {
       const { id } = req.params;
