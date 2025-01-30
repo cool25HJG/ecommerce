@@ -108,15 +108,15 @@ const refreshToken = (req, res) => {
   }
 };
 
-const getCurrentUser = async (req, res) => {
+const getOneUser = async (req, res) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.id, { attributes: { exclude: ["password"] } });
+    const { id } = req.params;
+    const user = await User.findByPk(id, { attributes: { exclude: ["password"] } });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
+    console.error("Error fetching user:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -146,8 +146,8 @@ const deleteUser= async (req, res) => {
 const updateUser= async (req,res) => {
   try {
     const { id } = req.params;
-    const {name,email,password,role}=req.body
-    await User.update({name,email,password,role},{
+    const {name,email,role}=req.body
+    await User.update({name,email,role},{
       where : {id}
     })
     res.status(200).send("updated")
@@ -174,7 +174,7 @@ module.exports={
   register,
   login,
   refreshToken,
-  getCurrentUser,
+  getOneUser,
   logout,
   deleteUser,
   updateUser,
