@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function ListOfProducts({product,DeleteProducts,updateProducts}) {
+function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
   const [name,setname]=useState("")
   const [description,setdescription]=useState("")
   const [price,setprice]=useState(0)
@@ -26,8 +26,8 @@ function ListOfProducts({product,DeleteProducts,updateProducts}) {
             <th scope="col">description</th>
             <th scope="col">price</th>
             <th scope="col">stock</th>
-            <th scope="col">sellerId</th>
-            <th scope="col">categoryId</th>
+            <th scope="col">seller</th>
+            <th scope="col">category</th>
             <th scope="col">action </th>
           </tr>
         </thead>
@@ -40,8 +40,9 @@ function ListOfProducts({product,DeleteProducts,updateProducts}) {
             {show!==el.id && <td>{el.description}</td>}
             {show!==el.id && <td>{el.price}</td>}
             {show!==el.id && <td>{el.stock}</td>}
-            {show!==el.id && <td>{el.sellerId}</td>}
-            {show!==el.id && <td>{el.categoryId}</td>}
+            {show!==el.id && <td>{el.User.firstName
+            }</td>}
+            {show!==el.id && <td>{el.Category.name}</td>}
             {show === el.id && <td><input  type="text"
                     id="name"
                     defaultValue={el.name}
@@ -78,14 +79,14 @@ function ListOfProducts({product,DeleteProducts,updateProducts}) {
                       setsellerId(e.target.value)}}/></td>}
                       {show === el.id && <td><input  type="text"
                     id="categoryId"
-                    defaultValue={el.categoryId}
+                    defaultValue={el.Category.name}
                     className="form-control"
                     onChange={(e) => {
                       setcategoryId(e.target.value)}}/></td>}
 
 
             {show!== el.id && <td>
-            <button type='button' className='btn btn-outline-danger' onClick={()=>{DeleteProducts(el.id),window.location.reload()}}> Delete <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+            <button type='button' className='btn btn-outline-danger' onClick={()=>{DeleteProducts(el.id),changeView("product")}}> Delete <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
   <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
   <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
 </svg></button>
@@ -95,7 +96,7 @@ function ListOfProducts({product,DeleteProducts,updateProducts}) {
 </svg></button>
             </td>}
             {show===el.id && <td>
-              <button type='button' className='btn btn-outline-success' onClick={()=>updateProducts(el.id,{name:name,description:description,price:price,sellerId:sellerId,stock:stock,categoryId:categoryId})}>Update</button>
+              <button type='button' className='btn btn-outline-success' onClick={()=>{updateProducts(el.id,{name:name,description:description,price:price,sellerId:sellerId,stock:stock,categoryId:categoryId}),changeView("product")}}>Update</button>
               </td>}
             
           </tr>
