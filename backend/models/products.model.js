@@ -33,6 +33,10 @@ const Products = connection.define("Product", {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  isFavorite:{
+    type:DataTypes.BOOLEAN,
+    allowNull:false
+  }
 })
 return Products;
   }

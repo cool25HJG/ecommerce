@@ -15,6 +15,8 @@ function Register() {
     phoneNumber:"",
     email: "",
     password: "",
+    image:"",
+    adresse:"",
     role: "client"
   });
 
@@ -76,6 +78,22 @@ function Register() {
           name="password"
           placeholder="Password"
           value={formData.password}
+          onChange={handleChange}
+          required
+        />
+         <input
+          type="text"
+          name="image"
+          placeholder="image"
+          value={formData.image}
+          onChange={handleChange}
+          required
+        />
+         <input
+          type="text"
+          name="adresse"
+          placeholder="adresse"
+          value={formData.adresse}
           onChange={handleChange}
           required
         />
