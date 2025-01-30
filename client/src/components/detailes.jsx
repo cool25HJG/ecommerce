@@ -1,24 +1,57 @@
-import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { CiHeart, CiShoppingCart } from "react-icons/ci";
+import { CartContext } from "./CartContext";
 
+function Detaile() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState(null);
+  const cart = useContext(CartContext);
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/api/Products/${id}`)
+      .then((resp) => setProduct(resp.data))
+      .catch((error) => {
+        console.log(error);
+        navigate("/"); // Redirect to home if product not found
+      });
+  }, [id, navigate]);
 
-function Profile() {
-    // const navigate=useNavigate()
-    // const {state}=useLocation()
-    // console.log(state)
-    // const product=state?.product
-    // console.log(product)
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div>
-      
-     <h2> name : { User.name}</h2>
-     <h4> email : { User.email}</h4>
-     <h4> role: { User.email}</h4>
-
-      <button>close</button>
-      </div>
-      
-  )
+    <div className="product-details-container">
+      {/* <h2>Product Details</h2>
+      <div className="product-details">
+        <img 
+          src={product.imageUrl} 
+          alt={product.name}
+          className="product-image"
+        />
+        <div className="product-info">
+          <h4>Name: {product.name}</h4>
+          <p className="full-description">Description: {product.description}</p>
+          <h4>Price: ${product.price}</h4>
+          <h4>Stock: {product.stock}</h4>
+          <div className="action-buttons">
+            <button onClick={() => cart.addToCart(product)}>
+              <CiShoppingCart size={25} className="me-3" /> Add to Cart
+            </button>
+            <button onClick={() => cart.addToWishlist(product)}>
+              <CiHeart size={25} className="me-3" /> Add to Wishlist
+            </button>
+            <button onClick={() => navigate("/")}>Back to Products</button>
+          </div>
+        </div>
+      </div> */}
+    </div>
+  );
 }
-export default  Profile;
+
+
+export default Detaile;

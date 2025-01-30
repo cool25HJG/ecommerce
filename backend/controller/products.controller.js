@@ -5,7 +5,7 @@ module.exports = {
     try {
       const products = await Products.findAll({
         include: [
-          { model: User, as: 'seller' },
+          { model: User },
           { model: Category }
         ]
       });

@@ -5,7 +5,7 @@ module.exports = {
     try {
       const commandes = await Commande.findAll({
         include: [
-          { model: User, as: 'client' }
+          { model: User }
         ]
       });
       res.send(commandes);
