@@ -3,7 +3,7 @@ import { CartContext } from "./CartContext";
 
 const Cart = () => {
     const { cart, updateQuantity, removeFromCart, getTotal } = useContext(CartContext);
-  
+
     const handleQuantityChange = (productId, quantity) => {
       if (quantity > 0) {
         updateQuantity(productId, quantity);
@@ -11,7 +11,7 @@ const Cart = () => {
         removeFromCart(productId);
       }
     };
-  
+
     return (
       <div className="cart">
         <h2>Cart</h2>
@@ -43,6 +43,6 @@ const Cart = () => {
       </div>
     );
   };
-  
+
 
 export default Cart;

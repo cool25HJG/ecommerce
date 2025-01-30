@@ -13,6 +13,9 @@ import MainSeller from './components/seller/MainSeller';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
+import Profile from "./components/profile"
+import Wishlist from './components/Wishlist';
+
 function App() {
  
     const [product, setproduct] = useState([]);
@@ -36,13 +39,15 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
-          {/* <Route path="/detailes" element={<ProductDetails />} /> */}
-          {/* <Route path="/profile" element={<Profile />} /> */}
+
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/detaile/:id" element={<Detaile />} />
+           <Route path="/profile" element={<Profile />}/> 
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
           {/* <Route path="/list" element={<List />} /> */}
           <Route path="/cart" element={<Cart />} /> {/* Render Cart component for /cart route */}
-          {/* <Route path="/wishlist" element={<Wishlist />} /> */}
+          <Route path="/wishlist" element={<Wishlist />} />
 
           <Route path="/listofproduct" element={<Listofproducts />}/>
         <Route path="/add" element={<Addproduct fetch={fetch}/>}/>
