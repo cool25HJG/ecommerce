@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import Main from './components/Main';
-import Login from './components/Login';
+import Login from "./components/Login"
 import Register from './components/Register';
 import Listofproducts from './components/seller/Listofproducts';
 import Updateproduct from './components/seller/updateproduct';
@@ -18,6 +18,7 @@ import Profile from './components/detailes';
 import List from "./components/listProduct.Client"
 import Wishlist from "./components/Wishlist"
 import UpdateProduct from "./components/seller/updateproduct"
+
 function App() {
   const [product, setProduct] = useState([]);
 
@@ -40,7 +41,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
-
           <Route path="/cart" element={<Cart />} />
           <Route path="/detailes" element={<ProductDetails />} />
            <Route path="/profile" element={<Profile />}/> 

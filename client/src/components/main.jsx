@@ -4,6 +4,7 @@ import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
 import Cart from "./cart";
+import Detailes from "./detailes"
 
 function Main() {
   const navigate = useNavigate();
@@ -62,6 +63,9 @@ function Main() {
               <li>
                 <a href="/contact">Contact</a>
               </li>
+              <li>
+                <button onClick={()=>navigate("/detaile")}>profile</button>
+              </li>
             </ul>
           </div>
 
@@ -103,6 +107,7 @@ function Main() {
                   </button>
                 </div>
               )}
+             
             </div>
           </div>
         </div>
