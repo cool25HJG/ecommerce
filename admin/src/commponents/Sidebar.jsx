@@ -21,7 +21,8 @@ function Sidebar({changeView,addCategory}) {
   <a href="#categories" onClick={()=>changeView("categories")}>List Categories</a>
   <a href="#" onClick={()=>{toggle("yes")}} >Add categorie</a>
   {show==="yes"&&<input  className="form-control" type="text" value="Readonly input here..." aria-label="readonly input example" readOnly typeof="text" onChange={(e)=>{setname(e.target.value)}} />}
-  <button type='button' className='btn btn-outline-success' onClick={()=>{addCategory({name:name})}}>ADD</button>
+  <div style={{display:"flex",justifyContent:"center",marginTop:"1px"}}><button type='button' className='btn btn-outline-success'   onClick={()=>{addCategory({name:name})}}>ADD</button></div>
+  
 </div>
     </div>
   )
