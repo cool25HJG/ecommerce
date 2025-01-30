@@ -142,29 +142,44 @@ const deleteUser= async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 }
-const updateUser= async (req,res) => {
+const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const {name,email,password,role}=req.body
-    const user =await User.findOne({where:{id}})
-    if(!user){
-      res.status(404).send({message:"user not found"})
+    const { firstName, lastName, email, phoneNumber, password, role } = req.body;
+
+    // Find the user by ID
+    const user = await User.findOne({ where: { id } });
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
     }
-    const updateduser=await User.update({
-      name:name||user.name,
-      email:email||user.email,
-      password:password||user.password,
-      role:role||user.role
-    },{
-      where:{id:id}
-    })
-    res.status(200).send("updated")
+
+    // Hash the new password if it's provided
+    let hashedPassword = user.password; // Keep the old password by default
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10); // Hash the new password
+    }
+
+    // Update the user's details
+    const updatedUser = await User.update(
+      {
+        firstName: firstName || user.firstName,
+        lastName: lastName || user.lastName,
+        email: email || user.email,
+        phoneNumber: phoneNumber || user.phoneNumber,
+        password: hashedPassword, // Use the hashed password
+        role: role || user.role,
+      },
+      {
+        where: { id },
+      }
+    );
+
+    res.status(200).send("updated");
   } catch (error) {
-    console.error("user updated", error);
+    console.error("Error updating user:", error);
     res.status(500).json({ message: "Server error" });
   }
-  
-}
+};
 const getAllUser = async (req,res) => {
   try {
     const users = await User.findAll()
