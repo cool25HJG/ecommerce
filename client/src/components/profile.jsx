@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+
 
 function Profile() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState(null);
   const [updateForm, setUpdateForm] = useState({
+
     firstName: "",
     lastName: "",
     email: "",
@@ -25,6 +28,7 @@ function Profile() {
       return;
     }
 
+
     // Decode the token to get the user ID
     const decoded = jwtDecode(token); // Use jwtDecode here
     const userId = decoded.id;
@@ -36,10 +40,12 @@ function Profile() {
       .then(response => {
         setUser(response.data);
         setUpdateForm({
+
           firstName: response.data.firstName,
           lastName: response.data.lastName,
           email: response.data.email,
           phoneNumber: response.data.phoneNumber,
+
           password: "",
           confirmPassword: ""
         });
@@ -71,6 +77,7 @@ function Profile() {
 
     try {
       const token = localStorage.getItem("accessToken");
+
       const decoded = jwtDecode(token); // Use jwtDecode here
       const userId = decoded.id;
 
@@ -82,6 +89,8 @@ function Profile() {
           lastName: updateForm.lastName,
           email: updateForm.email,
           phoneNumber: updateForm.phoneNumber,
+=======
+
           password: updateForm.password || undefined, // Only send password if it's changed
           role: user.role
         },
@@ -97,6 +106,7 @@ function Profile() {
         lastName: updateForm.lastName,
         email: updateForm.email,
         phoneNumber: updateForm.phoneNumber
+
       });
       setIsEditing(false);
       alert("Profile updated successfully!");
@@ -117,10 +127,12 @@ function Profile() {
       {!isEditing ? (
         // View Mode
         <div className="profile-info">
+
           <h3>First Name: {user.firstName}</h3>
           <h3>Last Name: {user.lastName}</h3>
           <h4>Email: {user.email}</h4>
           <h4>Phone Number: {user.phoneNumber}</h4>
+
           <button onClick={() => setIsEditing(true)}>Edit Profile</button>
           <button onClick={() => navigate("/")}>Back to Home</button>
         </div>
@@ -133,23 +145,28 @@ function Profile() {
               type="text"
               name="firstName"
               value={updateForm.firstName}
+=======
+
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-group">
+
             <label>Last Name:</label>
             <input
               type="text"
               name="lastName"
               value={updateForm.lastName}
+
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-group">
+
             <label>Email:</label>
             <input
               type="email"
@@ -172,6 +189,7 @@ function Profile() {
           </div>
 
           <div className="form-group">
+
             <label>New Password:</label>
             <input
               type="password"
@@ -203,4 +221,6 @@ function Profile() {
   );
 }
 
+
 export default Profile;
+
