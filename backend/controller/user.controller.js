@@ -3,6 +3,7 @@ const { User } = require("../models/index");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authenticateJWT = require("../middleware/authMiddleware");
+const { where } = require('sequelize');
 
 let refreshTokens = {
   users: {},
@@ -26,13 +27,13 @@ const generateRefreshToken = (user) => {
 };
 
 const register = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const {  email, password,firstName,lastName,phoneNumber, role } = req.body;
   try {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashedPassword, role });
+    const user = await User.create({  email, password: hashedPassword, role,firstName,lastName,phoneNumber });
     res.status(201).json({ message: "User created successfully", user });
   } catch (error) {
     console.error("Error registering user:", error);
@@ -85,7 +86,6 @@ const refreshToken = (req, res) => {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
     const { id, role } = decoded;
 
-    // Check if refresh token exists in appropriate storage
     const storedToken = role === 'seller' 
       ? refreshTokens.sellers[id] 
       : refreshTokens.users[id];
@@ -94,7 +94,6 @@ const refreshToken = (req, res) => {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
 
-    // Generate new access token
     const user = { id, role };
     const newAccessToken = generateAccessToken(user);
 
@@ -108,15 +107,15 @@ const refreshToken = (req, res) => {
   }
 };
 
-const getCurrentUser = async (req, res) => {
+const getOneUser = async (req, res) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.id, { attributes: { exclude: ["password"] } });
+    const { id } = req.params;
+    const user = await User.findByPk(id, { attributes: { exclude: ["password"] } });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
+    console.error("Error fetching user:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -146,9 +145,18 @@ const deleteUser= async (req, res) => {
 const updateUser= async (req,res) => {
   try {
     const { id } = req.params;
-    const {name,email,role,password}=req.body
-    await User.update({name,email,role,password},{
-      where : {id}
+    const {name,email,password,role}=req.body
+    const user =await User.findOne({where:{id}})
+    if(!user){
+      res.status(404).send({message:"user not found"})
+    }
+    const updateduser=await User.update({
+      name:name||user.name,
+      email:email||user.email,
+      password:password||user.password,
+      role:role||user.role
+    },{
+      where:{id:id}
     })
     res.status(200).send("updated")
   } catch (error) {
@@ -174,7 +182,7 @@ module.exports={
   register,
   login,
   refreshToken,
-  getCurrentUser,
+  getOneUser,
   logout,
   deleteUser,
   updateUser,
