@@ -58,9 +58,9 @@ function Navbar() {
     if (user.role === "seller") {
       return [
         { label: "Manage My Account", action: () => navigate("/profile") },
-        { label: "My Products", action: () => navigate("/seller/products") },
-        { label: "My Orders", action: () => navigate("/seller/orders") },
-        { label: "My Reviews", action: () => navigate("/seller/reviews") },
+        { label: "My Products", action: () => navigate("") },
+        { label: "My Orders", action: () => navigate("/") },
+        { label: "My Reviews", action: () => navigate("/") },
         { label: "Logout", action: handleLogout }
       ];
     }

@@ -32,8 +32,8 @@ db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
  db.Products.hasMany(db.OrderItem);
  db.Commande.hasMany(db.OrderItem);
  
-  connection
-  // .sync({ alter: true })
+  // connection
+  // .sync({ force: true })
   // .then(() => console.log("tables are created"))
   // .catch((err) => {
   //   throw err;
