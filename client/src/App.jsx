@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
 import Main from './components/main'
-import Login from './components/login';
+import Login from './components/Login';
 import Detaile from './components/detailes';
 // import List from './components/listProduct.Client'
 import Register from './components/Register';
@@ -15,12 +15,13 @@ import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
 import Profile from "./components/profile"
 import Wishlist from './components/Wishlist';
+import PaymentForm from './components/PaymentForm';
 
 function App() {
  
 
     const [product, setProduct] = useState([]);
-=======
+
 
   const fetch = async () => {
     try {
@@ -32,15 +33,16 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    fetch();
-  }, []);
+  // useEffect(() => {
+  //   fetch();
+  // }, []);
 
   return (
     <CartProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/payment" element={<PaymentForm />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/detaile/:id" element={<Detaile />} />
            <Route path="/profile" element={<Profile />}/> 

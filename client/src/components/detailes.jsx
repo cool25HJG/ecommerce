@@ -26,7 +26,7 @@ function Detaile() {
 
   return (
     <div className="product-details-container">
-      <h2>Product Details</h2>
+      {/* <h2>Product Details</h2>
       <div className="product-details">
         <img 
           src={product.imageUrl} 
@@ -48,11 +48,10 @@ function Detaile() {
             <button onClick={() => navigate("/")}>Back to Products</button>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
 
 
 export default Detaile;
-=======
