@@ -146,8 +146,8 @@ const deleteUser= async (req, res) => {
 const updateUser= async (req,res) => {
   try {
     const { id } = req.params;
-    const {name,email,password,role}=req.body
-    await User.update({name,email,password,role},{
+    const {name,email,role,password}=req.body
+    await User.update({name,email,role,password},{
       where : {id}
     })
     res.status(200).send("updated")
