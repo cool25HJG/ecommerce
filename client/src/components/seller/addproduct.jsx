@@ -3,19 +3,18 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Image } from 'cloudinary-react';
 
-export default function Addproduct({ fetch }) {
-    const navigate = useNavigate();
-    const [newProduct, setNewProduct] = useState({
-      name: '',
-      price: '',
-      quantity: '',
-      imageUrl: '',
-      description: '',
-    });
-    const [imageUrl, setImage] = useState('');
+
+
+export default function Addproduct({fetch}) {
+    const navigate=useNavigate()
+    const [name, setname] = useState("");
+    const [description, setdescription] = useState("");
+    const [price, setprice] = useState("");
+    const [stock, setstock] = useState("");
+    const [imageUrl, setimageUrl] = useState("");
+    const [isFavorite,setIsFavorite]=useState(false)
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
-
     const setImageFile = async (file) => {
       setLoading(true);
       const formData = new FormData();
@@ -57,41 +56,43 @@ export default function Addproduct({ fetch }) {
   };
     return (
       <div>
-            <div>
-                <label>Name</label>
-                <input type="text" value={newProduct.name} onChange={(e) => setname(e.target.value)} />
-            </div>
+      <div>
+         <label>Name</label>
+        <input onChange={(e) => setname(e.target.value)}/>
+      </div>
 
-            <div>
-                <label>Description</label>
-                <input type="text" value={newProduct.description} onChange={(e) => setdescription(e.target.value)} />
-            </div>
+      <div>
+         <label>description</label>
+        <input onChange={(e) => setdescription(e.target.value)}/>
+      </div>
 
-            <div>
-                <label>Price</label>
-                <input type="number" value={newProduct.price} onChange={(e) => setprice(e.target.value)} />
-            </div>
+      <div>
+         <label>price</label>
+        <input onChange={(e) => setprice(e.target.value)}/>
+      </div>
 
-            <div>
-                <label>Stock</label>
-                <input type="number" value={newProduct.stock} onChange={(e) => setstock(e.target.value)} />
-            </div>
+      <div>
+         <label>stock</label>
+        <input onChange={(e) => setstock(e.target.value)}/>
+      </div>
 
-            <div className="form-group mb-3">
-          <label htmlFor="image">Product Image</label>
-          <input
-            type="file"
-            className="form-control"
-            onChange={(e) => setImageFile(e.target.files[0])}
-          />
-          {loading && <div className="spinner-border text-primary mt-2" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>}
-        </div>
+      <div>
+         <label>imageUrl</label>
+        <input onChange={(e) => setimageUrl(e.target.value)}/>
+      </div>
+      <div>
+         <label>favorite</label>
+        <input onChange={(e) => setIsFavorite(e.target.value)}/>
+      </div>
 
-            <div>
-                <button onClick={handleAddproduct}>Add Product</button>
-            </div>
-        </div>
-    );
+
+    <div >
+      <button
+        onClick={() => handleAddproduct({ name, description, price, stock,imageUrl,isFavorite})}
+      >
+        Add
+      </button>
+    </div>
+  </div>
+  )
 }

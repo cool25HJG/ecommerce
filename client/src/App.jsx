@@ -19,6 +19,24 @@ import PaymentForm from './components/PaymentForm';
 
 function App() {
  
+
+    const [product, setProduct] = useState([]);
+
+
+  const fetch = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/api/Products/");
+      console.log(response.data);
+      setProduct(response.data);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    fetch();
+  }, []);
+
   return (
     <CartProvider>
       <Router>
@@ -35,9 +53,9 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
 
           <Route path="/listofproduct" element={<Listofproducts />}/>
-        <Route path="/add" element={<Addproduct />}/>
-        <Route path="/update" element={<Updateproduct />}/>
-        <Route path="/main/seller" element={<MainSeller /> } />
+        <Route path="/main/seller/add" element={<Addproduct fetch={fetch}/>}/>
+        <Route path="/update" element={<Updateproduct fetch={fetch}/>}/>
+        <Route path="/main/seller" element={<MainSeller product={product} fetch={fetch}/> } />
         </Routes>
       </Router>
     </CartProvider>

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-import { jwtDecode } from "jwt-decode"; // Import jwtDecode
-
+import { jwtDecode } from "jwt-decode";
 
 function Profile() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState(null);
   const [updateForm, setUpdateForm] = useState({
-
     firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
     password: "",
     confirmPassword: "",
+    role: "",
+    image: "", // Add image to the form state
+    address: "", // Add address to the form state
   });
   const [error, setError] = useState("");
 
@@ -27,9 +27,7 @@ function Profile() {
       return;
     }
 
-
-    // Decode the token to get the user ID
-    const decoded = jwtDecode(token); // Use jwtDecode here
+    const decoded = jwtDecode(token);
     const userId = decoded.id;
 
     axios
@@ -39,14 +37,15 @@ function Profile() {
       .then((response) => {
         setUser(response.data);
         setUpdateForm({
-
           firstName: response.data.firstName,
           lastName: response.data.lastName,
           email: response.data.email,
           phoneNumber: response.data.phoneNumber,
-
           password: "",
           confirmPassword: "",
+          role: response.data.role,
+          image: response.data.image, // Add image to the form state
+          address: response.data.address, // Add address to the form state
         });
       })
       .catch((error) => {
@@ -58,14 +57,12 @@ function Profile() {
       });
   }, [navigate]);
 
-
   const handleChange = (e) => {
     setUpdateForm({
       ...updateForm,
       [e.target.name]: e.target.value,
     });
   };
-
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -78,8 +75,7 @@ function Profile() {
 
     try {
       const token = localStorage.getItem("accessToken");
-
-      const decoded = jwtDecode(token); // Use jwtDecode here
+      const decoded = jwtDecode(token);
       const userId = decoded.id;
 
       const response = await axios.put(
@@ -89,10 +85,10 @@ function Profile() {
           lastName: updateForm.lastName,
           email: updateForm.email,
           phoneNumber: updateForm.phoneNumber,
-
-
-          password: updateForm.password || undefined, // Only send password if it's changed
-          role: user.role
+          password: updateForm.password || undefined,
+          role: updateForm.role,
+          image: updateForm.image, // Add image to the update request
+          address: updateForm.address, // Add address to the update request
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -104,8 +100,10 @@ function Profile() {
         firstName: updateForm.firstName,
         lastName: updateForm.lastName,
         email: updateForm.email,
-        phoneNumber: updateForm.phoneNumber
-
+        phoneNumber: updateForm.phoneNumber,
+        role: updateForm.role,
+        image: updateForm.image, // Update image in the user state
+        address: updateForm.address, // Update address in the user state
       });
       setIsEditing(false);
       alert("Profile updated successfully!");
@@ -113,7 +111,6 @@ function Profile() {
       setError(error.response?.data?.message || "Error updating profile");
     }
   };
-
 
   if (!user) {
     return <div>Loading...</div>;
@@ -125,19 +122,22 @@ function Profile() {
       {error && <div className="error-message">{error}</div>}
 
       {!isEditing ? (
-
         <div className="profile-info">
-
           <h3>First Name: {user.firstName}</h3>
           <h3>Last Name: {user.lastName}</h3>
           <h4>Email: {user.email}</h4>
           <h4>Phone Number: {user.phoneNumber}</h4>
-
+          <h4>Role: {user.role}</h4>
+          {user.image && (
+            <div className="profile-image">
+              <img src={user.image} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
+            </div>
+          )}
+          <h4>Address: {user.address}</h4>
           <button onClick={() => setIsEditing(true)}>Edit Profile</button>
           <button onClick={() => navigate("/")}>Back to Home</button>
         </div>
       ) : (
-
         <form onSubmit={handleUpdate} className="profile-form">
           <div className="form-group">
             <label>First Name:</label>
@@ -145,27 +145,23 @@ function Profile() {
               type="text"
               name="firstName"
               value={updateForm.firstName}
-
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-group">
-
             <label>Last Name:</label>
             <input
               type="text"
               name="lastName"
               value={updateForm.lastName}
-
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-group">
-
             <label>Email:</label>
             <input
               type="email"
@@ -188,7 +184,6 @@ function Profile() {
           </div>
 
           <div className="form-group">
-
             <label>New Password:</label>
             <input
               type="password"
@@ -210,6 +205,28 @@ function Profile() {
             />
           </div>
 
+          <div className="form-group">
+            <label>Image URL:</label>
+            <input
+              type="text"
+              name="image"
+              value={updateForm.image}
+              onChange={handleChange}
+              placeholder="Enter image URL"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Address:</label>
+            <input
+              type="text"
+              name="address"
+              value={updateForm.address}
+              onChange={handleChange}
+              placeholder="Enter your address"
+            />
+          </div>
+
           <div className="button-group">
             <button type="submit">Save Changes</button>
             <button type="button" onClick={() => setIsEditing(false)}>
@@ -222,6 +239,4 @@ function Profile() {
   );
 }
 
-
 export default Profile;
-
