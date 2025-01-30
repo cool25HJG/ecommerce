@@ -55,4 +55,4 @@ function Detaile() {
 
 
 export default Detaile;
-=======
+

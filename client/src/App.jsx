@@ -15,50 +15,49 @@ import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
 import Profile from "./components/profile"
 import Wishlist from './components/Wishlist';
+// import Footer from './components/footer';
 
 function App() {
- 
+  const [product, setProduct] = useState([]);
 
-    const [product, setProduct] = useState([]);
-=======
+  // const fetch = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:4000/api/Products/");
+  //     console.log(response.data);
+  //     setProduct(response.data);
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
 
-  const fetch = async () => {
-    try {
-      const response = await axios.get("http://localhost:4000/api/Products/");
-      console.log(response.data);
-      setProduct(response.data);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    fetch();
-  }, []);
+  // useEffect(() => {
+  //   fetch();
+  // }, []);
 
   return (
     <CartProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/detaile/:id" element={<Detaile />} />
-           <Route path="/profile" element={<Profile />}/> 
-          <Route path="/login" element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          {/* <Route path="/list" element={<List />} /> */}
-          <Route path="/cart" element={<Cart />} /> {/* Render Cart component for /cart route */}
-          <Route path="/wishlist" element={<Wishlist />} />
-
-          <Route path="/listofproduct" element={<Listofproducts />}/>
-        <Route path="/add" element={<Addproduct fetch={fetch}/>}/>
-        <Route path="/update" element={<Updateproduct fetch={fetch}/>}/>
-        <Route path="/main/seller" element={<MainSeller product={product} fetch={fetch}/> } />
-        </Routes>
+        <div className="app-container">
+          <div className="content-wrapper">
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/detaile/:id" element={<Detaile />} />
+              <Route path="/profile" element={<Profile />}/> 
+              <Route path="/login" element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/listofproduct" element={<Listofproducts />}/>
+              <Route path="/add" element={<Addproduct fetch={fetch}/>}/>
+              <Route path="/update" element={<Updateproduct fetch={fetch}/>}/>
+              <Route path="/main/seller" element={<MainSeller product={product} fetch={fetch}/> } />
+            </Routes>
+          </div>
+          {/* <Footer /> */}
+        </div>
       </Router>
     </CartProvider>
   );
 }
-
 
 export default App;

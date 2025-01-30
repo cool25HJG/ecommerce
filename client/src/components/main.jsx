@@ -74,14 +74,14 @@ function Main() {
       <nav className="navbar">
         <div className="navbar-container">
           <div className="navbar-left">
-            <a className="navbar-brand" href="/">
-              <img src="https://via.placeholder.com/100x40" alt="Logo" className="navbar-logo" />
-            </a>
+        
+              <h1  onClick={() => navigate("/")}alt="Logo" className="navbar-logo" >CoolStore</h1>
+           
             <ul className="navbar-links">
-              <li><a href="/">Home</a></li>
-              <li><a href="/products">Products</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/contact">Contact</a></li>
+              <li onClick={() => navigate("/")}>Home</li>
+              <li onClick={() => navigate("/about")}>About</li>
+              <li onClick={() => navigate("/team")}>team</li>
+              <li onClick={() => navigate("/contact")}>Contact</li>
             </ul>
           </div>
 
