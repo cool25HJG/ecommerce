@@ -1,47 +1,62 @@
-import React, { useContext } from "react";
-import { CartContext } from "./CartContext";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-function Wishlist() {
-  const { wishlist, removeFromWishlist, moveToCart } = useContext(CartContext);
-  const navigate = useNavigate();
+const Wishlist = ({ userId }) => {
+  const [wishlist, setWishlist] = useState([]);
 
-  if (wishlist.length === 0) {
-    return (
-      <div className="wishlist-empty">
-        <h3>Your Wishlist is Empty</h3>
-        <button onClick={() => navigate("/")}>Continue Shopping</button>
-      </div>
-    );
-  }
+  const fetchWishlist = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/wishlist/${userId}`);
+      setWishlist(response.data);
+    } catch (error) {
+      console.error('Error fetching wishlist:', error);
+    }
+  };
+
+  const addToWishlist = async (productId) => {
+    try {
+      await axios.post(`http://localhost:4000/api/wishlist/${userId}`, { productId });
+      fetchWishlist();
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+    }
+  };
+
+  const removeFromWishlist = async (productId) => {
+    try {
+      await axios.delete(`http://localhost:4000/api/wishlist/${userId}/${productId}`);
+      fetchWishlist();
+    } catch (error) {
+      console.error('Error removing from wishlist:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
 
   return (
-    <div className="wishlist-container"> 
-      <h3>My Wishlist</h3>
-      <div className="wishlist-grid">
-        {wishlist.map((product) => (
-          <div key={product.id} className="product-card">
-            <img 
-              src={product.imageUrl} 
-              alt={product.name}
-              onClick={() => navigate(`/detaile/${product.id}`)}
-            />
-            <h4>{product.name}</h4>
-            <p>{product.description}</p>
-            <h4>${product.price}</h4>
-            <div className="wishlist-actions">
-              <button onClick={() => moveToCart(product)}>Move to Cart</button>
-              <button onClick={() => removeFromWishlist(product.id)}>Remove</button>
-            </div>
-          </div>
-        ))}
+    <div>
+      <h2>Wishlist</h2>
+      {wishlist.length === 0 ? (
+        <p>Your wishlist is empty</p>
+      ) : (
+        <ul>
+          {wishlist.map(item => (
+            <li key={item.id}>
+              <img src={item.imageUrl} alt={item.name} style={{ width: "50px" }} />
+              <h4>{item.name}</h4>
+              <button onClick={() => removeFromWishlist(item.id)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div>
+        <input type="text" placeholder="Product ID" id="productId" />
+        <button onClick={() => addToWishlist(document.getElementById('productId').value)}>Add to Wishlist</button>
       </div>
-      <button onClick={() => navigate("/")} className="continue-shopping">
-        Continue Shopping
-      </button>
     </div>
   );
-}
+};
 
 export default Wishlist;
-
