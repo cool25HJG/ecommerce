@@ -2,13 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+
+
 function Profile() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState(null);
   const [updateForm, setUpdateForm] = useState({
-    name: "",
+
+    firstName: "",
+    lastName: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: ""
   });
@@ -22,14 +28,24 @@ function Profile() {
       return;
     }
 
-    axios.get("http://localhost:4000/api/user/current-user", {
+
+    // Decode the token to get the user ID
+    const decoded = jwtDecode(token); // Use jwtDecode here
+    const userId = decoded.id;
+
+    // Fetch user details using the getOneUser route
+    axios.get(`http://localhost:4000/api/user/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         setUser(response.data);
         setUpdateForm({
-          name: response.data.name,
+
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
           email: response.data.email,
+          phoneNumber: response.data.phoneNumber,
+
           password: "",
           confirmPassword: ""
         });
@@ -61,11 +77,20 @@ function Profile() {
 
     try {
       const token = localStorage.getItem("accessToken");
+
+      const decoded = jwtDecode(token); // Use jwtDecode here
+      const userId = decoded.id;
+
+      // Update user details using the updateUser route
       const response = await axios.put(
-        `http://localhost:4000/api/user/${user.id}`,
+        `http://localhost:4000/api/user/${userId}`,
         {
-          name: updateForm.name,
+          firstName: updateForm.firstName,
+          lastName: updateForm.lastName,
           email: updateForm.email,
+          phoneNumber: updateForm.phoneNumber,
+=======
+
           password: updateForm.password || undefined, // Only send password if it's changed
           role: user.role
         },
@@ -74,10 +99,14 @@ function Profile() {
         }
       );
 
+      // Update the user state with the new data
       setUser({
         ...user,
-        name: updateForm.name,
-        email: updateForm.email
+        firstName: updateForm.firstName,
+        lastName: updateForm.lastName,
+        email: updateForm.email,
+        phoneNumber: updateForm.phoneNumber
+
       });
       setIsEditing(false);
       alert("Profile updated successfully!");
@@ -98,8 +127,12 @@ function Profile() {
       {!isEditing ? (
         // View Mode
         <div className="profile-info">
-          <h3>Name: {user.name}</h3>
+
+          <h3>First Name: {user.firstName}</h3>
+          <h3>Last Name: {user.lastName}</h3>
           <h4>Email: {user.email}</h4>
+          <h4>Phone Number: {user.phoneNumber}</h4>
+
           <button onClick={() => setIsEditing(true)}>Edit Profile</button>
           <button onClick={() => navigate("/")}>Back to Home</button>
         </div>
@@ -107,17 +140,33 @@ function Profile() {
         // Edit Mode
         <form onSubmit={handleUpdate} className="profile-form">
           <div className="form-group">
-            <label>Name:</label>
+            <label>First Name:</label>
             <input
               type="text"
-              name="name"
-              value={updateForm.name}
+              name="firstName"
+              value={updateForm.firstName}
+=======
+
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="form-group">
+
+            <label>Last Name:</label>
+            <input
+              type="text"
+              name="lastName"
+              value={updateForm.lastName}
+
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+
             <label>Email:</label>
             <input
               type="email"
@@ -129,6 +178,18 @@ function Profile() {
           </div>
 
           <div className="form-group">
+            <label>Phone Number:</label>
+            <input
+              type="text"
+              name="phoneNumber"
+              value={updateForm.phoneNumber}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+
             <label>New Password:</label>
             <input
               type="password"
@@ -160,4 +221,6 @@ function Profile() {
   );
 }
 
+
 export default Profile;
+
