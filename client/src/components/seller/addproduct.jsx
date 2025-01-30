@@ -9,6 +9,7 @@ export default function Addproduct({fetch}) {
     const [price, setprice] = useState("");
     const [stock, setstock] = useState("");
     const [imageUrl, setimageUrl] = useState("");
+    const [isFavorite,setIsFavorite]=useState(false)
 
     const handleAddproduct = async (product) => {
         try {
@@ -46,11 +47,15 @@ export default function Addproduct({fetch}) {
            <label>imageUrl</label>
           <input onChange={(e) => setimageUrl(e.target.value)}/>
         </div>
+        <div>
+           <label>favorite</label>
+          <input onChange={(e) => setIsFavorite(e.target.value)}/>
+        </div>
 
 
       <div >
         <button
-          onClick={() => handleAddproduct({ name, description, price, stock,imageUrl})}
+          onClick={() => handleAddproduct({ name, description, price, stock,imageUrl,isFavorite})}
         >
           Add
         </button>
