@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-import Main from './components/Main';
-import Login from "./components/Login"
+import { useState,useEffect } from 'react'
+import './App.css'
+import axios from 'axios'
+import Main from './components/main'
+import Login from './components/login';
+import Detaile from './components/detailes';
+// import List from './components/listProduct.Client'
 import Register from './components/Register';
 import Listofproducts from './components/seller/Listofproducts';
 import Updateproduct from './components/seller/updateproduct';
@@ -10,17 +13,12 @@ import MainSeller from './components/seller/MainSeller';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
-import axios from "axios"
-import ProductDetails from "./components/detailes"
-import ListOfProduct from "./components/seller/Listofproducts"
-import AddProduct from "./components/seller/addproduct"
-import Profile from './components/detailes';
-import List from "./components/listProduct.Client"
-import Wishlist from "./components/Wishlist"
-import UpdateProduct from "./components/seller/updateproduct"
+import Profile from "./components/profile"
+import Wishlist from './components/Wishlist';
 
 function App() {
-  const [product, setProduct] = useState([]);
+ 
+    const [product, setProduct] = useState([]);
 
   const fetch = async () => {
     try {
@@ -42,13 +40,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/detailes" element={<ProductDetails />} />
+          <Route path="/detaile/:id" element={<Detaile />} />
            <Route path="/profile" element={<Profile />}/> 
           <Route path="/login" element={<Login />} />
           <Route path='/register' element={<Register />} />
           {/* <Route path="/list" element={<List />} /> */}
           <Route path="/cart" element={<Cart />} /> {/* Render Cart component for /cart route */}
-          {/* <Route path="/wishlist" element={<Wishlist />} /> */}
+          <Route path="/wishlist" element={<Wishlist />} />
 
           <Route path="/listofproduct" element={<Listofproducts />}/>
         <Route path="/add" element={<Addproduct fetch={fetch}/>}/>
