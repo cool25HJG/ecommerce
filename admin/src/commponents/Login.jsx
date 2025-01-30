@@ -39,7 +39,7 @@ function Login() {
       if (user.role === "admin") {
         window.location.href = "http://localhost:5174";
       } else if (user.role === "seller") {
-        navigate("/main/seller");
+        navigate("/");
       } else {
         navigate("/");
       }
@@ -92,4 +92,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;
