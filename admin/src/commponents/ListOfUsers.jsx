@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 
 function ListOfUsers({users,DeleteUser,updateUser}) {
-  const [name,setname]=useState("")
+  const [firstName,setfirstName]=useState("")
+  const [lastName,setlastName]=useState("")
+  const [phoneNumber,setphoneNumber]=useState(0)
   const [email,setemail]=useState("")
   const [role,setrole]=useState("")
   const [show,setshow]=useState(0)
@@ -19,7 +21,9 @@ function ListOfUsers({users,DeleteUser,updateUser}) {
         <thead>
           <tr>
           <th scope="col">Users_id</th>
-            <th scope="col">Name</th>
+            <th scope="col">firstName</th>
+            <th scope="col">lastName</th>
+            <th scope="col">phoneNumber</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
             <th scope="col">action </th>
@@ -30,15 +34,31 @@ function ListOfUsers({users,DeleteUser,updateUser}) {
             return (
 <tr key={el.id}>
             <th scope="row" >{el.id}</th>
-            {show!==el.id && <td>{el.name}</td>}
+            {show!==el.id && <td>{el.firstName}</td>}
+            {show!==el.id && <td>{el.lastName}</td>}
+            {show!==el.id && <td>{el.phoneNumber}</td>}
             {show!==el.id && <td>{el.email}</td>}
             {show!==el.id && <td>{el.role}</td>}
             {show === el.id && <td><input  type="text"
                     id="name"
-                    defaultValue={el.name}
+                    defaultValue={el.firstName}
                     className="form-control"
                     onChange={(e) => {
-                      setname(e.target.value);
+                      setfirstName(e.target.value);
+                    }}/></td>}
+                    {show === el.id && <td><input  type="text"
+                    id="name"
+                    defaultValue={el.lastName}
+                    className="form-control"
+                    onChange={(e) => {
+                      setlastName(e.target.value);
+                    }}/></td>}
+                    {show === el.id && <td><input  type="text"
+                    id="name"
+                    defaultValue={el.phoneNumber}
+                    className="form-control"
+                    onChange={(e) => {
+                      setphoneNumber(e.target.value);
                     }}/></td>}
             {show === el.id && <td><input  type="text"
                     id="Email"
@@ -66,7 +86,7 @@ function ListOfUsers({users,DeleteUser,updateUser}) {
 </svg></button>
             </td>}
             {show===el.id && <td>
-              <button type='button' className='btn btn-outline-success' onClick={()=>updateUser(el.id,{name:name,email:email,role:role})}>Update</button>
+              <button type='button' className='btn btn-outline-success' onClick={()=>updateUser()}>Update</button>
               </td>}
             
           </tr>
