@@ -62,6 +62,7 @@ console.log("orderItems",orderItems)
   };
 
   return (
+    
     <div className="cart">
       <h2>Cart</h2>
       {orderItems.length === 0 ? (
