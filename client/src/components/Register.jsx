@@ -10,7 +10,9 @@ function Register() {
   const { error, loading } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName:"",
+    phoneNumber:"",
     email: "",
     password: "",
     role: "client"
@@ -40,12 +42,27 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
+          name="firstName"
+          placeholder="firstName"
+          value={formData.firstName}
           onChange={handleChange}
           required
-        />
+        /><input
+        type="text"
+        name="lastName"
+        placeholder="lastName"
+        value={formData.lastName}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="number"
+        name="phoneNumber"
+        placeholder="phoneNumber"
+        value={formData.phoneNumber}
+        onChange={handleChange}
+        required
+      />
         <input
           type="email"
           name="email"

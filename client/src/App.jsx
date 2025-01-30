@@ -18,7 +18,9 @@ import Wishlist from './components/Wishlist';
 
 function App() {
  
-    const [product, setproduct] = useState([]);
+
+    const [product, setProduct] = useState([]);
+=======
 
   const fetch = async () => {
     try {
