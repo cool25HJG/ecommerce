@@ -1,40 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "./CartContext";
 import axios from "axios";
 
-const Wishlist = ({ userId }) => {
-  const [wishlist, setWishlist] = useState([]);
+function Wishlist() {
+  const navigate = useNavigate();
+  const cart = useContext(CartContext);
+  const [favorites, setFavorites] = useState([]);
+console.log("favorites",favorites);
 
-  const fetchWishlist = async () => {
-    try {
-      const response = await axios.get(`http://localhost:4000/api/Products`);
-      // Filter products where isFavorite is true
-      const favoriteProducts = response.data.filter(product => product.isFavorite);
-      setWishlist(favoriteProducts);
-    } catch (error) {
-      console.error('Error fetching wishlist:', error);
-    }
-  };
-
-  const removeFromWishlist = async (product) => {
-    try {
-      await axios.put(`http://localhost:4000/api/Products/${product.id}`, {
-        ...product,
-        isFavorite: false
-      });
-      fetchWishlist();
-    } catch (error) {
-      console.error('Error removing from wishlist:', error);
-    }
+  const fetchFavorites = () => {
+    axios
+      .get("http://localhost:4000/api/Products/favorites")
+      .then((resp) => setFavorites(resp.data))
+      .catch((error) => console.error("Error fetching favorites:", error));
   };
 
   useEffect(() => {
-    fetchWishlist();
+    fetchFavorites();
   }, []);
 
-  
+  const moveToCart = (product) => {
+    cart.addToCart(product);
+    toggleFavorite(product.id); // Remove from favorites
+  };
+
+  const toggleFavorite = async (productId) => {
+    try {
+      await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
+      fetchFavorites(); // Refresh data after toggling favorite
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
+
   return (
-   <div></div>
-  )
-};
+    <div className="wishlist">
+      <h2>Wishlist</h2>
+      {favorites.length === 0 ? (
+        <p>Your wishlist is empty</p>
+      ) : (
+        <div className="products-grid">
+          {favorites.map((product) => (
+            <div key={product.id} className="product-card">
+              <div className="product-image-container">
+                <img src={product.imageUrl} alt={product.name} />
+              </div>
+              <h4>{product.name}</h4>
+              <p>{product.description}</p>
+              <h4>${product.price}</h4>
+              <div className="product-actions">
+                <button onClick={() => moveToCart(product)}>Add to Cart</button>
+                <button onClick={() => toggleFavorite(product.id)}>Remove from Wishlist</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default Wishlist;

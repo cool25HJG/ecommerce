@@ -3,11 +3,10 @@ import { CartContext } from "./CartContext";
 import axios from "axios";
 
 const Cart = () => {
-  const { orderItems, updateQuantity, removeFromCart, getTotal, user } = useContext(CartContext);
+  const { orderItems, updateQuantity, removeFromCart, getTotal, user, addToWishlist } = useContext(CartContext);
   const [isProcessing, setIsProcessing] = useState(false); // State to manage "Buy" button status
-console.log("user",user);
-console.log("orderItems",orderItems)
-
+  console.log("user", user);
+  console.log("orderItems", orderItems);
 
   const handleQuantityChange = (productId, quantity) => {
     if (quantity > 0) {
@@ -61,8 +60,12 @@ console.log("orderItems",orderItems)
     }
   };
 
+  const moveToWishlist = (product) => {
+    addToWishlist(product);
+    removeFromCart(product.productId);
+  };
+
   return (
-    
     <div className="cart">
       <h2>Cart</h2>
       {orderItems.length === 0 ? (
