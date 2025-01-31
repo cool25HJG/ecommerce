@@ -9,13 +9,13 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lastName:{
+    lastName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    phoneNumber:{
-    type: DataTypes.FLOAT,
-    allowNull: false,
+    phoneNumber: {
+      type: DataTypes.STRING,  // Changed from FLOAT to STRING
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
@@ -41,18 +41,15 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-    image:{
+    image: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    adresse:{
+    adresse: {
       type: DataTypes.STRING,
       allowNull: false,
     }
   });
-  
-    
-  
-    return User;
-  }
-  
+
+  return User;
+};

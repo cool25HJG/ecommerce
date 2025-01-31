@@ -32,7 +32,7 @@ const Wishlist = ({ userId }) => {
   }, []);
 
   return (
-   
+   <div></div>
   )
 };
 
