@@ -1,12 +1,18 @@
 import React from "react";
 import { CiTwitter, CiInstagram, CiLinkedin } from "react-icons/ci";
+import gaston from "../assets/image/gaston.jpg"
+import houssem from "../assets/image/houssam.jpg"
+import lilia from "../assets/image/lilia01.jpg"
+import nour from "../assets/image/nour.jpg"
+import anas from "../assets/image/anas.jpg"
+import about from "../assets/image/aboutus.jpg"
 
 function About() {
   const teamMembers = [
     {
-      name: "Tom Cruise",
-      role: "Founder & Chairman",
-      image: "/images/team/member1.jpg",
+      name: "Ghassen Kharrat",
+      role: "product OWNER",
+      image: gaston,
       social: {
         twitter: "#",
         instagram: "#",
@@ -14,9 +20,9 @@ function About() {
       },
     },
     {
-      name: "Emma Watson",
-      role: "Managing Director",
-      image: "/images/team/member2.jpg",
+      name: "houssem saad bennani",
+      role: "scrum master ",
+      image: houssem,
       social: {
         twitter: "#",
         instagram: "#",
@@ -24,9 +30,9 @@ function About() {
       },
     },
     {
-      name: "Will Smith",
-      role: "Product Designer",
-      image: "/images/team/member3.jpg",
+      name: "Lilia Ghezaiel",
+      role: "member and frontend developer",
+      image: lilia,
       social: {
         twitter: "#",
         instagram: "#",
@@ -34,9 +40,9 @@ function About() {
       },
     },
     {
-      name: "Sarah Johnson",
-      role: "Marketing Head",
-      image: "/images/team/member4.jpg",
+      name: "Nour Tebourski",
+      role: "member and backend developer",
+      image: nour,
       social: {
         twitter: "#",
         instagram: "#",
@@ -44,9 +50,9 @@ function About() {
       },
     },
     {
-      name: "Michael Chen",
-      role: "Lead Developer",
-      image: "/images/team/member5.jpg",
+      name: "saoudi khemiri anas",
+      role: "member and full stack developer",
+      image: anas,
       social: {
         twitter: "#",
         instagram: "#",
@@ -61,8 +67,8 @@ function About() {
         <div className="story-content">
           <h2>Our Story</h2>
           <p>
-            Launched in 2015, Exclusive is South Asia's premier online shopping
-            marketplace with an active presence in Bangladesh. Supported by wide
+            Launched in 2025, Exclusive is South africa's premier online shopping
+            marketplace with an active presence in Tunisia. Supported by wide
             range of tailored marketing, data and service solutions, Exclusive has
             10,500 sellers and 300 brands and serves 3 millions customers across
             the region.
@@ -74,7 +80,7 @@ function About() {
           </p>
         </div>
         <div className="story-image">
-          <img src="/images/about-image.jpg" alt="Shopping Experience" />
+          <img src={about} alt="Shopping Experience" />
         </div>
       </section>
 
