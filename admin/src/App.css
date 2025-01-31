@@ -28,7 +28,7 @@
   
   /* Active/current link */
   .sidebar a.active {
-    background-color: #04AA6D;
+    background-color: #d90000;
     color: white;
   }
   
@@ -62,4 +62,15 @@
       text-align: center;
       float: none;
     }
+  }
+  .container {
+    max-width: 1200px;
+  }
+  
+  .text-success {
+    color: #d90000 !important;
+  }
+  
+  .text-muted {
+    color: #6c757d !important;
   }

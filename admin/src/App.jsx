@@ -6,6 +6,7 @@ import ListOfCategory from "./commponents/ListOfCategory.jsx";
 import Navbar from "./commponents/Navbar.jsx";
 import Sidebar from "./commponents/Sidebar.jsx";
 import axios from "axios"
+import AdminProfile from "./commponents/AdminProfile.jsx";
 function App() {
   const [View, setView] = useState("product");
   const [users,setusers] = useState([])
@@ -98,7 +99,7 @@ function App() {
       <Sidebar changeView={changeView}  addCategory={addCategory}  />
       
       <div className="viewdiv">
-      {View === "product" ? <ListOfProducts updateProducts={updateProducts} DeleteProducts={DeleteProducts} product={product} changeView={changeView} /> : View === "user" ?<ListOfUsers  updateUser={updateUser} users={users}  changeView={changeView} DeleteUser={DeleteUser} />: <ListOfCategory category={category}   updateCategory={updateCategory} DeleteCategory={DeleteCategory} addCategory={addCategory} changeView={changeView} />}</div>
+      {View === "product" ? <ListOfProducts updateProducts={updateProducts} DeleteProducts={DeleteProducts} product={product} changeView={changeView} /> : View === "user" ?<ListOfUsers  updateUser={updateUser} users={users}  changeView={changeView} DeleteUser={DeleteUser} />: View==="category"? <ListOfCategory category={category}   updateCategory={updateCategory} DeleteCategory={DeleteCategory} addCategory={addCategory} changeView={changeView} /> : <AdminProfile/>}</div>
     </div>
   );
 }
