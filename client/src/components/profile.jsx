@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { Image } from "cloudinary-react";
+
 
 function Profile() {
   const navigate = useNavigate();
@@ -15,9 +17,10 @@ function Profile() {
     password: "",
     confirmPassword: "",
     role: "",
-    image: "", // Add image to the form state
-    address: "", // Add address to the form state
+    address: "",
+    image: "", // Cloudinary image URL
   });
+  const [imageFile, setImageFile] = useState(null); // For storing selected image file
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -41,11 +44,9 @@ function Profile() {
           lastName: response.data.lastName,
           email: response.data.email,
           phoneNumber: response.data.phoneNumber,
-          password: "",
-          confirmPassword: "",
           role: response.data.role,
-          image: response.data.image, // Add image to the form state
-          address: response.data.address, // Add address to the form state
+          address: response.data.address,
+          image: response.data.image || "", // Set Cloudinary image URL from user data
         });
       })
       .catch((error) => {
@@ -62,6 +63,31 @@ function Profile() {
       ...updateForm,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleImageFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+  const handleImageUpload = async () => {
+    if (!imageFile) return;
+
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("upload_preset", "Ghassen123"); // Replace with your Cloudinary upload preset
+    formData.append("cloud_name", "dqh6arave"); // Replace with your Cloudinary cloud name
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/dqh6arave/image/upload`,
+        formData
+      );
+
+      setUpdateForm({ ...updateForm, image: response.data.secure_url });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setError("Failed to upload image. Please try again.");
+    }
   };
 
   const handleUpdate = async (e) => {
@@ -87,8 +113,8 @@ function Profile() {
           phoneNumber: updateForm.phoneNumber,
           password: updateForm.password || undefined,
           role: updateForm.role,
-          image: updateForm.image, // Add image to the update request
-          address: updateForm.address, // Add address to the update request
+          address: updateForm.address,
+          image: updateForm.image, // Include Cloudinary image URL in the update request
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -102,8 +128,8 @@ function Profile() {
         email: updateForm.email,
         phoneNumber: updateForm.phoneNumber,
         role: updateForm.role,
+        address: updateForm.address,
         image: updateForm.image, // Update image in the user state
-        address: updateForm.address, // Update address in the user state
       });
       setIsEditing(false);
       alert("Profile updated successfully!");
@@ -125,7 +151,7 @@ function Profile() {
         <div className="profile-info">
           {user.image && (
             <div className="profile-image">
-              <img src={user.image} alt="Profile" />
+              <Image cloudName="your_cloud_name" publicId={user.image} />
             </div>
           )}
           <h3>First Name: {user.firstName}</h3>
@@ -142,14 +168,22 @@ function Profile() {
       ) : (
         <form onSubmit={handleUpdate} className="profile-form">
           <div className="form-group">
-            <label>Profile Image URL:</label>
+            <label>Profile Image:</label>
+            {updateForm.image && (
+              <div className="current-image">
+                <Image cloudName="your_cloud_name" publicId={updateForm.image} />
+              </div>
+            )}
             <input
-              type="text"
-              name="image"
-              value={updateForm.image}
-              onChange={handleChange}
-              placeholder="Enter image URL"
+              type="file"
+              accept="image/*"
+              onChange={handleImageFileChange}
             />
+            {imageFile && (
+              <button type="button" onClick={handleImageUpload}>
+                Upload Image
+              </button>
+            )}
           </div>
 
           <div className="form-group">

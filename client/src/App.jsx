@@ -53,8 +53,9 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/listofproduct" element={<Listofproducts />} />
-              <Route path="/add" element={<Addproduct fetch={fetch} />} />
+
+              <Route path="/listofproduct" element={<Listofproducts fetch={fetch} />} />
+              <Route path="/main/seller/add" element={<Addproduct fetch={fetch} />} />
               <Route path="/update" element={<Updateproduct fetch={fetch} />} />
               <Route path="/review" element={<ReviewList  />} />
               <Route
