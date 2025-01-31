@@ -1,10 +1,11 @@
+// Main.js
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
-import Cart from "./cart";
-import Detailes from "./detailes"
+import ReviewList from './ReviewList';
+import ReviewForm from './Reviewform';
 
 function Main() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function Main() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentProd, setCurrentProd] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(12);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const setCurrent = (current) => {
     setCurrentProd(current);
@@ -45,8 +47,6 @@ function Main() {
     }
   }, [location]);
 
-  console.log("data",data);
-
   // const [currentSlide, setCurrentSlide] = useState(0);
 
   // const slides = [
@@ -55,31 +55,29 @@ function Main() {
   //   { image: "", text: "Find the best deals", button: "Check Offers" },
   // ];
 
-  // const nextSlide = () => {
-  //   setCurrentSlide((prev) => (prev + 1) % slides.length);
-  // };
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
 
-  // Filter products based on search query
   const filteredProducts = data.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const loadMore = () => {
-    setVisibleProducts(prev => prev + 12);
+    setVisibleProducts((prev) => prev + 12);
   };
 
-  // Add this helper function at the top of your component
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + "...";
   };
 
+  const handleReviewSubmitted = () => {
+    setRefreshKey((prev) => prev + 1); // Increment refreshKey to trigger re-fetch
+  };
+
   return (
     <div>
-      {/* <div className="page-title">
-   
-      </div> */}
-      
       {searchQuery ? (
         <div className="search-results-header">
           <h2>Search Results for "{searchQuery}"</h2>
@@ -121,10 +119,12 @@ function Main() {
                     </div>
                   </div>
                   <h4>{el.name}</h4>
-                  <p onClick={() => navigate(`/detaile/${el.id}`)}>{truncateText(el.description, 20)}</p>
+                  <p onClick={() => navigate("/detaile",{state:{product:el}})}>{truncateText(el.description, 20)}</p>
                   <h4>${el.price}</h4>
+                  <ReviewList productId={el.id} refreshKey={refreshKey} />
+                  <ReviewForm productId={el.id} onReviewSubmitted={handleReviewSubmitted} />
                   <div className="product-actions">
-                    <button onClick={() => navigate(`/detaile/${el.id}`)}>View Details</button>
+                    <button onClick={() => navigate("/detaile",{state:{product:el}})}>View Details</button>
                   </div>
                 </div>
               ))}

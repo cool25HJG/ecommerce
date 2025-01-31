@@ -18,6 +18,8 @@ connection
   db.Products=require("./products.model")(connection,DataTypes)
   db.Commande=require("./commande.model")(connection,DataTypes)
   db.OrderItem=require("./orderitems.model")(connection,DataTypes)
+  db.Review=require("./review.model")(connection,DataTypes)
+
 
   db.User.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", foreignKey: "sellerId" });
 db.Products.belongsTo(db.User, {  foreignKey: "sellerId" }); 
@@ -31,7 +33,10 @@ db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
  db.OrderItem.belongsTo(db.Commande);
  db.Products.hasMany(db.OrderItem);
  db.Commande.hasMany(db.OrderItem);
- 
+ db.Review.belongsTo(db.Products);
+ db.Products.hasMany(db.Review);
+ db.User.hasMany(db.Review);
+ db.Review.belongsTo(db.User);
   // connection
   // .sync({ force: true })
   // .then(() => console.log("tables are created"))

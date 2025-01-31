@@ -18,6 +18,7 @@ import Wishlist from './components/Wishlist';
 import PaymentForm from './components/PaymentForm';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
+import ReviewList from './components/ReviewList'
 import About from './components/about';
 import Contact from './components/contact';
 function App() {
@@ -47,7 +48,7 @@ function App() {
 
               <Route path="/payment" element={<PaymentForm />} />
               <Route path="/cart" element={<Cart />} />
-              <Route path="/detaile/:id" element={<Detaile />} />
+              <Route path="/detaile" element={<Detaile />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -55,6 +56,7 @@ function App() {
               <Route path="/listofproduct" element={<Listofproducts />} />
               <Route path="/seller/add" element={<Addproduct fetch={fetch} />} />
               <Route path="/update" element={<Updateproduct fetch={fetch} />} />
+              <Route path="/review" element={<ReviewList  />} />
               <Route
                 path="/seller"
                 element={<MainSeller product={product} fetch={fetch} />}

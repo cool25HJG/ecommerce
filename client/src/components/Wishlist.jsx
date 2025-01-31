@@ -31,7 +31,10 @@ const Wishlist = ({ userId }) => {
     fetchWishlist();
   }, []);
 
-  return 
+
+  return (
+   <div></div>
+  )
 };
 
 export default Wishlist;
