@@ -22,7 +22,7 @@ const Products = connection.define("Product", {
     allowNull: false,
   },
   imageUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   createdAt: {
