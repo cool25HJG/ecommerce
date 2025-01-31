@@ -32,24 +32,8 @@ const Wishlist = ({ userId }) => {
   }, []);
 
   return (
-    <div className="wishlist-container">
-      <h2>Wishlist</h2>
-      {wishlist.length === 0 ? (
-        <p>Your wishlist is empty</p>
-      ) : (
-        <div className="wishlist-grid">
-          {wishlist.map(item => (
-            <div key={item.id} className="wishlist-item">
-              <img src={item.imageUrl} alt={item.name} />
-              <h4>{item.name}</h4>
-              <p>${item.price}</p>
-              <button onClick={() => removeFromWishlist(item)}>Remove</button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+   
+  )
 };
 
 export default Wishlist;
