@@ -1,11 +1,10 @@
-// Main.js
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CiHeart, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
 import ReviewList from './ReviewList';
-import ReviewForm from './Reviewform';
+import ReviewForm from './ReviewForm';
 
 function Main() {
   const navigate = useNavigate();
@@ -16,10 +15,7 @@ function Main() {
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleProducts, setVisibleProducts] = useState(12);
   const [refreshKey, setRefreshKey] = useState(0);
-  // const [selectedCategory, setSelectedCategory] = useState(null);
-  // const setCurrent = (current) => {
-  //   setCurrentProd(current);
-  // };
+  const [selectedCategory, setSelectedCategory] = useState(null); // State for selected category
 
   const fetchData = () => {
     axios
@@ -41,29 +37,24 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    if (location.state?.searchQuery !== undefined) {
+    if (location.state?.searchQuery) {
       setSearchQuery(location.state.searchQuery);
-    } else {
-      setSearchQuery(""); // Ensure it resets when cleared
     }
   }, [location]);
-  
 
-  // const [currentSlide, setCurrentSlide] = useState(0);
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategory(categoryId === selectedCategory ? null : categoryId);
+  };
 
-  // const slides = [
-  //   { image: "", text: "Discover the latest trends!", button: "Shop Now" },
-  //   { image: "", text: "Upgrade your home essentials", button: "Explore" },
-  //   { image: "", text: "Find the best deals", button: "Check Offers" },
-  // ];
+  const resetCategoryFilter = () => {
+    setSelectedCategory(null);
+  };
 
-  // const nextSlide = () => {
-  //   setCurrentSlide((prev) => (prev + 1) % slides.length);
-  // };
-
-  const filteredProducts = data.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredProducts = data.filter((product) => {
+    const matchSearchQuery = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchCategory = !selectedCategory || product.categoryId === selectedCategory;
+    return matchSearchQuery && matchCategory;
+  });
 
   const loadMore = () => {
     setVisibleProducts((prev) => prev + 12);
@@ -76,15 +67,6 @@ function Main() {
 
   const handleReviewSubmitted = () => {
     setRefreshKey((prev) => prev + 1); // Increment refreshKey to trigger re-fetch
-  };
-
-  const toggleFavorite = async (productId) => {
-    try {
-      await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
-      fetchData(); // Refresh data after toggling favorite
-    } catch (error) {
-      console.error("Error toggling favorite:", error);
-    }
   };
 
   return (
@@ -106,15 +88,27 @@ function Main() {
           <h3>Categories:</h3>
           <p>({categories.length} Categories)</p>
           <ul>
+            <li >
+              <button className={!selectedCategory ? "active" : ""} onClick={resetCategoryFilter}>
+                All Products
+              </button>
+            </li>
             {categories.map((category) => (
-              <li key={category.id}>{category.name}</li>
+              <li key={category.id}>
+                <button
+                  className={category.id === selectedCategory ? "active" : ""}
+                  onClick={() => handleCategoryClick(category.id)}
+                >
+                  {category.name}
+                </button>
+              </li>
             ))}
           </ul>
         </aside>
 
         <div className="main-content">
           <div className="products-grid">
-            {(searchQuery ? filteredProducts : data)
+            {filteredProducts
               .slice(0, visibleProducts)
               .map((el) => (
                 <div key={el.id} className="product-card">
@@ -126,36 +120,32 @@ function Main() {
                       </div>
                       <div className="icon-circle">
                         <CiHeart
-                          onClick={() => toggleFavorite(el.id)}
+                          onClick={() => cart.addToWishlist(el)}
                           style={{ color: el.isFavorite ? "red" : "gray" }}
                         />
                       </div>
                     </div>
                   </div>
                   <h4>{el.name}</h4>
-                  <p onClick={() => navigate(`/detaile/${el.id}`)}>{truncateText(el.description, 20)}</p>
+                  <p onClick={() => navigate(`/detail/${el.id}`)}>
+                    {truncateText(el.description, 20)}
+                  </p>
                   <h4>${el.price}</h4>
                   <ReviewList productId={el.id} refreshKey={refreshKey} />
                   <ReviewForm productId={el.id} onReviewSubmitted={handleReviewSubmitted} />
                   <div className="product-actions">
-                    <button onClick={() => navigate(`/detaile/${el.id}`)}>View Details</button>
+                    <button onClick={() => navigate(`/detail/${el.id}`)}>
+                      View Details
+                    </button>
                   </div>
                 </div>
               ))}
           </div>
-          
-          {searchQuery ? (
-            filteredProducts.length > visibleProducts && (
-              <button onClick={loadMore} className="load-more-button">
-                See More
-              </button>
-            )
-          ) : (
-            data.length > visibleProducts && (
-              <button onClick={loadMore} className="load-more-button">
-                See More
-              </button>
-            )
+
+          {filteredProducts.length > visibleProducts && (
+            <button onClick={loadMore} className="load-more-button">
+              See More
+            </button>
           )}
         </div>
       </div>
