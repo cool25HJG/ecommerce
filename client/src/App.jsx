@@ -18,7 +18,7 @@ import Wishlist from './components/Wishlist';
 import PaymentForm from './components/PaymentForm';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
-
+import ReviewList from './components/ReviewList'
 function App() {
   const [product, setProduct] = useState([]);
 
@@ -50,6 +50,7 @@ function App() {
               <Route path="/listofproduct" element={<Listofproducts />} />
               <Route path="/add" element={<Addproduct fetch={fetch} />} />
               <Route path="/update" element={<Updateproduct fetch={fetch} />} />
+              <Route path="/review" element={<ReviewList  />} />
               <Route
                 path="/main/seller"
                 element={<MainSeller product={product} fetch={fetch} />}

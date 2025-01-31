@@ -37,7 +37,15 @@ const Products = connection.define("Product", {
     type:DataTypes.BOOLEAN,
     allowNull:false,
     defaultValue:false
-  }
+  },
+  averageRating: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0,
+  },
+  totalReviews: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
 })
 return Products;
   }
