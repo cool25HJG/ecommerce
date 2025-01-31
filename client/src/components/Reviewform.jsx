@@ -47,12 +47,12 @@ function ReviewForm({ productId, onReviewSubmitted }) {
           </span>
         ))}
       </div>
-      <textarea
+      <textarea className='review-form'
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         placeholder="Write your review here..."
       />
-      <button type="submit">Submit Review</button>
+      <button  className='submit-review-button'type="submit">Submit Review</button>
     </form>
   );
 }
