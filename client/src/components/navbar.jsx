@@ -7,11 +7,12 @@ import { CartContext } from "./CartContext"; // Import the CartContext
 function Navbar() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  const { orderItems, wishlistItems } = useContext(CartContext); // Use the CartContext to get orderItems and wishlistItems
+  const {favorites, orderItems, favorite } = useContext(CartContext); // Use the CartContext to get orderItems and favorite
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
+console.log("faaaaav",favorites);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -81,8 +82,9 @@ function Navbar() {
   };
 
   const getWishlistCount = () => {
-    return wishlistItems.length;
+    return favorites.length;
   };
+console.log("favorite",orderItems);
 
   return (
     <nav className="navbar">
@@ -128,7 +130,7 @@ function Navbar() {
               size={25}
               className="icon"
             />
-            {wishlistItems.length > 0 && (
+            {favorites.length > 0 && (
               <span style={{ position: "absolute",backgroundColor: "red",color: "white",borderRadius: "50%", padding: "2px 6px",fontSize: "12px",}} className="wishlist-notification">{getWishlistCount()}</span>
             )}
           </div>

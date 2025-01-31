@@ -8,6 +8,22 @@ export const CartProvider = ({ children }) => {
   const [orderItems, setOrderItems] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
   const [user, setUser] = useState(null);
+  const [favorites, setFavorites] = useState([]);
+  console.log("favorites",favorites);
+  
+    const fetchFavorites = () => {
+      axios
+        .get("http://localhost:4000/api/Products/favorites")
+        .then((resp) => setFavorites(resp.data))
+        .catch((error) => console.error("Error fetching favorites:", error));
+    };
+  
+    useEffect(() => {
+      fetchFavorites();
+    }, []);
+  
+
+
 
   // Load cart and wishlist data from local storage on mount
   useEffect(() => {
@@ -110,7 +126,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ orderItems, addToCart, updateQuantity, removeFromCart, getTotal, addToWishlist, removeFromWishlist, wishlistItems, toggleFavorite, user }}>
+    <CartContext.Provider value={{ favorites, orderItems, addToCart, updateQuantity, removeFromCart, getTotal, addToWishlist, removeFromWishlist, wishlistItems, toggleFavorite, user }}>
       {children}
     </CartContext.Provider>
   );
