@@ -51,7 +51,8 @@ function Navbar() {
   const getDropdownItems = () => {
     if (!user) {
       return [
-        { label: "Log In", action: () => navigate("/login") }
+        { label: "Log In", action: () => navigate("/login") },
+        { label: "Manage My Account", action: () => navigate("/profile") },
       ];
     }
 
@@ -83,7 +84,6 @@ function Navbar() {
           <ul className="navbar-links">
             <li onClick={handleHomeClick}>Home</li>
             <li onClick={() => navigate("/about")}>About</li>
-            <li onClick={() => navigate("/team")}>team</li>
             <li onClick={() => navigate("/contact")}>Contact</li>
           </ul>
         </div>

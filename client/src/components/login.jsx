@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { CiUser, CiLock } from "react-icons/ci";
 import "./Login.css";
 
 function Login() {
@@ -39,7 +40,7 @@ function Login() {
       if (user.role === "admin") {
         window.location.href = "http://localhost:5174";
       } else if (user.role === "seller") {
-        navigate("/main/seller");
+        navigate("/");
       } else {
         navigate("/");
       }
@@ -52,44 +53,49 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-container">
+      <div className="auth-box">
         <h2>Login</h2>
         {error && <div className="error-message">{error}</div>}
         
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <div className="input-icon">
+              <CiUser className="icon" />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          <div className="form-group">
+            <div className="input-icon">
+              <CiLock className="icon" />
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
 
-        <button type="submit" className="login-button">
-          Login
-        </button>
-       <div>
-        <p onClick={()=>navigate("/register")}>you dont have an account? register</p>
-       </div>
-      </form>
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
+          
+          <p className="auth-switch" onClick={() => navigate("/register")}>
+            Don't have an account? <span>Sign Up</span>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }
 
-export default Login
+export default Login;
