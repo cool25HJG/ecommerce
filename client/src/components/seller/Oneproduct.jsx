@@ -1,38 +1,53 @@
-import React, { useState } from "react";
-import axios from 'axios'
+import React from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-export default function Oneproduct({product,fetch}) {
-    console.log("pro",product);
-    
-    const navigate=useNavigate()
-    
-    const handleDelete = async (id) => {
-        try {
-          const response = await axios.delete(`http://localhost:4000/api/Products/${id}`);
-          fetch()
-        } catch (error) {
-          throw error;
-        }
-      };
+
+
+export default function Oneproduct({ product, fetch }) {
+  const navigate = useNavigate();
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4000/api/Products/${id}`);
+      fetch(); // Refresh the product list
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
 
   return (
-    <div>
-      <h3> list of product  </h3>
-<div className="column">
-<div  className="product-card">
+    <div className="container">
+      <div className="main-content">
+        <div className="products-grid" >
+          <div className="product-card">
+            {/* Product Image & Icons */}
+            <div className="product-image-container">
+              <img src={product.imageUrl} alt={product.name} />
+              <div className="product-overlay-icons">
+                
+               
+              </div>
+            </div>
 
-            <img src={product.imageUrl} alt="" />
+            {/* Product Details */}
             <h4>{product.name}</h4>
-            <p>{product.description}</p>
-            <h4>{product.price}</h4>
-            <h4>{product.stock}</h4>
-            
-    <button onClick={()=>navigate("/update",{state:{product:product}})}>Update</button>
-    <button onClick={()=>{handleDelete(product.id)}}>Delete</button>
+            <p onClick={() => navigate(`/detaile/${product.id}`)}>
+              {product.description.length > 20
+                ? `${product.description.slice(0, 20)}...`
+                : product.description}
+            </p>
+            <h4>${product.price}</h4>
+            <h4>Stock: {product.stock}</h4>
 
-</div>
-
-</div>
+            {/* Action Buttons */}
+            <div className="product-actions">
+              <button onClick={() => navigate(`/detaile/${product.id}`)}>View Details</button>
+              <button onClick={() => navigate("/update", { state: { product } })}>Update</button>
+              <button onClick={() => handleDelete(product.id)}>Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

@@ -9,7 +9,7 @@ import Register from './components/Register';
 import Listofproducts from './components/seller/Listofproducts';
 import Updateproduct from './components/seller/updateproduct';
 import Addproduct from './components/seller/addproduct';
-import MainSeller from './components/seller/MainSeller';
+// import MainSeller from './components/seller/MainSeller';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
@@ -53,14 +53,15 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/listofproduct" element={<Listofproducts />} />
-              <Route path="/seller/add" element={<Addproduct fetch={fetch} />} />
+
+              <Route path="/main/seller" element={<Listofproducts  product={product} fetch={fetch} />} />
+              <Route path="/main/seller/add" element={<Addproduct fetch={fetch} />} />
               <Route path="/update" element={<Updateproduct fetch={fetch} />} />
               <Route path="/review" element={<ReviewList  />} />
-              <Route
-                path="/seller"
+              {/* <Route
+                path="/main/seller"
                 element={<MainSeller product={product} fetch={fetch} />}
-              />
+              /> */}
             </Routes>
           </main>
           <Footer />
