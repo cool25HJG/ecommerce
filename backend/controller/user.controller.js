@@ -1,13 +1,13 @@
-const express = require('express');
+const express = require("express");
 const { User } = require("../models/index");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authenticateJWT = require("../middleware/authMiddleware");
-const { where } = require('sequelize');
+const { where } = require("sequelize");
 
 let refreshTokens = {
   users: {},
-  sellers: {}
+  sellers: {},
 };
 
 const generateAccessToken = (user) => {
@@ -27,13 +27,32 @@ const generateRefreshToken = (user) => {
 };
 
 const register = async (req, res) => {
-  const {  email, password,firstName,lastName,phoneNumber, role,image,adresse } = req.body;
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    phoneNumber,
+    role,
+    image,
+    adresse,
+  } = req.body;
   try {
     const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) return res.status(400).json({ message: "Email already exists" });
+    if (existingUser)
+      return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({  email, password: hashedPassword, role,firstName,lastName,phoneNumber,image,adresse });
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+      role,
+      firstName,
+      lastName,
+      phoneNumber,
+      image,
+      adresse,
+    });
     res.status(201).json({ message: "User created successfully", user });
   } catch (error) {
     console.error("Error registering user:", error);
@@ -48,27 +67,27 @@ const login = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-    
+
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
     // Store refresh token based on user role
-    if (user.role === 'seller') {
+    if (user.role === "seller") {
       refreshTokens.sellers[user.id] = refreshToken;
     } else {
       refreshTokens.users[user.id] = refreshToken;
     }
-    
-    res.json({ 
-      message: "Login successful", 
-      accessToken, 
-      refreshToken, 
+
+    res.json({
+      message: "Login successful",
+      accessToken,
+      refreshToken,
       user: {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
   } catch (error) {
     console.error("Error logging in:", error);
@@ -86,9 +105,8 @@ const refreshToken = (req, res) => {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
     const { id, role } = decoded;
 
-    const storedToken = role === 'seller' 
-      ? refreshTokens.sellers[id] 
-      : refreshTokens.users[id];
+    const storedToken =
+      role === "seller" ? refreshTokens.sellers[id] : refreshTokens.users[id];
 
     if (!storedToken || storedToken !== refreshToken) {
       return res.status(403).json({ message: "Invalid refresh token" });
@@ -97,9 +115,9 @@ const refreshToken = (req, res) => {
     const user = { id, role };
     const newAccessToken = generateAccessToken(user);
 
-    res.json({ 
+    res.json({
       accessToken: newAccessToken,
-      message: "Token refreshed successfully"
+      message: "Token refreshed successfully",
     });
   } catch (error) {
     console.error("Error refreshing token:", error);
@@ -110,7 +128,9 @@ const refreshToken = (req, res) => {
 const getOneUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByPk(id, { attributes: { exclude: ["password"] } });
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ["password"] },
+    });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (error) {
@@ -119,33 +139,41 @@ const getOneUser = async (req, res) => {
   }
 };
 
-
 const logout = (req, res) => {
   const { userId, role } = req.body;
-  
-  if (role === 'seller') {
+
+  if (role === "seller") {
     delete refreshTokens.sellers[userId];
   } else {
     delete refreshTokens.users[userId];
   }
-  
+
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-const deleteUser= async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     await User.destroy({ where: { id } });
-    res.status(200).send("deleted")
+    res.status(200).send("deleted");
   } catch (error) {
     console.error("user deleted", error);
     res.status(500).json({ message: "Server error" });
   }
-}
+};
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, phoneNumber, password, role,image,adresse} = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
+      role,
+      image,
+      adresse,
+    } = req.body;
 
     // Find the user by ID
     const user = await User.findOne({ where: { id } });
@@ -168,8 +196,8 @@ const updateUser = async (req, res) => {
         phoneNumber: phoneNumber || user.phoneNumber,
         password: hashedPassword, // Use the hashed password
         role: role || user.role,
-        image:image||user.image,
-        adresse:adresse||user.adresse
+        image: image || user.image,
+        adresse: adresse || user.adresse,
       },
       {
         where: { id },
@@ -182,19 +210,27 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-const getAllUser = async (req,res) => {
+const getAllUser = async (req, res) => {
   try {
-    const users = await User.findAll()
-    res.status(200).send(users)
+    const users = await User.findAll();
+    res.status(200).send(users);
   } catch (error) {
     console.error("users not found", error);
-   
   }
-  
-}
+};
 
-module.exports={
-  generateAccessToken ,
+const getUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const users = await User.findOne({ where: { email } });
+    res.status(200).send(users);
+  } catch (error) {
+    console.error("users not found", error);
+  }
+};
+
+module.exports = {
+  generateAccessToken,
   generateRefreshToken,
   register,
   login,
@@ -203,6 +239,6 @@ module.exports={
   logout,
   deleteUser,
   updateUser,
-  getAllUser
-
-}
+  getAllUser,
+  getUserByEmail,
+};

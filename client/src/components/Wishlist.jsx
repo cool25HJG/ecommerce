@@ -5,33 +5,11 @@ import axios from "axios";
 
 function Wishlist() {
   const navigate = useNavigate();
-  const cart = useContext(CartContext);
-  const [favorites, setFavorites] = useState([]);
-console.log("favorites",favorites);
-
-  const fetchFavorites = () => {
-    axios
-      .get("http://localhost:4000/api/Products/favorites")
-      .then((resp) => setFavorites(resp.data))
-      .catch((error) => console.error("Error fetching favorites:", error));
-  };
-
-  useEffect(() => {
-    fetchFavorites();
-  }, []);
+  const { favorites, removeFromWishlist, addToCart } = useContext(CartContext);
 
   const moveToCart = (product) => {
-    cart.addToCart(product);
-    toggleFavorite(product.id); // Remove from favorites
-  };
-
-  const toggleFavorite = async (productId) => {
-    try {
-      await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
-      fetchFavorites(); // Refresh data after toggling favorite
-    } catch (error) {
-      console.error("Error toggling favorite:", error);
-    }
+    addToCart(product);
+    removeFromWishlist(product.id);
   };
 
   return (
@@ -51,7 +29,9 @@ console.log("favorites",favorites);
               <h4>${product.price}</h4>
               <div className="product-actions">
                 <button onClick={() => moveToCart(product)}>Add to Cart</button>
-                <button onClick={() => toggleFavorite(product.id)}>Remove from Wishlist</button>
+                <button onClick={() => removeFromWishlist(product.id)}>
+                  Remove from Wishlist
+                </button>
               </div>
             </div>
           ))}
