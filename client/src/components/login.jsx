@@ -37,7 +37,7 @@ function Login() {
 
       // Redirect based on role
       if (user.role === "admin") {
-        window.location.href = "http://localhost:5174";
+        window.location.href = "http://localhost:5173";
       } else if (user.role === "seller") {
         navigate("/");
       } else {
