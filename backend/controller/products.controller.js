@@ -1,19 +1,21 @@
 const { Products, User, Category } = require("../models/index");
 
 module.exports = {
-  getAllProducts: async (req, res) => {
-    try {
-      const products = await Products.findAll({
-        include: [
-          { model: User },
-          { model: Category }
-        ]
-      });
-      res.send(products);
-    } catch (error) {
-      throw error;
-    }
-  },
+ getAllProducts : async (req, res) => {
+  try {
+    const products = await Products.findAll({
+      include: [
+        { model: User },
+        { model: Category }
+      ],
+      order: [['createdAt', 'DESC']] // Order by createdAt in descending order
+    });
+    res.send(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).send('Failed to fetch products');
+  }
+},
   
   addProducts: async (req, res) => {
     try {

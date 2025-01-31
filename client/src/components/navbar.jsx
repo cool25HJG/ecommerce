@@ -3,30 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { CartContext } from "./CartContext"; // Import the CartContext
-import axios from "axios";
 
 function Navbar() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  const { orderItems } = useContext(CartContext); // Use the CartContext to get orderItems
+  const { orderItems, wishlistItems } = useContext(CartContext); // Use the CartContext to get orderItems and wishlistItems
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [wishlistCount, setWishlistCount] = useState(0);
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
-
-  useEffect(() => {
-    fetchWishlistCount();
-  }, []);
-
-  const fetchWishlistCount = async () => {
-    try {
-      const response = await axios.get("http://localhost:4000/api/Products/favorites");
-      setWishlistCount(response.data.length);
-    } catch (error) {
-      console.error("Error fetching wishlist count:", error);
-    }
-  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -95,6 +80,10 @@ function Navbar() {
     return orderItems.reduce((sum, item) => sum + item.quantity, 0);
   };
 
+  const getWishlistCount = () => {
+    return wishlistItems.length;
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -139,8 +128,8 @@ function Navbar() {
               size={25}
               className="icon"
             />
-            {wishlistCount > 0 && (
-              <span style={{ position: "absolute",backgroundColor: "red",color: "white",borderRadius: "50%", padding: "2px 6px",fontSize: "12px",}} className="wishlist-notification">{wishlistCount}</span>
+            {wishlistItems.length > 0 && (
+              <span style={{ position: "absolute",backgroundColor: "red",color: "white",borderRadius: "50%", padding: "2px 6px",fontSize: "12px",}} className="wishlist-notification">{getWishlistCount()}</span>
             )}
           </div>
           <div

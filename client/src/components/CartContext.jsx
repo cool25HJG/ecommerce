@@ -96,18 +96,18 @@ export const CartProvider = ({ children }) => {
   };
 
   const toggleFavorite = async (productId) => {
-  try {
-    await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
-    const updatedProduct = await axios.get(`http://localhost:4000/api/Products/${productId}`);
-    if (updatedProduct.data.isFavorite) {
-      addToWishlist(updatedProduct.data);
-    } else {
-      removeFromWishlist(productId);
+    try {
+      await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
+      const updatedProduct = await axios.get(`http://localhost:4000/api/Products/${productId}`);
+      if (updatedProduct.data.isFavorite) {
+        addToWishlist(updatedProduct.data);
+      } else {
+        removeFromWishlist(productId);
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
     }
-  } catch (error) {
-    console.error("Error toggling favorite:", error);
-  }
-};
+  };
 
   return (
     <CartContext.Provider value={{ orderItems, addToCart, updateQuantity, removeFromCart, getTotal, addToWishlist, removeFromWishlist, wishlistItems, toggleFavorite, user }}>

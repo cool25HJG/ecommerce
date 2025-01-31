@@ -7,6 +7,7 @@ function Wishlist() {
   const navigate = useNavigate();
   const cart = useContext(CartContext);
   const [favorites, setFavorites] = useState([]);
+console.log("favorites",favorites);
 
   const fetchFavorites = () => {
     axios
