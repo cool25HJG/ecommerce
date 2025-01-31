@@ -31,7 +31,7 @@ const Wishlist = ({ userId }) => {
     fetchWishlist();
   }, []);
 
-
+  
   return (
    <div></div>
   )
