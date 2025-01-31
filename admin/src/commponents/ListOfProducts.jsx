@@ -40,8 +40,7 @@ function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
             {show!==el.id && <td>{el.description}</td>}
             {show!==el.id && <td>{el.price}</td>}
             {show!==el.id && <td>{el.stock}</td>}
-            {show!==el.id && <td>{el.User.firstName
-            }</td>}
+            {show!==el.id && <td>{el.User.firstName}</td>}
             {show!==el.id && <td>{el.Category.name}</td>}
             {show === el.id && <td><input  type="text"
                     id="name"
