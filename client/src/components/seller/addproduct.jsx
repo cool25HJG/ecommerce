@@ -44,7 +44,7 @@ export default function Addproduct({fetch}) {
       }
     };
   
-    const handleAddproduct = async () => {
+    const handleAddproduct = async (newProduct) => {
 
       try {
           const response = await axios.post("http://localhost:4000/api/Products/", newProduct);
@@ -84,8 +84,6 @@ export default function Addproduct({fetch}) {
          <label>favorite</label>
         <input onChange={(e) => setIsFavorite(e.target.value)}/>
       </div>
-
-
     <div >
       <button
         onClick={() => handleAddproduct({ name, description, price, stock,imageUrl,isFavorite})}
