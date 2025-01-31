@@ -552,7 +552,7 @@ body {
 }
 
 .social-links a:hover {
-  background-color: #b20505;
+  background-color: #b2050511;
 }
 
 /* Add these new styles for footer icons */
@@ -725,7 +725,7 @@ svg:hover {
 .about-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 15px 15px;
 }
 
 /* Story Section */
@@ -853,7 +853,7 @@ svg:hover {
 
 .member-info .social-links a:hover {
   color: white;
-  background: #b20505;
+  background: #b205053c;
 }
 
 .member-info .social-links a:hover svg {
@@ -1446,8 +1446,37 @@ svg:hover {
     z-index: 2000;
   }
 }
+/* review button */
 
+.review-button{
+  font-size: 11px; /* Small button */
+  padding: 1px 2px; /* Adjust padding */
+  border: 1px solid rgba(128, 128, 128, 0); /* Gray border */
+  background-color: transparent; /* Transparent background */
+  color: gray; /* Gray text */
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 3px;
+}
+.submit-review-button{
+  font-size: 11px; /* Small button */
+  padding: 1px 2px; /* Adjust padding */
+  border: 1px solid rgba(128, 128, 128, 0.852); /* Gray border */
+  background-color: transparent; /* Transparent background */
+  color: gray; /* Gray text */
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 3px;
+}
+.review-button:hover{
+  background-color: rgba(255, 0, 0, 0.2); /* Transparent red background */
+  color: red; /* Change text color to red on hover */
+}
+.review-form{
 
+  border: 1px solid rgba(128, 128, 128, 0.704);
+  border-radius: 3px;
+}
 
 
 
