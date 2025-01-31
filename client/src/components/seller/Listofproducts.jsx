@@ -1,11 +1,12 @@
-
+import { useEffect } from 'react'
 import Oneproduct from "./Oneproduct";
 
-function Listofproducts({product}) {
+function Listofproducts({product,fetch}) {
+
+  useEffect(() => {
+    fetch()
+  }, []);
  
-
-
-
   return (
     <div> 
 {      product.map((product) => {
