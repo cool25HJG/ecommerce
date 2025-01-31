@@ -1429,6 +1429,22 @@ svg:hover {
   .cart > div > button {
     width: 100%;
   }
+  /* Notification styles for the cart icon */
+  .cart-icon-wrapper {
+    position: relative;
+  }
+  
+  .cart-notification {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    z-index: 2000;
+  }
 }
 /* review button */
 
