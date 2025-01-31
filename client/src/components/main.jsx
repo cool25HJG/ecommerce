@@ -1,7 +1,7 @@
 // Main.js
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
+import { CiHeart, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
 import ReviewList from './ReviewList';
@@ -14,13 +14,8 @@ function Main() {
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentProd, setCurrentProd] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(12);
   const [refreshKey, setRefreshKey] = useState(0);
-
-  const setCurrent = (current) => {
-    setCurrentProd(current);
-  };
 
   const fetchData = () => {
     axios
@@ -47,18 +42,6 @@ function Main() {
     }
   }, [location]);
 
-  // const [currentSlide, setCurrentSlide] = useState(0);
-
-  // const slides = [
-  //   { image: "", text: "Discover the latest trends!", button: "Shop Now" },
-  //   { image: "", text: "Upgrade your home essentials", button: "Explore" },
-  //   { image: "", text: "Find the best deals", button: "Check Offers" },
-  // ];
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
   const filteredProducts = data.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -74,6 +57,15 @@ function Main() {
 
   const handleReviewSubmitted = () => {
     setRefreshKey((prev) => prev + 1); // Increment refreshKey to trigger re-fetch
+  };
+
+  const toggleFavorite = async (productId) => {
+    try {
+      await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
+      fetchData(); // Refresh data after toggling favorite
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   };
 
   return (
@@ -114,7 +106,10 @@ function Main() {
                         <CiShoppingCart onClick={() => cart.addToCart(el)} />
                       </div>
                       <div className="icon-circle">
-                        <CiHeart onClick={() => cart.addToWishlist(el)} />
+                        <CiHeart
+                          onClick={() => toggleFavorite(el.id)}
+                          style={{ color: el.isFavorite ? "red" : "gray" }}
+                        />
                       </div>
                     </div>
                   </div>

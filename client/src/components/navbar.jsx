@@ -1,11 +1,13 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
 import { useSelector } from "react-redux";
+import { CartContext } from "./CartContext"; // Import the CartContext
 
 function Navbar() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const { orderItems, wishlistItems } = useContext(CartContext); // Use the CartContext to get orderItems and wishlistItems
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const dropdownRef = useRef(null);
@@ -74,6 +76,14 @@ function Navbar() {
     ];
   };
 
+  const getItemsCount = () => {
+    return orderItems.reduce((sum, item) => sum + item.quantity, 0);
+  };
+
+  const getWishlistCount = () => {
+    return wishlistItems.length;
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -102,16 +112,26 @@ function Navbar() {
         </div>
 
         <div className="navbar-right">
-          <CiShoppingCart
-            onClick={() => navigate("/cart")}
-            size={25}
-            className="icon"
-          />
-          <CiHeart
-            onClick={() => navigate("/wishlist")}
-            size={25}
-            className="icon"
-          />
+          <div className="cart-icon-wrapper">
+            <CiShoppingCart
+              onClick={() => navigate("/cart")}
+              size={25}
+              className="icon"
+            />
+            {orderItems.length > 0 && (
+              <span style={{ position: "absolute",backgroundColor: "red",color: "white",borderRadius: "50%", padding: "2px 6px",fontSize: "12px",}} className="cart-notification">{getItemsCount()}</span>
+            )}
+          </div>
+          <div className="wishlist-icon-wrapper">
+            <CiHeart
+              onClick={() => navigate("/wishlist")}
+              size={25}
+              className="icon"
+            />
+            {wishlistItems.length > 0 && (
+              <span style={{ position: "absolute",backgroundColor: "red",color: "white",borderRadius: "50%", padding: "2px 6px",fontSize: "12px",}} className="wishlist-notification">{getWishlistCount()}</span>
+            )}
+          </div>
           <div
             className="icon dropdown"
             onMouseEnter={handleMouseEnter}
