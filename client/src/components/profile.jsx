@@ -123,22 +123,35 @@ function Profile() {
 
       {!isEditing ? (
         <div className="profile-info">
+          {user.image && (
+            <div className="profile-image">
+              <img src={user.image} alt="Profile" />
+            </div>
+          )}
           <h3>First Name: {user.firstName}</h3>
           <h3>Last Name: {user.lastName}</h3>
           <h4>Email: {user.email}</h4>
           <h4>Phone Number: {user.phoneNumber}</h4>
           <h4>Role: {user.role}</h4>
-          {user.image && (
-            <div className="profile-image">
-              <img src={user.image} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
-            </div>
-          )}
           <h4>Address: {user.address}</h4>
-          <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-          <button onClick={() => navigate("/")}>Back to Home</button>
+          <div className="profile-buttons">
+            <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+            <button onClick={() => navigate("/")}>Back to Home</button>
+          </div>
         </div>
       ) : (
         <form onSubmit={handleUpdate} className="profile-form">
+          <div className="form-group">
+            <label>Profile Image URL:</label>
+            <input
+              type="text"
+              name="image"
+              value={updateForm.image}
+              onChange={handleChange}
+              placeholder="Enter image URL"
+            />
+          </div>
+
           <div className="form-group">
             <label>First Name:</label>
             <input
@@ -202,17 +215,6 @@ function Profile() {
               value={updateForm.confirmPassword}
               onChange={handleChange}
               placeholder="Confirm new password"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Image URL:</label>
-            <input
-              type="text"
-              name="image"
-              value={updateForm.image}
-              onChange={handleChange}
-              placeholder="Enter image URL"
             />
           </div>
 

@@ -19,6 +19,8 @@ import PaymentForm from './components/PaymentForm';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import ReviewList from './components/ReviewList'
+import About from './components/about';
+import Contact from './components/contact';
 function App() {
   const [product, setProduct] = useState([]);
 
@@ -40,6 +42,10 @@ function App() {
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Main />} />
+              {/* pages */}
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+
               <Route path="/payment" element={<PaymentForm />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/detaile/:id" element={<Detaile />} />
