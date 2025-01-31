@@ -16,6 +16,10 @@ function Main() {
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleProducts, setVisibleProducts] = useState(12);
   const [refreshKey, setRefreshKey] = useState(0);
+  // const [selectedCategory, setSelectedCategory] = useState(null);
+  // const setCurrent = (current) => {
+  //   setCurrentProd(current);
+  // };
 
   const fetchData = () => {
     axios
@@ -37,10 +41,25 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    if (location.state?.searchQuery) {
+    if (location.state?.searchQuery !== undefined) {
       setSearchQuery(location.state.searchQuery);
+    } else {
+      setSearchQuery(""); // Ensure it resets when cleared
     }
   }, [location]);
+  
+
+  // const [currentSlide, setCurrentSlide] = useState(0);
+
+  // const slides = [
+  //   { image: "", text: "Discover the latest trends!", button: "Shop Now" },
+  //   { image: "", text: "Upgrade your home essentials", button: "Explore" },
+  //   { image: "", text: "Find the best deals", button: "Check Offers" },
+  // ];
+
+  // const nextSlide = () => {
+  //   setCurrentSlide((prev) => (prev + 1) % slides.length);
+  // };
 
   const filteredProducts = data.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())

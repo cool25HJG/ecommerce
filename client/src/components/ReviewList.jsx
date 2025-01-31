@@ -29,7 +29,7 @@ function ReviewList({ productId, refreshKey }) {
   return (
     <div>
       <StarRating rating={getAverageRating()} totalReviews={reviews.length} />
-      <button onClick={() => setShowReviews(!showReviews)}>
+      <button onClick={() => setShowReviews(!showReviews)}  className='review-button'>
         {showReviews ? "Hide Reviews" : "Show Reviews"}
       </button>
       {showReviews && reviews.map((review) => (

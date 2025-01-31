@@ -17,6 +17,13 @@ function Navbar() {
     e.preventDefault();
     navigate("/", { state: { searchQuery } });
   };
+// Reset search when the input is cleared
+const handleSearchChange = (e) => {
+  setSearchQuery(e.target.value);
+  if (e.target.value.trim() === "") {
+    navigate("/", { state: { searchQuery: "" } });
+  }
+}; 
 
   const handleHomeClick = () => {
     setSearchQuery("");
@@ -54,7 +61,11 @@ function Navbar() {
     if (!user) {
       return [
         { label: "Log In", action: () => navigate("/login") },
+        // extra for testing
+
         { label: "Manage My Account", action: () => navigate("/profile") },
+        { label: "My Products", action: () => navigate("/main/seller") },
+        { label: "add product", action: () => navigate("/main/seller/add") },
       ];
     }
 
@@ -106,7 +117,7 @@ function Navbar() {
               aria-label="Search"
               className="search-input"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
             />
           </form>
         </div>
