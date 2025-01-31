@@ -14,6 +14,7 @@ function App() {
   const changeView = (view) => {
     setView(view);
   };
+  console.log("users",product)
   const fetchUsers = ()=>{
   axios.get("http://localhost:4000/api/user")
   .then((res)=>{setusers(res.data)})

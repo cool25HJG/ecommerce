@@ -48,10 +48,10 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/listofproduct" element={<Listofproducts />} />
-              <Route path="/add" element={<Addproduct fetch={fetch} />} />
+              <Route path="/seller/add" element={<Addproduct fetch={fetch} />} />
               <Route path="/update" element={<Updateproduct fetch={fetch} />} />
               <Route
-                path="/main/seller"
+                path="/seller"
                 element={<MainSeller product={product} fetch={fetch} />}
               />
             </Routes>
