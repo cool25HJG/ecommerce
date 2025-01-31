@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Navbar({changeView}) {
+function Navbar({changeView,getAdmin}) {
   return (
     <div>
   <nav className="navbar navbar-expand-lg fixed-top bg-body-tertiary" data-bs-theme="dark">
@@ -24,8 +24,8 @@ function Navbar({changeView}) {
             Admin
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" onClick={()=>{changeView("profile")}} href="#">Profile</a></li>
-            <li><a className="dropdown-item"  href="#">Another action</a></li>
+            <li><a className="dropdown-item" onClick={()=>{changeView("profile"),getAdmin("nour@gmail.com")}} href="#">Profile</a></li>
+            <li><a className="dropdown-item"   onClick={()=>{changeView("houssem")}} href="#">Another action</a></li>
             <li><hr className="dropdown-divider" /></li>
             <li><a className="dropdown-item" href="#">Log out</a></li>
           </ul>

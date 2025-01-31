@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 
 
-function AdminProfile() {
+function AdminProfile({admin}) {
     const [editMode, setEditMode] = useState(false);
 
     const handleEditClick = () => {
@@ -10,7 +10,8 @@ function AdminProfile() {
     };
   
     return (
-      <div className="container min-vh-100 bg-light p-4">
+      <div>
+        <div className="container min-vh-100 bg-light p-4">
         <h1 className="h3 text-success mb-4">My Profile</h1>
   
         {/* Profile Card */}
@@ -25,10 +26,10 @@ function AdminProfile() {
               />
               <div>
                 <h5 className="d-flex align-items-center">
-                  Ghassen Kharrat
-                  <span className="badge bg-danger ms-2">Admin</span>
+                  {admin.firstName}
+                  <span className="badge bg-danger ms-2">{admin.role}</span>
                 </h5>
-                <p className="text-muted">rue jalouli, tunis</p>
+                <p className="text-muted">{admin.adresse}</p>
               </div>
             </div>
           </div>
@@ -56,7 +57,7 @@ function AdminProfile() {
                     className="form-control"
                   />
                 ) : (
-                  <p>Ghassen</p>
+                  <p>{admin.firstName}</p>
                 )}
               </div>
               <div className="col-12 col-md-4">
@@ -68,7 +69,7 @@ function AdminProfile() {
                     className="form-control"
                   />
                 ) : (
-                  <p>Kharrat</p>
+                  <p>{admin.lastName}</p>
                 )}
               </div>
               
@@ -81,24 +82,24 @@ function AdminProfile() {
                     className="form-control"
                   />
                 ) : (
-                  <p>Ghassenkharrat@gmail.com</p>
+                  <p>{admin.email}</p>
                 )}
               </div>
               <div className="col-12 col-md-4">
                 <p className="text-muted mb-1">Phone Number</p>
                 {editMode ? (
                   <input
-                    type="tel"
+                    type="tadmin"
                     defaultValue="(+62) 821 2554-5846"
                     className="form-control"
                   />
                 ) : (
-                  <p>(+216) 29842206</p>
+                  <p>(+216) {admin.phoneNumber}</p>
                 )}
               </div>
               <div className="col-12 col-md-4">
                 <p className="text-muted mb-1">User Role</p>
-                <p>Admin</p>
+                <p>{admin.role}</p>
               </div>
             </div>
           </div>
@@ -130,6 +131,9 @@ function AdminProfile() {
           </div>
         </div>
       </div>
+        
+      </div>
+      
     );
 }
 
