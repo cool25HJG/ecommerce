@@ -10,7 +10,7 @@ import ReviewForm from './Reviewform';
 function Main() {
   const navigate = useNavigate();
   const location = useLocation();
-  const cart = useContext(CartContext);
+  const { favorites, toggleFavorite, addToCart } = useContext(CartContext);
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,6 +20,7 @@ function Main() {
   // const setCurrent = (current) => {
   //   setCurrentProd(current);
   // };
+console.log("CartContext",favorites);
 
   const fetchData = () => {
     axios
@@ -78,13 +79,8 @@ function Main() {
     setRefreshKey((prev) => prev + 1); // Increment refreshKey to trigger re-fetch
   };
 
-  const toggleFavorite = async (productId) => {
-    try {
-      await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
-      fetchData(); // Refresh data after toggling favorite
-    } catch (error) {
-      console.error("Error toggling favorite:", error);
-    }
+  const isFavorite = (productId) => {
+    return favorites.some(fav => fav.id === productId);
   };
 
   return (
@@ -122,12 +118,24 @@ function Main() {
                     <img src={el.imageUrl} alt={el.name} />
                     <div className="product-overlay-icons">
                       <div className="icon-circle">
-                        <CiShoppingCart onClick={() => cart.addToCart(el)} />
+                        <CiShoppingCart onClick={() => addToCart(el)}    style={{ 
+                          
+                            strokeWidth: "1",
+                            cursor: "pointer",
+                            fontSize: "1.5em"
+                          }} />
                       </div>
                       <div className="icon-circle">
                         <CiHeart
                           onClick={() => toggleFavorite(el.id)}
-                          style={{ color: el.isFavorite ? "red" : "gray" }}
+                          style={{ 
+                            color: isFavorite(el.id) ? "#00ff00" : "#333333",
+                            fill: isFavorite(el.id) ? "#00ff00" : "transparent",
+                            stroke: isFavorite(el.id) ? "#00ff00" : "#333333",
+                            strokeWidth: "1",
+                            cursor: "pointer",
+                            fontSize: "1.5em"
+                          }}
                         />
                       </div>
                     </div>
