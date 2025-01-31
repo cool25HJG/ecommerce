@@ -16,11 +16,13 @@ const Products = require("./routes/Products.routes");
 const Commande = require("./routes/Commande.routes");
 const Order = require("./routes/order.routes");
 const User = require("./routes/User.routes");
+const Review=require("./routes/review.routes")
 app.use("/api/user", User);
 app.use("/api/Category", Category);
 app.use("/api/Products", Products);
 app.use("/api/Commande", Commande);
 app.use("/api/order", Order);
+app.use("/api/review", Review);
 // Payment endpoint
 app.post('/create-payment', async (req, res) => {
   const {

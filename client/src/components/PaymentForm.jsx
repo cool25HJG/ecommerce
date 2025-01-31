@@ -12,6 +12,7 @@ const PaymentForm = () => {
     email: '',
     orderId: ''
   });
+console.log("formData",formData.firstName);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,13 +1,14 @@
 
 .viewdiv{
   margin-left: 15%;
-  margin-top: 1%;
+  margin-top: 3.6%;
 }
 
 /* The side navigation menu */
 .sidebar {
     margin: 0;
     padding: 0;
+   
     width: 200px;
     background-color: #222121;
     position: fixed;
