@@ -71,19 +71,25 @@ console.log("orderItems",orderItems)
         <div>
           <ul>
             {orderItems.map((item) => (
-              <li key={item.productId}>
-                <img src={item.product.imageUrl} alt={item.product.name} style={{ width: "50px" }} />
-                <h4>{item.product.name}</h4>
-                <p>Price: {item.price}</p>
-                <p>Quantity: 
-                  <input 
-                    type="number" 
-                    value={item.quantity} 
-                    onChange={(e) => handleQuantityChange(item.productId, parseInt(e.target.value))} 
-                    min="1"
-                  />
-                </p>
-                <button onClick={() => removeFromCart(item.productId)}>Remove</button>
+              <li key={item.productId} className="cart-item">
+                <img src={item.product.imageUrl} alt={item.product.name} />
+                <div className="cart-item-details">
+                  <h4>{item.product.name}</h4>
+                  <p>Price: ${item.price}</p>
+                  <div className="quantity-control">
+                    <label>Quantity:</label>
+                    <input 
+                      type="number" 
+                      value={item.quantity} 
+                      onChange={(e) => handleQuantityChange(item.productId, parseInt(e.target.value))} 
+                      min="1"
+                    />
+                  </div>
+                </div>
+                <div className="cart-item-actions">
+                  <button className="remove-btn" onClick={() => removeFromCart(item.productId)}>Remove</button>
+                  <button className="wishlist-btn" onClick={() => moveToWishlist(item.product)}>Move to Wishlist</button>
+                </div>
               </li>
             ))}
           </ul>

@@ -47,17 +47,17 @@ function Main() {
 
   console.log("data",data);
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
 
-  const slides = [
-    { image: "", text: "Discover the latest trends!", button: "Shop Now" },
-    { image: "", text: "Upgrade your home essentials", button: "Explore" },
-    { image: "", text: "Find the best deals", button: "Check Offers" },
-  ];
+  // const slides = [
+  //   { image: "", text: "Discover the latest trends!", button: "Shop Now" },
+  //   { image: "", text: "Upgrade your home essentials", button: "Explore" },
+  //   { image: "", text: "Find the best deals", button: "Check Offers" },
+  // ];
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+  // const nextSlide = () => {
+  //   setCurrentSlide((prev) => (prev + 1) % slides.length);
+  // };
 
   // Filter products based on search query
   const filteredProducts = data.filter((product) =>
