@@ -17,7 +17,7 @@ function Main() {
   const [currentProd, setCurrentProd] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(12);
   const [refreshKey, setRefreshKey] = useState(0);
-
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const setCurrent = (current) => {
     setCurrentProd(current);
   };
@@ -42,10 +42,13 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    if (location.state?.searchQuery) {
+    if (location.state?.searchQuery !== undefined) {
       setSearchQuery(location.state.searchQuery);
+    } else {
+      setSearchQuery(""); // Ensure it resets when cleared
     }
   }, [location]);
+  
 
   // const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -55,9 +58,9 @@ function Main() {
   //   { image: "", text: "Find the best deals", button: "Check Offers" },
   // ];
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+  // const nextSlide = () => {
+  //   setCurrentSlide((prev) => (prev + 1) % slides.length);
+  // };
 
   const filteredProducts = data.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
