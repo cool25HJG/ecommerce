@@ -9,11 +9,12 @@ import axios from "axios"
 import AdminProfile from "./commponents/AdminProfile.jsx";
 import LoginAdmin from "./commponents/LoginAdmin.jsx";
 function App() {
-  const [View, setView] = useState("product");
+  const [View, setView] = useState("login");
   const [users,setusers] = useState([])
   const [product,setproduct] = useState([])
   const [category,setcategory] =useState([])
   const [admin,setadmin]=useState([])
+  
   const changeView = (view) => {
     setView(view);
   };
@@ -61,7 +62,7 @@ function App() {
  
   const updateUser = (id,body)=>{
     axios.put(`http://localhost:4000/api/user/${id}`,body)
-    .then(()=>{console.log("updated")
+    .then(()=>{console.log("updated"),
     fetchUsers()
   })
     .catch((err)=>console.error("err updating",err))
@@ -79,6 +80,7 @@ function App() {
     })
     .catch((err)=>console.error("err updating",err))
   }
+  
   const addCategory = (body)=>{
     axios.post("http://localhost:4000/api/Category",body)
     .then(()=>{console.log("added")
@@ -92,20 +94,23 @@ function App() {
     .then((res)=>{setadmin(res.data)})
     .catch((err)=>console.error("error fetching admin",err))
   }
+  
   useEffect(()=>{
     fetchUsers()
     fetchProducts()
     fetchCategory()
     
   },[])
-  console.log("admin",admin)
+
+
+  
   return (
     <div>
      <Navbar changeView={changeView} getAdmin={getAdmin} />
       <Sidebar changeView={changeView}  addCategory={addCategory}  />
       
       <div className="viewdiv">
-      {View === "product" ? <ListOfProducts updateProducts={updateProducts} DeleteProducts={DeleteProducts} product={product} changeView={changeView} /> : View === "user" ?<ListOfUsers  updateUser={updateUser} users={users}  changeView={changeView} DeleteUser={DeleteUser} />: View==="category"? <ListOfCategory category={category}   updateCategory={updateCategory} DeleteCategory={DeleteCategory} addCategory={addCategory} changeView={changeView} /> :View==="profile" ? <AdminProfile admin={admin} /> :<LoginAdmin/> }</div>
+      {View === "product" ? <ListOfProducts updateProducts={updateProducts} DeleteProducts={DeleteProducts} product={product} changeView={changeView} /> : View === "user" ?<ListOfUsers  updateUser={updateUser} users={users}  changeView={changeView} DeleteUser={DeleteUser} />: View==="category"? <ListOfCategory category={category}   updateCategory={updateCategory} DeleteCategory={DeleteCategory} addCategory={addCategory} changeView={changeView} /> :View==="profile" ? <AdminProfile admin={admin}  updateUser={updateUser} changeView={changeView} /> :<LoginAdmin changeView={changeView} getAdmin={getAdmin}  /> }</div>
     </div>
   );
 }

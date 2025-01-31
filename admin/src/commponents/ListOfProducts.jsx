@@ -16,6 +16,10 @@ function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
     }
 
   }
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + "...";
+  };
   return (
     <div>
       <table className="table">
@@ -37,7 +41,7 @@ function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
 <tr key={el.id}>
             <th scope="row" >{el.id}</th>
             {show!==el.id && <td>{el.name}</td>}
-            {show!==el.id && <td>{el.description}</td>}
+            {show!==el.id && <td>{truncateText(el.description,20)}</td>}
             {show!==el.id && <td>{el.price}</td>}
             {show!==el.id && <td>{el.stock}</td>}
             {show!==el.id && <td>{el.User.firstName}</td>}

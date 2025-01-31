@@ -18,16 +18,15 @@ function Navbar({changeView,getAdmin}) {
         </form>
       </div>
 
-      <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul className="navbar-nav ms-auto mb-2 mb-lg-0" style={{marginRight:"100px"}}>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle mr-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Admin
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" onClick={()=>{changeView("profile"),getAdmin("nour@gmail.com")}} href="#">Profile</a></li>
-            <li><a className="dropdown-item"   onClick={()=>{changeView("houssem")}} href="#">Another action</a></li>
+            <li><a className="dropdown-item" onClick={()=>{changeView("profile")}} href="#">Profile</a></li>
             <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" href="#">Log out</a></li>
+            <li><a className="dropdown-item" onClick={()=>window.location.reload()} href="#">Log out</a></li>
           </ul>
         </li>
       </ul>

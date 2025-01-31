@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 
 
 
-function AdminProfile({admin}) {
+function AdminProfile({admin,updateUser,changeView}) {
     const [editMode, setEditMode] = useState(false);
-
+    const [firstName, setfirstName] = useState("");
+      const [lastName, setlastName] = useState("");
+      const[adress,setadress] = useState("")
+      const [phoneNumber, setphoneNumber] = useState(0); 
     const handleEditClick = () => {
       setEditMode(!editMode);
     };
@@ -19,14 +22,14 @@ function AdminProfile({admin}) {
           <div className="card-body">
             <div className="d-flex align-items-center">
               <img
-                src="https://scontent.ftun2-2.fna.fbcdn.net/v/t39.30808-6/441526275_844702864363914_6387689304949025577_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=58ZJSUCkT4EQ7kNvgFY07VQ&_nc_zt=23&_nc_ht=scontent.ftun2-2.fna&_nc_gid=AE2LY1Shy2vIoZSa2mYIerb&oh=00_AYCpzgt1qZZlq6ge3BXC4M2ncVjLjpIu5huoXmFyP1QMLQ&oe=67A27E89"
+                src={admin.image}
                 alt="Profile"
                 className="rounded-circle me-3"
                 style={{ width: '80px', height: '80px' }}
               />
               <div>
                 <h5 className="d-flex align-items-center">
-                  {admin.firstName}
+                  {admin.firstName} {admin.lastName}
                   <span className="badge bg-danger ms-2">{admin.role}</span>
                 </h5>
                 <p className="text-muted">{admin.adresse}</p>
@@ -53,8 +56,11 @@ function AdminProfile({admin}) {
                 {editMode ? (
                   <input
                     type="text"
-                    defaultValue="Natashia"
+                    defaultValue={admin.firstName}
                     className="form-control"
+                    onChange={(e) => {
+                      setfirstName(e.target.value);
+                    }}
                   />
                 ) : (
                   <p>{admin.firstName}</p>
@@ -65,8 +71,11 @@ function AdminProfile({admin}) {
                 {editMode ? (
                   <input
                     type="text"
-                    defaultValue="Khaleira"
+                    defaultValue={admin.lastName}
                     className="form-control"
+                    onChange={(e) => {
+                      setlastName(e.target.value);
+                    }}
                   />
                 ) : (
                   <p>{admin.lastName}</p>
@@ -76,32 +85,52 @@ function AdminProfile({admin}) {
               <div className="col-12 col-md-4">
                 <p className="text-muted mb-1">Email Address</p>
                 {editMode ? (
-                  <input
-                    type="email"
-                    defaultValue="info@binary-fusion.com"
-                    className="form-control"
-                  />
+                 <p>{admin.email}</p>
                 ) : (
                   <p>{admin.email}</p>
                 )}
               </div>
+
+
               <div className="col-12 col-md-4">
                 <p className="text-muted mb-1">Phone Number</p>
                 {editMode ? (
                   <input
                     type="tadmin"
-                    defaultValue="(+62) 821 2554-5846"
+                    defaultValue={admin.phoneNumber}
                     className="form-control"
+                    onChange={(e) => {
+                      setphoneNumber(e.target.value);
+                    }}
                   />
                 ) : (
-                  <p>(+216) {admin.phoneNumber}</p>
+                  <p>(+216) {admin.
+                    phoneNumber}</p>
                 )}
               </div>
-              <div className="col-12 col-md-4">
+
+
+              {editMode ?(<div className="col-12 col-md-4">
+                <p className="text-muted mb-1">City</p>
+                <input
+                    type="tadmin"
+                    defaultValue={admin.adresse}
+                    className="form-control"
+                    onChange={(e) => {
+                      setadress(e.target.value);
+                    }}
+                  />
+              </div>) : (<div className="col-12 col-md-4">
                 <p className="text-muted mb-1">User Role</p>
                 <p>{admin.role}</p>
-              </div>
+              </div>)}
+              {editMode ? (<div className="col-12 col-md-4">
+                <p className="text-muted mb-1"> Update Button </p><button type="button" onClick={()=>{updateUser(admin.id,{firstName:firstName,lastName:lastName,phoneNumber:phoneNumber,adresse:adress}),changeView("profile"),handleEditClick()}} className="btn btn-secondary" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
+  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+  <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+</svg></button></div>):("")}
             </div>
+            
           </div>
         </div>
   
@@ -124,7 +153,7 @@ function AdminProfile({admin}) {
               </div>
               <div className="col-12 col-md-4">
                 <p className="text-muted mb-1">City</p>
-                <p>rue jalouli, karouin</p>
+                <p>{admin.adresse}</p>
               </div>
              
             </div>
