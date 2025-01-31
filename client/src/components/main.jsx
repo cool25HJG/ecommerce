@@ -4,12 +4,12 @@ import { CiHeart, CiShoppingCart } from "react-icons/ci";
 import axios from "axios";
 import { CartContext } from "./CartContext";
 import ReviewList from './ReviewList';
-import ReviewForm from './ReviewForm';
+import ReviewForm from './Reviewform';
 
 function Main() {
   const navigate = useNavigate();
   const location = useLocation();
-  const cart = useContext(CartContext);
+  const { favorites, toggleFavorite, addToCart } = useContext(CartContext);
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -116,12 +116,24 @@ function Main() {
                     <img src={el.imageUrl} alt={el.name} />
                     <div className="product-overlay-icons">
                       <div className="icon-circle">
-                        <CiShoppingCart onClick={() => cart.addToCart(el)} />
+                        <CiShoppingCart onClick={() => addToCart(el)}    style={{ 
+                          
+                            strokeWidth: "1",
+                            cursor: "pointer",
+                            fontSize: "1.5em"
+                          }} />
                       </div>
                       <div className="icon-circle">
                         <CiHeart
-                          onClick={() => cart.addToWishlist(el)}
-                          style={{ color: el.isFavorite ? "red" : "gray" }}
+                          onClick={() => toggleFavorite(el.id)}
+                          style={{ 
+                            color: isFavorite(el.id) ? "#00ff00" : "#333333",
+                            fill: isFavorite(el.id) ? "#00ff00" : "transparent",
+                            stroke: isFavorite(el.id) ? "#00ff00" : "#333333",
+                            strokeWidth: "1",
+                            cursor: "pointer",
+                            fontSize: "1.5em"
+                          }}
                         />
                       </div>
                     </div>

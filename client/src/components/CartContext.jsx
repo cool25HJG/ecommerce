@@ -6,25 +6,40 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [orderItems, setOrderItems] = useState([]);
-  const [wishlistItems, setWishlistItems] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [user, setUser] = useState(null);
+  const [products, setProducts] = useState([]);
 
-  // Load cart and wishlist data from local storage on mount
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/api/Products/");
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  const fetchFavorites = () => {
+    axios
+      .get("http://localhost:4000/api/Products/favorites")
+      .then((resp) => setFavorites(resp.data))
+      .catch((error) => console.error("Error fetching favorites:", error));
+  };
+
   useEffect(() => {
+    fetchProducts();
+    fetchFavorites();
+    
+    // Load cart data from local storage on mount
     const storedOrderItems = localStorage.getItem('orderItems');
     if (storedOrderItems) {
       setOrderItems(JSON.parse(storedOrderItems));
     }
 
-    const storedWishlistItems = localStorage.getItem('wishlistItems');
-    if (storedWishlistItems) {
-      setWishlistItems(JSON.parse(storedWishlistItems));
-    }
-
-    // Fetch user data when the component mounts
+    // Fetch user data
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/user/1'); // Replace with actual user ID or API endpoint
+        const response = await axios.get('http://localhost:4000/api/user/1');
         setUser(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -34,40 +49,33 @@ export const CartProvider = ({ children }) => {
     fetchUserData();
   }, []);
 
-  // Save cart and wishlist data to local storage whenever they change
+  // Save cart data to local storage whenever it changes
   useEffect(() => {
     localStorage.setItem('orderItems', JSON.stringify(orderItems));
   }, [orderItems]);
 
-  useEffect(() => {
-    localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
-  }, [wishlistItems]);
-
   const addToCart = (product) => {
     setOrderItems((prevItems) => {
       const existingItem = prevItems.find(item => item.productId === product.id);
-
+      
       if (existingItem) {
-        // Update quantity if the product already exists in the cart
         return prevItems.map(item =>
-          item.productId === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.productId === product.id 
+            ? { ...item, quantity: item.quantity + 1 } 
+            : item
         );
       } else {
-        // Add new product to the cart
-        return [...prevItems, { productId: product.id, quantity: 1, price: product.price, product }];
+        // If the product was in favorites, remove it when adding to cart
+        if (favorites.some(fav => fav.id === product.id)) {
+          toggleFavorite(product.id);
+        }
+        return [...prevItems, { 
+          productId: product.id, 
+          quantity: 1, 
+          price: product.price, 
+          product: product 
+        }];
       }
-    });
-  };
-
-  const addToWishlist = (product) => {
-    setWishlistItems((prevItems) => {
-      const existingItem = prevItems.find(item => item.productId === product.id);
-
-      if (!existingItem) {
-        // Add new product to the wishlist
-        return [...prevItems, { productId: product.id, product }];
-      }
-      return prevItems;
     });
   };
 
@@ -80,15 +88,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (productId) => {
-    setOrderItems((prevItems) =>
-      prevItems.filter(item => item.productId !== productId)
-    );
-  };
-
-  const removeFromWishlist = (productId) => {
-    setWishlistItems((prevItems) =>
-      prevItems.filter(item => item.productId !== productId)
-    );
+    setOrderItems(prevItems => prevItems.filter(item => item.productId !== productId));
   };
 
   const getTotal = () => {
@@ -97,20 +97,61 @@ export const CartProvider = ({ children }) => {
 
   const toggleFavorite = async (productId) => {
     try {
+      // Optimistically update UI first
+      setFavorites(prev => {
+        const isCurrentlyFavorite = prev.some(fav => fav.id === productId);
+        if (isCurrentlyFavorite) {
+          // Remove from favorites
+          return prev.filter(fav => fav.id !== productId);
+        } else {
+          // Add to favorites
+          const productToAdd = products.find(p => p.id === productId);
+          if (productToAdd) {
+            return [...prev, productToAdd];
+          }
+          return prev;
+        }
+      });
+
+      // Then make API call
       await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
-      const updatedProduct = await axios.get(`http://localhost:4000/api/Products/${productId}`);
-      if (updatedProduct.data.isFavorite) {
-        addToWishlist(updatedProduct.data);
-      } else {
-        removeFromWishlist(productId);
-      }
+      
+      // Optionally fetch to ensure sync with server
+      // Only if you need to ensure complete sync
+      // await fetchFavorites();
     } catch (error) {
       console.error("Error toggling favorite:", error);
+      // Revert the optimistic update if the API call fails
+      fetchFavorites();
+    }
+  };
+
+  const removeFromWishlist = async (productId) => {
+    try {
+      // Optimistically update UI
+      setFavorites(prev => prev.filter(fav => fav.id !== productId));
+      
+      // Make API call
+      await axios.put(`http://localhost:4000/api/Products/toggle-favorite/${productId}`);
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+      // Revert on error
+      fetchFavorites();
     }
   };
 
   return (
-    <CartContext.Provider value={{ orderItems, addToCart, updateQuantity, removeFromCart, getTotal, addToWishlist, removeFromWishlist, wishlistItems, toggleFavorite, user }}>
+    <CartContext.Provider value={{ 
+      favorites, 
+      orderItems, 
+      addToCart, 
+      updateQuantity, 
+      removeFromCart, 
+      getTotal,
+      toggleFavorite,
+      removeFromWishlist,
+      user 
+    }}>
       {children}
     </CartContext.Provider>
   );
