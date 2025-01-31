@@ -84,10 +84,7 @@ export default function Addproduct({ fetch }) {
                 {message ? <p>{message}</p> : null}
             </div>
 
-            <div>
-                <label>Favorite</label>
-                <input type="checkbox" checked={isFavorite} onChange={(e) => setIsFavorite(e.target.checked)} />
-            </div>
+            
 
             <div>
                 <button onClick={handleAddProduct}>Add Product</button>
