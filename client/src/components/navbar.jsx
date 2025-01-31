@@ -52,7 +52,11 @@ function Navbar() {
     if (!user) {
       return [
         { label: "Log In", action: () => navigate("/login") },
+        // extra for testing
+
         { label: "Manage My Account", action: () => navigate("/profile") },
+        { label: "My Products", action: () => navigate("/main/seller") },
+        { label: "add product", action: () => navigate("/main/seller/add") },
       ];
     }
 
