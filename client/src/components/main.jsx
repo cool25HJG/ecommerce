@@ -5,6 +5,10 @@ import axios from "axios";
 import { CartContext } from "./CartContext";
 import ReviewList from './ReviewList';
 import ReviewForm from './Reviewform';
+import { MdLocalShipping } from "react-icons/md";
+import { BiSupport } from "react-icons/bi";
+import { RiSecurePaymentLine } from "react-icons/ri";
+
 
 function Main() {
   const navigate = useNavigate();
@@ -154,6 +158,36 @@ function Main() {
           )}
         </div>
       </div>
+
+      <section className="service-features">
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">
+              <MdLocalShipping />
+            </div>
+            <h3>FREE AND FAST DELIVERY</h3>
+            <p>Free delivery for all orders over $140</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">
+              <BiSupport />
+            </div>
+            <h3>24/7 CUSTOMER SERVICE</h3>
+            <p>Friendly 24/7 customer support</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">
+              <RiSecurePaymentLine />
+            </div>
+            <h3>MONEY BACK GUARANTEE</h3>
+            <p>We return money within 30 days</p>
+          </div>
+        </div>
+      </section>
+
+
     </div>
   );
 }

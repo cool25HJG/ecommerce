@@ -76,37 +76,67 @@ function Updateproduct({ fetch }) {
     };
 
     return (
-        <div>
-            <h2>Update Product</h2>
+        <div className="update-product-container">
+            <h2 className="update-product-title">Update Product</h2>
+            
+            <div className="update-product-form">
+             
 
-            <label>Category</label>
-            <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))}>
-                <option value="">Select Category</option>
-                {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                    </option>
-                ))}
-            </select>
+                <div className="form-group">
+                    <label>Name</label>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                </div>
 
-            <label>Name</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="form-group">
+                    <label>Description</label>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                </div>
+                <div className="form-group">
+                    <label>Category</label>
+                    <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))}>
+                        <option value="">Select Category</option>
+                        {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                                {cat.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>Price</label>
+                    <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+                </div>
 
-            <label>Description</label>
-            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                <div className="form-group">
+                    <label>Stock</label>
+                    <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
+                </div>
 
-            <label>Price</label>
-            <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+                <div className="form-group">
+                    <div className="image-upload-container">
+                        <label className="upload-label">
+                            {imageUrl ? 'Change Image' : 'Upload Product Image'}
+                            <input 
+                                type="file" 
+                                onChange={(e) => handleImageUpload(e.target.files[0])}
+                                accept="image/*"
+                            />
+                        </label>
+                        {imageUrl && <img src={imageUrl} alt="Preview" className="image-preview" />}
+                    </div>
+                </div>
 
-            <label>Stock</label>
-            <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
+                {loading && <p className="loading-message">Uploading image...</p>}
+                {message && <p className="error-message">{message}</p>}
 
-            <label>Image Upload</label>
-            <input type="file" onChange={(e) => handleImageUpload(e.target.files[0])} />
-            {loading && <p>Uploading...</p>}
-            {message && <p>{message}</p>}
-
-            <button onClick={handleUpdateProduct}>Update Product</button>
+                <button 
+                    className="update-product-button"
+                    onClick={handleUpdateProduct}
+                    disabled={loading || !name || !description || !price || !stock || !imageUrl || !categoryId}
+                >
+                    Update Product
+                </button>
+            </div>
         </div>
     );
 }

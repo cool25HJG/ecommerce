@@ -29,7 +29,7 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(response?.user));
 
         if (userRole === "admin") {
-          window.location.href = "http://localhost:5174/";
+          window.location.href = "http://localhost:5173/";
         } else {
           navigate("/");
         }
