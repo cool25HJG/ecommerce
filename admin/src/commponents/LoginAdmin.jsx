@@ -38,7 +38,7 @@ function LoginAdmin({changeView,getAdmin}) {
         // Redirect based on role
         if (user.role === "admin") {
             getAdmin(formData.email)
-         changeView("profile")
+         changeView("dashboard")
         } else {
           alert ("you dont have the access")
         }
