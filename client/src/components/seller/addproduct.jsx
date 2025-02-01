@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { Image } from 'cloudinary-react';
 
 export default function Addproduct({ fetch }) {
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [stock, setStock] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [categoryId, setCategoryId] = useState(""); // Category Selection
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        axios.get(import.meta.env.VITE_HOST+"/api/Category/")
+            .then((resp) => setCategories(resp.data))
+            .catch((error) => console.error("Error fetching categories:", error));
+    }, []);
 
     const handleImageUpload = async (file) => {
         setLoading(true);
@@ -26,17 +32,21 @@ export default function Addproduct({ fetch }) {
                 'https://api.cloudinary.com/v1_1/dqh6arave/image/upload',
                 formData
             );
-            const imageUrl = response.data.secure_url;
-            setImageUrl(imageUrl);
+            setImageUrl(response.data.secure_url);
             setLoading(false);
         } catch (error) {
-            console.error('Error uploading image: ', error);
+            console.error('Error uploading image:', error);
             setMessage('Failed to upload image.');
             setLoading(false);
         }
     };
 
     const handleAddProduct = async () => {
+        if (!categoryId) {
+            alert("Please select a category.");
+            return;
+        }
+
         try {
             const newProduct = {
                 name,
@@ -44,51 +54,47 @@ export default function Addproduct({ fetch }) {
                 price,
                 stock,
                 imageUrl,
-                isFavorite
+                categoryId
             };
 
-            const response = await axios.post("http://localhost:4000/api/Products/", newProduct);
+            await axios.post(import.meta.env.VITE_HOST+"/api/Products/", newProduct);
             navigate("/main/seller");
             fetch();
         } catch (error) {
-            console.error("Error adding product: ", error);
+            console.error("Error adding product:", error);
         }
     };
 
     return (
         <div>
-            <div>
-                <label>Name</label>
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
+            <h2>Add Product</h2>
 
-            <div>
-                <label>Description</label>
-                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-            </div>
+            <label>Category</label>
+            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                <option value="">Select Category</option>
+                {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+            </select>
 
-            <div>
-                <label>Price</label>
-                <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
-            </div>
+            <label>Name</label>
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
 
-            <div>
-                <label>Stock</label>
-                <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
-            </div>
+            <label>Description</label>
+            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
 
-            <div>
-                <label>Image Upload</label>
-                <input type="file" onChange={(e) => handleImageUpload(e.target.files[0])} />
-                {loading ? <p>Uploading...</p> : null}
-                {message ? <p>{message}</p> : null}
-            </div>
+            <label>Price</label>
+            <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
 
-            
+            <label>Stock</label>
+            <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
 
-            <div>
-                <button onClick={handleAddProduct}>Add Product</button>
-            </div>
+            <label>Image Upload</label>
+            <input type="file" onChange={(e) => handleImageUpload(e.target.files[0])} />
+            {loading && <p>Uploading...</p>}
+            {message && <p>{message}</p>}
+
+            <button onClick={handleAddProduct}>Add Product</button>
         </div>
     );
 }

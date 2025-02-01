@@ -17,7 +17,7 @@ function Profile() {
     password: "",
     confirmPassword: "",
     role: "",
-    address: "",
+    adresse: "",
     image: "", // Cloudinary image URL
   });
   const [imageFile, setImageFile] = useState(null); // For storing selected image file
@@ -34,7 +34,7 @@ function Profile() {
     const userId = decoded.id;
 
     axios
-      .get(`http://localhost:4000/api/user/${userId}`, {
+      .get(import.meta.env.VITE_HOST+`/api/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -45,7 +45,7 @@ function Profile() {
           email: response.data.email,
           phoneNumber: response.data.phoneNumber,
           role: response.data.role,
-          address: response.data.address,
+          adresse: response.data.adresse,
           image: response.data.image || "", // Set Cloudinary image URL from user data
         });
       })
@@ -105,7 +105,7 @@ function Profile() {
       const userId = decoded.id;
 
       const response = await axios.put(
-        `http://localhost:4000/api/user/${userId}`,
+        process.env.HOST+`/api/user/${userId}`,
         {
           firstName: updateForm.firstName,
           lastName: updateForm.lastName,
@@ -113,7 +113,7 @@ function Profile() {
           phoneNumber: updateForm.phoneNumber,
           password: updateForm.password || undefined,
           role: updateForm.role,
-          address: updateForm.address,
+          adresse: updateForm.adresse,
           image: updateForm.image, // Include Cloudinary image URL in the update request
         },
         {
@@ -128,7 +128,7 @@ function Profile() {
         email: updateForm.email,
         phoneNumber: updateForm.phoneNumber,
         role: updateForm.role,
-        address: updateForm.address,
+        adresse: updateForm.adresse,
         image: updateForm.image, // Update image in the user state
       });
       setIsEditing(false);
@@ -159,7 +159,7 @@ function Profile() {
           <h4>Email: {user.email}</h4>
           <h4>Phone Number: {user.phoneNumber}</h4>
           <h4>Role: {user.role}</h4>
-          <h4>Address: {user.address}</h4>
+          <h4>Address: {user.adresse}</h4>
           <div className="profile-buttons">
             <button onClick={() => setIsEditing(true)}>Edit Profile</button>
             <button onClick={() => navigate("/")}>Back to Home</button>
@@ -257,7 +257,7 @@ function Profile() {
             <input
               type="text"
               name="address"
-              value={updateForm.address}
+              value={updateForm.adresse}
               onChange={handleChange}
               placeholder="Enter your address"
             />

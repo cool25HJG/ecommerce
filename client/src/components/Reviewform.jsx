@@ -19,7 +19,7 @@ function ReviewForm({ productId, onReviewSubmitted }) {
     }
 
     try {
-      await axios.post("http://localhost:4000/api/review/reviews", {
+      await axios.post(import.meta.env.VITE_HOST+"/api/review/reviews", {
         rating,
         comment,
         productId, // Ensure productId is included here

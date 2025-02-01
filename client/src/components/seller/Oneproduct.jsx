@@ -8,7 +8,7 @@ export default function Oneproduct({ product, fetch }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/Products/${id}`);
+      await axios.delete(import.meta.env.VITE_HOST+`/api/Products/${id}`);
       fetch(); // Refresh the product list
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -31,7 +31,7 @@ export default function Oneproduct({ product, fetch }) {
 
             {/* Product Details */}
             <h4>{product.name}</h4>
-            <p onClick={() => navigate(`/detaile/${product.id}`)}>
+            <p onClick={() => navigate("/detaile")}>
               {product.description.length > 20
                 ? `${product.description.slice(0, 20)}...`
                 : product.description}
@@ -41,7 +41,7 @@ export default function Oneproduct({ product, fetch }) {
 
             {/* Action Buttons */}
             <div className="product-actions">
-              <button onClick={() => navigate(`/detaile/${product.id}`)}>View Details</button>
+              <button onClick={() => navigate("/detaile")}>View Details</button>
               <button onClick={() => navigate("/update", { state: { product } })}>Update</button>
               <button onClick={() => handleDelete(product.id)}>Delete</button>
             </div>

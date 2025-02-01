@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { CiUser, CiLock } from "react-icons/ci";
+import { login } from "../store/reducer/login";
 import "./Login.css";
 
 function Login() {
@@ -21,35 +20,23 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: "AUTH_START" });
+    dispatch(login(formData))
+      .unwrap()
+      .then((response) => {
+        const userRole = response?.user?.role;
 
-    try {
-      const response = await axios.post("http://localhost:4000/api/user/login", formData);
-      const { accessToken, refreshToken, user } = response.data;
+        // ✅ Save user info to localStorage for persistence
+        localStorage.setItem("user", JSON.stringify(response?.user));
 
-      if (!user) {
-        throw new Error("User data is missing in the response");
-      }
-
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
-
-      // Redirect based on role
-      if (user.role === "admin") {
-        window.location.href = "http://localhost:5174";
-      } else if (user.role === "seller") {
-        navigate("/");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      dispatch({
-        type: "AUTH_FAIL",
-        payload: error.response?.data?.message || "Authentication failed",
+        if (userRole === "admin") {
+          window.location.href = "http://localhost:5174/";
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
       });
-      }
   };
 
   return (
@@ -57,40 +44,34 @@ function Login() {
       <div className="auth-box">
         <h2>Login</h2>
         {error && <div className="error-message">{error}</div>}
-        
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <div className="input-icon">
-              <CiUser className="icon" />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
-
           <div className="form-group">
-            <div className="input-icon">
-              <CiLock className="icon" />
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
           </div>
-
           <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Logging in..." : "Login"}
           </button>
-          
           <p className="auth-switch" onClick={() => navigate("/register")}>
-            Don't have an account? <span>Sign Up</span>
+            Don't have an account? <span>Register</span>
           </p>
         </form>
       </div>

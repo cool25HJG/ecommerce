@@ -11,7 +11,7 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+   
     // Reset form
     setFormData({
       name: "",

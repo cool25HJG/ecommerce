@@ -26,7 +26,7 @@ function App() {
 
   const fetch = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/Products/");
+      const response = await axios.get(import.meta.env.VITE_HOST+"/api/Products/");
       console.log(response.data);
       setProduct(response.data);
     } catch (error) {
@@ -48,7 +48,7 @@ function App() {
 
               <Route path="/payment" element={<PaymentForm />} />
               <Route path="/cart" element={<Cart />} />
-              <Route path="/detaile/:id" element={<Detaile />} />
+              <Route path="/detaile" element={<Detaile />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
