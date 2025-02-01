@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import { login } from "../store/reducer/login";
 import "./Login.css";
 
 function Login() {
@@ -20,74 +20,61 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: "AUTH_START" });
+    dispatch(login(formData))
+      .unwrap()
+      .then((response) => {
+        const userRole = response?.user?.role;
 
-    try {
-      const response = await axios.post("http://localhost:4000/api/user/login", formData);
-      const { accessToken, refreshToken, user } = response.data;
+        // ✅ Save user info to localStorage for persistence
+        localStorage.setItem("user", JSON.stringify(response?.user));
 
-      if (!user) {
-        throw new Error("User data is missing in the response");
-      }
-
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      dispatch({ type: "AUTH_SUCCESS", payload: response.data });
-
-      // Redirect based on role
-      if (user.role === "admin") {
-        window.location.href = "http://localhost:5174";
-      } else if (user.role === "seller") {
-        navigate("/");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      dispatch({
-        type: "AUTH_FAIL",
-        payload: error.response?.data?.message || "Authentication failed",
+        if (userRole === "admin") {
+          window.location.href = "http://localhost:5174/";
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
       });
-      }
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-container">
+      <div className="auth-box">
         <h2>Login</h2>
         {error && <div className="error-message">{error}</div>}
-        
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit" className="login-button">
-          Login
-        </button>
-       <div>
-        <p onClick={()=>navigate("/register")}>you dont have an account? register</p>
-       </div>
-      </form>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+          <p className="auth-switch" onClick={() => navigate("/register")}>
+            Don't have an account? <span>Register</span>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

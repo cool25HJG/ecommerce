@@ -26,7 +26,7 @@ function App() {
 
   const fetch = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/Products/");
+      const response = await axios.get(import.meta.env.VITE_HOST+"/api/Products/");
       console.log(response.data);
       setProduct(response.data);
     } catch (error) {

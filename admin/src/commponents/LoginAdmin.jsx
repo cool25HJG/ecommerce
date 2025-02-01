@@ -12,7 +12,7 @@ function LoginAdmin({changeView,getAdmin}) {
       email: "",
       password: "",
     });
-    console.log("formData",formData)
+   
   
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });

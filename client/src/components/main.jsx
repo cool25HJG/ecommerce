@@ -15,18 +15,18 @@ function Main() {
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleProducts, setVisibleProducts] = useState(12);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState(null); // State for selected category
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const fetchData = () => {
     axios
-      .get("http://localhost:4000/api/Products/")
+      .get(import.meta.env.VITE_HOST+"/api/Products/")
       .then((resp) => setData(resp.data))
       .catch((error) => console.log(error));
   };
 
   const fetchCategories = () => {
     axios
-      .get("http://localhost:4000/api/Category/")
+      .get(import.meta.env.VITE_HOST+"/api/Category/")
       .then((resp) => setCategories(resp.data))
       .catch((error) => console.log(error));
   };
@@ -50,6 +50,8 @@ function Main() {
     setSelectedCategory(null);
   };
 
+  const isFavorite = (productId) => favorites.includes(productId);
+
   const filteredProducts = data.filter((product) => {
     const matchSearchQuery = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchCategory = !selectedCategory || product.categoryId === selectedCategory;
@@ -66,7 +68,7 @@ function Main() {
   };
 
   const handleReviewSubmitted = () => {
-    setRefreshKey((prev) => prev + 1); // Increment refreshKey to trigger re-fetch
+    setRefreshKey((prev) => prev + 1);
   };
 
   return (
@@ -88,7 +90,7 @@ function Main() {
           <h3>Categories:</h3>
           <p>({categories.length} Categories)</p>
           <ul>
-            <li >
+            <li>
               <button className={!selectedCategory ? "active" : ""} onClick={resetCategoryFilter}>
                 All Products
               </button>
@@ -116,17 +118,13 @@ function Main() {
                     <img src={el.imageUrl} alt={el.name} />
                     <div className="product-overlay-icons">
                       <div className="icon-circle">
-                        <CiShoppingCart onClick={() => addToCart(el)}    style={{ 
-                          
-                            strokeWidth: "1",
-                            cursor: "pointer",
-                            fontSize: "1.5em"
-                          }} />
+                        <CiShoppingCart onClick={() => addToCart(el)}
+                          style={{ strokeWidth: "1", cursor: "pointer", fontSize: "1.5em" }} />
                       </div>
                       <div className="icon-circle">
                         <CiHeart
                           onClick={() => toggleFavorite(el.id)}
-                          style={{ 
+                          style={{
                             color: isFavorite(el.id) ? "#00ff00" : "#333333",
                             fill: isFavorite(el.id) ? "#00ff00" : "transparent",
                             stroke: isFavorite(el.id) ? "#00ff00" : "#333333",
@@ -139,17 +137,16 @@ function Main() {
                     </div>
                   </div>
                   <h4>{el.name}</h4>
-                  <p onClick={() => navigate("/detaile",{state:{product:el}})}>{truncateText(el.description, 20)}</p>
+                  <p onClick={() => navigate("/detaile", { state: { product: el } })}>{truncateText(el.description, 20)}</p>
                   <h4>${el.price}</h4>
                   <ReviewList productId={el.id} refreshKey={refreshKey} />
                   <ReviewForm productId={el.id} onReviewSubmitted={handleReviewSubmitted} />
                   <div className="product-actions">
-                    <button onClick={() => navigate("/detaile",{state:{product:el}})}>View Details</button>
+                    <button onClick={() => navigate("/detaile", { state: { product: el } })}>View Details</button>
                   </div>
                 </div>
               ))}
           </div>
-
           {filteredProducts.length > visibleProducts && (
             <button onClick={loadMore} className="load-more-button">
               See More
