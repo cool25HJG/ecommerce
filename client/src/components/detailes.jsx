@@ -9,8 +9,9 @@ import ReviewForm from './Reviewform';
 
 function Detaile() {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const product = state?.product;
+  const location = useLocation();
+  const [product, setProduct] = useState(location.state?.product || null);
+  const [loading, setLoading] = useState(!location.state?.product);
   const { addToCart, toggleFavorite, favorites } = useContext(CartContext);
   const [refreshKey, setRefreshKey] = useState(0);
 

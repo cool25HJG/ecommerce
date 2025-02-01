@@ -26,7 +26,7 @@ function Navbar({changeView,getAdmin}) {
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" onClick={()=>{changeView("profile")}} href="#">Profile</a></li>
             <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" onClick={()=>window.location.reload()} href="#">Log out</a></li>
+            <li><a className="dropdown-item" onClick={localStorage.removeItem("admin")} href="http://localhost:5174/">Log out</a></li>
           </ul>
         </li>
       </ul>

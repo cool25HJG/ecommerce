@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
+import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
 import { CartContext } from "./CartContext";
 import { logout } from "../store/reducer/login";
@@ -16,6 +17,7 @@ function Navbar() {
   const timeoutRef = useRef(null);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // ✅ Load user from localStorage on refresh
   useEffect(() => {
@@ -33,20 +35,21 @@ function Navbar() {
     setWishlistCount(favorites.length);
   }, [orderItems, favorites]);
 
-  // Handle search form submission
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate("/", { state: { searchQuery } });
-  };
-
   // Handle search input change
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-
+    
+    // Navigate immediately when search is empty
     if (value.trim() === "") {
-      navigate("/", { replace: true, state: { searchQuery: "" } });
+      navigate("/", { state: { searchQuery: "" } });
     }
+  };
+
+  // Handle search form submission
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate("/", { state: { searchQuery: searchQuery.trim() } });
   };
 
   // Handle home click
@@ -115,6 +118,17 @@ function Navbar() {
     return commonItems;
   };
 
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Close mobile menu when navigating
+  const handleNavigation = (path) => {
+    setIsMobileMenuOpen(false);
+    navigate(path);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -122,13 +136,21 @@ function Navbar() {
           <h1 onClick={handleHomeClick} className="navbar-logo">
             CoolStore
           </h1>
-          <ul className="navbar-links">
-            <li onClick={handleHomeClick}>Home</li>
-            <li onClick={() => navigate("/about")}>About</li>
-            <li onClick={() => navigate("/contact")}>Contact</li>
+          
+          {/* Desktop Navigation */}
+          <ul className="navbar-links desktop-nav">
+            <li onClick={() => handleNavigation("/")}>Home</li>
+            <li onClick={() => handleNavigation("/about")}>About</li>
+            <li onClick={() => handleNavigation("/contact")}>Contact</li>
           </ul>
+          
+          {/* Mobile Menu Button */}
+          <button className="mobile-menu-button" onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? <RiCloseLine size={24} /> : <RiMenu3Line size={24} />}
+          </button>
         </div>
 
+        {/* Search Bar */}
         <div className="navbar-center">
           <form className="navbar-search" onSubmit={handleSearch}>
             <input
@@ -141,10 +163,11 @@ function Navbar() {
           </form>
         </div>
 
+        {/* Icons Section */}
         <div className="navbar-right">
           <div className="cart-icon-wrapper">
             <CiShoppingCart
-              onClick={() => navigate("/cart")}
+              onClick={() => handleNavigation("/cart")}
               size={25}
               className="icon"
             />
@@ -152,9 +175,10 @@ function Navbar() {
               <span className="cart-notification">{cartCount}</span>
             )}
           </div>
+          
           <div className="wishlist-icon-wrapper">
             <CiHeart
-              onClick={() => navigate("/wishlist")}
+              onClick={() => handleNavigation("/wishlist")}
               size={25}
               className="icon"
             />
@@ -162,7 +186,8 @@ function Navbar() {
               <span className="wishlist-notification">{wishlistCount}</span>
             )}
           </div>
-          <div
+
+          <div 
             className="icon dropdown"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -170,7 +195,7 @@ function Navbar() {
           >
             <CiUser size={25} />
             {showDropdown && (
-              <div
+              <div 
                 className="dropdown-menu"
                 onClick={(e) => e.stopPropagation()}
                 onMouseEnter={clearCloseTimer}
@@ -194,6 +219,17 @@ function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu">
+          <ul className="mobile-nav-links">
+            <li onClick={() => handleNavigation("/")}>Home</li>
+            <li onClick={() => handleNavigation("/about")}>About</li>
+            <li onClick={() => handleNavigation("/contact")}>Contact</li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

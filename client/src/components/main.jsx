@@ -5,10 +5,8 @@ import axios from "axios";
 import { CartContext } from "./CartContext";
 import ReviewList from './ReviewList';
 import ReviewForm from './Reviewform';
-import { MdLocalShipping } from "react-icons/md";
-import { BiSupport } from "react-icons/bi";
-import { RiSecurePaymentLine } from "react-icons/ri";
-
+import Header from './header';
+import Lastsection from './lastsection';
 
 function Main() {
   const navigate = useNavigate();
@@ -41,10 +39,10 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    if (location.state?.searchQuery) {
+    if (location.state?.searchQuery !== undefined) {
       setSearchQuery(location.state.searchQuery);
     }
-  }, [location]);
+  }, [location.state?.searchQuery]);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId === selectedCategory ? null : categoryId);
@@ -54,7 +52,9 @@ function Main() {
     setSelectedCategory(null);
   };
 
-  const isFavorite = (productId) => favorites.includes(productId);
+  const isFavorite = (productId) => {
+    return favorites.some(fav => fav.id === productId);
+  };
 
   const filteredProducts = data.filter((product) => {
     const matchSearchQuery = product.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -77,17 +77,7 @@ function Main() {
 
   return (
     <div>
-      {searchQuery ? (
-        <div className="search-results-header">
-          <h2>Search Results for "{searchQuery}"</h2>
-          <p>({filteredProducts.length} Products found)</p>
-        </div>
-      ) : (
-        <div className="search-results-header">
-          <h2>All Products</h2>
-          <p>({data.length} Products available)</p>
-        </div>
-      )}
+      <Header />
 
       <div className="container">
         <aside className="sidebar">
@@ -113,6 +103,17 @@ function Main() {
         </aside>
 
         <div className="main-content">
+        {searchQuery ? (
+        <div className="search-results-header">
+          <h2>Search Results for "{searchQuery}"</h2>
+          <p>({filteredProducts.length} Products found)</p>
+        </div>
+      ) : (
+        <div className="search-results-header">
+          <h2>All Products</h2>
+          <p>({data.length} Products available)</p>
+        </div>
+      )}
           <div className="products-grid">
             {filteredProducts
               .slice(0, visibleProducts)
@@ -122,17 +123,21 @@ function Main() {
                     <img src={el.imageUrl} alt={el.name} />
                     <div className="product-overlay-icons">
                       <div className="icon-circle">
-                        <CiShoppingCart onClick={() => addToCart(el)}
-                          style={{ strokeWidth: "1", cursor: "pointer", fontSize: "1.5em" }} />
+                        <CiShoppingCart onClick={() => addToCart(el)} style={{ 
+                           
+                            strokeWidth: "0.7",
+                            cursor: "pointer",
+                            fontSize: "1.5em"
+                          }}  />
                       </div>
                       <div className="icon-circle">
                         <CiHeart
                           onClick={() => toggleFavorite(el.id)}
                           style={{
                             color: isFavorite(el.id) ? "#00ff00" : "#333333",
-                            fill: isFavorite(el.id) ? "#00ff00" : "transparent",
+                            fill: isFavorite(el.id) ? "#00ff00" : "#0c0c0c",
                             stroke: isFavorite(el.id) ? "#00ff00" : "#333333",
-                            strokeWidth: "1",
+                            strokeWidth: "0.7",
                             cursor: "pointer",
                             fontSize: "1.5em"
                           }}
@@ -158,36 +163,7 @@ function Main() {
           )}
         </div>
       </div>
-
-      <section className="service-features">
-        <div className="features-grid">
-          <div className="feature-card">
-            <div className="feature-icon">
-              <MdLocalShipping />
-            </div>
-            <h3>FREE AND FAST DELIVERY</h3>
-            <p>Free delivery for all orders over $140</p>
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">
-              <BiSupport />
-            </div>
-            <h3>24/7 CUSTOMER SERVICE</h3>
-            <p>Friendly 24/7 customer support</p>
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">
-              <RiSecurePaymentLine />
-            </div>
-            <h3>MONEY BACK GUARANTEE</h3>
-            <p>We return money within 30 days</p>
-          </div>
-        </div>
-      </section>
-
-
+      <Lastsection />
     </div>
   );
 }
