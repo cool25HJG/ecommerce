@@ -54,6 +54,7 @@ const Cart = () => {
         email: user.email || "unknown@example.com",
         orderId: newCommande.id,
       });
+console.log(("user",user));
 
       const { payUrl } = paymentResponse.data;
       window.location.href = payUrl;
@@ -65,10 +66,13 @@ const Cart = () => {
     }
   };
 
-  const moveToWishlist = async (product) => {
+  // Handler for moving items from cart to wishlist
+  const moveToWishlist = async (item) => {
     try {
-      await toggleFavorite(product.id);
-      removeFromCart(product.productId);
+      // First add to wishlist
+      await toggleFavorite(item.productId);
+      // Then remove from cart
+      removeFromCart(item.productId);
     } catch (error) {
       console.error("Error moving item to wishlist:", error);
     }
@@ -99,7 +103,7 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="cart-item-actions">
-                  <button onClick={() => moveToWishlist(item.product)}>Move to Wishlist</button>
+                  <button onClick={() => moveToWishlist(item)}>Move to Wishlist</button>
                   <button onClick={() => removeFromCart(item.productId)}>Remove</button>
                 </div>
               </li>
