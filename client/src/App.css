@@ -1478,9 +1478,131 @@ svg:hover {
   border-radius: 3px;
 }
 
+/* Password Input Styles */
+.password-group {
+  position: relative;
+}
 
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
+.password-input-container input {
+  width: 100%;
+  padding-right: 40px; /* Make space for the eye icon */
+}
 
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: #666;
+  transition: color 0.3s ease;
+}
 
+.password-toggle:hover {
+  color: #b20505;
+}
 
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
 
+/* Existing Auth Form Styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.auth-form {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #b20505;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  background: #b20505;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+  background: #8c0404;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+}
+
+.auth-link span {
+  color: #b20505;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-link span:hover {
+  color: #8c0404;
+}
+
+.error-message {
+  color: #b20505;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: rgba(178, 5, 5, 0.1);
+  border-radius: 4px;
+}
