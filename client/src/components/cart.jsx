@@ -64,12 +64,12 @@ const Cart = () => {
   };
 
   // Handler for moving items from cart to wishlist
-  const moveToWishlist = async (product) => {
+  const moveToWishlist = async (item) => {
     try {
       // First add to wishlist
-      await toggleFavorite(product.id);
+      await toggleFavorite(item.productId);
       // Then remove from cart
-      removeFromCart(product.productId);
+      removeFromCart(item.productId);
     } catch (error) {
       console.error("Error moving item to wishlist:", error);
     }
@@ -107,7 +107,7 @@ const Cart = () => {
                 </div>
                 {/* Item action buttons */}
                 <div className="cart-item-actions">
-                  <button onClick={() => moveToWishlist(item.product)}>Move to Wishlist</button>
+                  <button onClick={() => moveToWishlist(item)}>Move to Wishlist</button>
                   <button onClick={() => removeFromCart(item.productId)}>Remove</button>
                 </div>
               </li>

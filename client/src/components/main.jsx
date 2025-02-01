@@ -69,6 +69,10 @@ function Main() {
     setRefreshKey((prev) => prev + 1); // Increment refreshKey to trigger re-fetch
   };
 
+  const isFavorite = (productId) => {
+    return favorites.some(fav => fav.id === productId);
+  };
+
   return (
     <div>
       {searchQuery ? (
@@ -116,12 +120,12 @@ function Main() {
                     <img src={el.imageUrl} alt={el.name} />
                     <div className="product-overlay-icons">
                       <div className="icon-circle">
-                        <CiShoppingCart onClick={() => addToCart(el)}    style={{ 
-                          
+                        <CiShoppingCart onClick={() => addToCart(el)} style={{ 
+                           
                             strokeWidth: "1",
                             cursor: "pointer",
                             fontSize: "1.5em"
-                          }} />
+                          }}  />
                       </div>
                       <div className="icon-circle">
                         <CiHeart
