@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authenticateJWT = require("../middleware/authMiddleware");
 const { where } = require("sequelize");
-
+const { Op } = require("sequelize");
 let refreshTokens = {
   users: {},
   sellers: {},
@@ -228,7 +228,23 @@ const getUserByEmail = async (req, res) => {
     console.error("users not found", error);
   }
 };
-
+const getClietsSellers= async (req, res) => {
+  try {
+    const allusers = await User.findAll({
+      where: {
+        [Op.or]: [
+          { role: "client" },
+          { role: "seller" }
+        ]
+      }
+    })
+    console.log(allusers)
+    res.status(200).send(allusers)
+  } catch (err) {
+    console.log("err", err)
+    res.status(400).send({ "message": err })
+  }
+};
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
@@ -241,4 +257,5 @@ module.exports = {
   updateUser,
   getAllUser,
   getUserByEmail,
+  getClietsSellers,
 };

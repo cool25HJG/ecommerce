@@ -1,36 +1,37 @@
 import React, { useState } from "react";
 
-function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
-  const [phoneNumber, setphoneNumber] = useState(0);
-  const [email, setemail] = useState("");
-  const [role, setrole] = useState("");
-  const [show, setshow] = useState(0);
+function ListOfUsers({ clientsellers, DeleteUser, updateUser, changeView }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(0);
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState(""); // Manage role state
+  const [show, setShow] = useState(0);
+
   const toggle = (action) => {
     if (show === action) {
-      setshow(0);
+      setShow(0);
     } else {
-      setshow(action);
+      setShow(action);
     }
   };
-  
+
   return (
     <div>
       <table className="table">
         <thead>
           <tr>
             <th scope="col">Users_id</th>
-            <th scope="col">firstName</th>
-            <th scope="col">lastName</th>
-            <th scope="col">phoneNumber</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Phone Number</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
-            <th scope="col">action </th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((el) => {
+          {clientsellers.map((el) => {
             return (
               <tr key={el.id}>
                 <th scope="row">{el.id}</th>
@@ -39,6 +40,7 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
                 {show !== el.id && <td>{el.phoneNumber}</td>}
                 {show !== el.id && <td>{el.email}</td>}
                 {show !== el.id && <td>{el.role}</td>}
+
                 {show === el.id && (
                   <td>
                     <input
@@ -46,9 +48,7 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
                       id="name"
                       defaultValue={el.firstName}
                       className="form-control"
-                      onChange={(e) => {
-                        setfirstName(e.target.value);
-                      }}
+                      onChange={(e) => setFirstName(e.target.value)}
                     />
                   </td>
                 )}
@@ -59,9 +59,7 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
                       id="name"
                       defaultValue={el.lastName}
                       className="form-control"
-                      onChange={(e) => {
-                        setlastName(e.target.value);
-                      }}
+                      onChange={(e) => setLastName(e.target.value)}
                     />
                   </td>
                 )}
@@ -72,9 +70,7 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
                       id="name"
                       defaultValue={el.phoneNumber}
                       className="form-control"
-                      onChange={(e) => {
-                        setphoneNumber(e.target.value);
-                      }}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                   </td>
                 )}
@@ -85,36 +81,36 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
                       id="Email"
                       defaultValue={el.email}
                       className="form-control"
-                      onChange={(e) => {
-                        setemail(e.target.value);
-                      }}
-                    />
-                  </td>
-                )}
-                {show === el.id && (
-                  <td>
-                    <input
-                      type="text"
-                      id="Role"
-                      defaultValue={el.role}
-                      className="form-control"
-                      onChange={(e) => {
-                        setrole(e.target.value);
-                      }}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </td>
                 )}
 
+                {/* Dropdown for Role (Seller or Client) */}
+                {show === el.id && (
+                  <td>
+                    <select
+                      className="form-control"
+                      value={role || el.role}
+                      onChange={(e) => setRole(e.target.value)}
+                    >
+                      <option value="Client">Client</option>
+                      <option value="Seller">Seller</option>
+                    </select>
+                  </td>
+                )}
+
+                {/* Actions */}
                 {show !== el.id && (
                   <td>
                     <button
                       type="button"
                       className="btn btn-outline-danger"
                       onClick={() => {
-                        DeleteUser(el.id), changeView("user");
+                        DeleteUser(el.id);
+                        changeView("user");
                       }}
                     >
-                      {" "}
                       Delete{" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -131,9 +127,7 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
                     <button
                       type="button"
                       className="btn btn-outline-success"
-                      onClick={() => {
-                        toggle(el.id);
-                      }}
+                      onClick={() => toggle(el.id)}
                     >
                       Edit{" "}
                       <svg
@@ -153,20 +147,24 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
                     </button>
                   </td>
                 )}
+
+                {/* Save changes */}
                 {show === el.id && (
                   <td>
                     <button
                       type="button"
                       className="btn btn-outline-success"
-                      onClick={() =>{{
+                      onClick={() => {
                         updateUser(el.id, {
-                          firstName: firstName,
-                          lastName: lastName,
-                          phoneNumber: phoneNumber,
-                          role: role,
-                          email: email,
-                        }),changeView("user"),toggle(el.id)}}
-                      }
+                          firstName,
+                          lastName,
+                          phoneNumber,
+                          role,
+                          email,
+                        });
+                        changeView("user");
+                        toggle(el.id);
+                      }}
                     >
                       Update
                     </button>
