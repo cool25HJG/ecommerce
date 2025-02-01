@@ -12,7 +12,7 @@ const PaymentForm = () => {
     email: '',
     orderId: ''
   });
-console.log("formData",formData.firstName);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +26,7 @@ console.log("formData",formData.firstName);
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:4000/create-payment', formData);
+      const response = await axios.post(import.meta.env.VITE_HOST+'/create-payment', formData);
       const { payUrl } = response.data;
 
       // Redirect to the payment URL

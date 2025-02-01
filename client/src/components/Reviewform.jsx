@@ -1,37 +1,63 @@
 // ReviewForm.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { CartContext } from './CartContext';
 
 function ReviewForm({ productId, onReviewSubmitted }) {
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useSelector((state) => state.auth);
   const handleRatingClick = (value) => {
     setRating(value);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
 
-    if (rating < 1 || rating > 5) {
-      alert("Rating must be between 1 and 5!");
+    if (!user) {
+      setError('Please log in to submit a review');
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      await axios.post("http://localhost:4000/api/review/reviews", {
+      const reviewData = {
+        productId: productId,
+        userId: user.id,
         rating,
-        comment,
-        productId, // Ensure productId is included here
-        userId: 1, // Replace with actual logged-in user ID
-      });
-      alert("Review submitted successfully!");
-      onReviewSubmitted(); // Trigger re-fetch of reviews
+        comment
+      };
+
+      const response = await axios.post(
+        import.meta.env.VITE_HOST+"/api/review/reviews", 
+        reviewData
+      );
+
+      if (response.status === 201 || response.status === 200) {
+        setComment('');
+        if (onReviewSubmitted) {
+          onReviewSubmitted();
+        }
+      }
     } catch (error) {
-      console.error("Error submitting review:", error); // Debugging line
-      alert("Error submitting review!");
+      console.error('Error submitting review:', error);
+      if (error.response?.status === 400) {
+        setError('You have already reviewed this product');
+      } else {
+        setError('Failed to submit review. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  if (!user) {
+    return <p>Please log in to submit a review.</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit}>

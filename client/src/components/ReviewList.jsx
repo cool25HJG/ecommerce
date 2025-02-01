@@ -9,7 +9,7 @@ function ReviewList({ productId, refreshKey }) {
 
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/review/products/${productId}/reviews`);
+      const response = await axios.get(import.meta.env.VITE_HOST+`/api/review/products/${productId}/reviews`);
       setReviews(response.data);
     } catch (error) {
       console.log("Error fetching reviews", error);

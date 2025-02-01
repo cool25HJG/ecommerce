@@ -21,12 +21,13 @@ import Footer from './components/footer';
 import ReviewList from './components/ReviewList'
 import About from './components/about';
 import Contact from './components/contact';
+
 function App() {
   const [product, setProduct] = useState([]);
 
   const fetch = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/Products/");
+      const response = await axios.get(import.meta.env.VITE_HOST+"/api/Products/");
       console.log(response.data);
       setProduct(response.data);
     } catch (error) {
@@ -46,13 +47,15 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
 
-              <Route path="/payment" element={<PaymentForm />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/detaile/:id" element={<Detaile />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/payment" element={<PaymentForm />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/detaile/:id" element={<Detaile />} />
+                <Route path="/detaile" element={<Detaile />} />
+                
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/wishlist" element={<Wishlist />} />
 
               <Route path="/main/seller" element={<Listofproducts  product={product} fetch={fetch} />} />
               <Route path="/main/seller/add" element={<Addproduct fetch={fetch} />} />

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { registerStart, registerSuccess, registerFailure } from "../store/reducer/login";
+import { register } from "../store/reducer/login";
 import { CiUser, CiLock, CiMail, CiPhone, CiLocationOn, CiImageOn } from "react-icons/ci";
-import { Image, CloudinaryContext } from "cloudinary-react";
+import axios from "axios";
 import "./Login.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Register() {
   const navigate = useNavigate();
@@ -20,13 +20,18 @@ function Register() {
     password: "",
     image: "", // For storing Cloudinary image URL
     adresse: "",
-    role: "client"
+    role: "client",
   });
 
   const [imageFile, setImageFile] = useState(null); // For storing selected image file
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleImageFileChange = (e) => {
@@ -46,28 +51,30 @@ function Register() {
         `https://api.cloudinary.com/v1_1/dqh6arave/image/upload`,
         formData
       );
-
-      setFormData({ ...formData, image: response.data.secure_url });
+      return response.data.secure_url;
     } catch (error) {
       console.error("Error uploading image:", error);
+      throw error;
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(registerStart());
 
     try {
-      // Upload image to Cloudinary if imageFile is selected
+      let imageUrl = formData.image;
       if (imageFile) {
-        await handleImageUpload();
+        imageUrl = await handleImageUpload();
       }
 
-      const response = await axios.post("http://localhost:4000/api/user/register", formData);
-      dispatch(registerSuccess(response.data));
+      await dispatch(register({
+        ...formData,
+        image: imageUrl,
+      })).unwrap();
+
       navigate("/login"); // Redirect to login after successful registration
     } catch (error) {
-      dispatch(registerFailure(error.response?.data?.message || "Registration failed"));
+      console.error("Registration error:", error);
     }
   };
 
@@ -142,19 +149,25 @@ function Register() {
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="form-group password-group">
             <label htmlFor="password">Password</label>
-            <div className="input-icon">
-              <CiLock className="icon" />
+            <div className="password-input-container">
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
           </div>
 

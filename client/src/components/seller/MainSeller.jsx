@@ -6,6 +6,7 @@ function MainSeller({product,fetch}) {
    
     return (
         <div>
+         
           {<Listofproducts product={product} fetch={fetch}/>}
         </div>
       )

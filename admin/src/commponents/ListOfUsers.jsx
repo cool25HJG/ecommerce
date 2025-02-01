@@ -14,6 +14,7 @@ function ListOfUsers({ users, DeleteUser, updateUser,changeView }) {
       setshow(action);
     }
   };
+  
   return (
     <div>
       <table className="table">

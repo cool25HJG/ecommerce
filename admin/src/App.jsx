@@ -19,19 +19,19 @@ function App() {
     setView(view);
   };
   const fetchUsers = ()=>{
-  axios.get("http://localhost:4000/api/user")
+  axios.get(import.meta.env.VITE_HOST+"/api/user")
   .then((res)=>{setusers(res.data)})
   .catch((err)=>console.error("err fetching user",err))
   }
   const fetchProducts = ()=>{
-    axios.get("http://localhost:4000/api/Products")
+    axios.get(import.meta.env.VITE_HOST+"/api/Products")
     .then((res)=>{setproduct(res.data)
       
     })
   .catch((err)=>console.error("err fetching product",err))
   }
   const fetchCategory = ()=>{
-    axios.get("http://localhost:4000/api/Category")
+    axios.get(import.meta.env.VITE_HOST+"/api/Category")
     .then((res)=>{setcategory(res.data)
       
     })
@@ -39,21 +39,21 @@ function App() {
   }
 
   const DeleteUser = (id)=>{
-    axios.delete(`http://localhost:4000/api/user/${id}`)
+    axios.delete(import.meta.env.VITE_HOST+`/api/user/${id}`)
     .then(()=>{console.log("deleted")
       fetchUsers()
     })
     .catch((err)=>{console.err("err delete",err)})
   }
   const DeleteProducts = (id)=>{
-    axios.delete(`http://localhost:4000/api/Products/${id}`)
+    axios.delete(import.meta.env.VITE_HOST+`/api/Products/${id}`)
     .then(()=>{console.log("deleted")
       fetchProducts()
     })
     .catch((err)=>{console.err("err delete",err)})
   }
   const DeleteCategory = (id)=>{
-    axios.delete(`http://localhost:4000/api/Category/${id}`)
+    axios.delete(import.meta.env.VITE_HOST+`/api/Category/${id}`)
     .then(()=>{console.log("deleted")
       fetchCategory()
     })
@@ -61,20 +61,20 @@ function App() {
   }
  
   const updateUser = (id,body)=>{
-    axios.put(`http://localhost:4000/api/user/${id}`,body)
+    axios.put(import.meta.env.VITE_HOST+`/api/user/${id}`,body)
     .then(()=>{console.log("updated"),
     fetchUsers()
   })
     .catch((err)=>console.error("err updating",err))
   }
   const updateProducts = (id,body)=>{
-    axios.put(`http://localhost:4000/api/Products/${id}`,body)
+    axios.put(import.meta.env.VITE_HOST+`/api/Products/${id}`,body)
     .then(()=>{console.log("updated"),
       fetchProducts()})
     .catch((err)=>console.error("err updating",err))
   }
   const updateCategory = (id,body)=>{
-    axios.put(`http://localhost:4000/api/Category/${id}`,body)
+    axios.put(import.meta.env.VITE_HOST+`/api/Category/${id}`,body)
     .then(()=>{console.log("updated")
       fetchCategory()
     })
@@ -82,7 +82,7 @@ function App() {
   }
   
   const addCategory = (body)=>{
-    axios.post("http://localhost:4000/api/Category",body)
+    axios.post(import.meta.env.VITE_HOST+"/api/Category",body)
     .then(()=>{console.log("added")
       alert("new category added")
       fetchCategory()
@@ -90,7 +90,7 @@ function App() {
     .catch((err)=>console.log("error adding cat"))
   }
   const getAdmin = (admin) =>{
-    axios.get(`http://localhost:4000/api/user/get/${admin}`)
+    axios.get(import.meta.env.VITE_HOST+`/api/user/get/${admin}`)
     .then((res)=>{setadmin(res.data)})
     .catch((err)=>console.error("error fetching admin",err))
   }

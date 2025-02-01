@@ -3,15 +3,10 @@ import { CartContext } from "./CartContext";
 import axios from "axios";
 
 const Cart = () => {
-  // Destructure necessary functions and state from CartContext
   const { orderItems, updateQuantity, removeFromCart, getTotal, user, toggleFavorite } = useContext(CartContext);
-  // State to manage "Buy" button status and prevent double submissions
   const [isProcessing, setIsProcessing] = useState(false);
-  console.log("user", user);
-  console.log("orderItems", orderItems);
 
-  // Handler for updating item quantity in cart
-  // If quantity > 0, update the quantity; if 0, remove item from cart
+
   const handleQuantityChange = (productId, quantity) => {
     if (quantity > 0) {
       updateQuantity(productId, quantity);
@@ -20,44 +15,52 @@ const Cart = () => {
     }
   };
 
-  // Handler for processing the purchase
   const handleBuy = async () => {
-    // Prevent multiple submissions while processing
+    // ✅ Check if user exists before making a purchase
+    if (!user || !user.id) {
+      alert("You must be logged in to make a purchase.");
+      return;
+    }
+
     if (isProcessing) return;
     setIsProcessing(true);
 
     const totalAmount = getTotal();
 
     try {
-      // Step 1: Create a new order in the backend
-      const commandeResponse = await axios.post('http://localhost:4000/api/Commande/', {
+      // ✅ Ensure orderItems are valid before proceeding
+      if (!Array.isArray(orderItems) || orderItems.length === 0) {
+        alert("Your cart is empty.");
+        setIsProcessing(false);
+        return;
+      }
+
+      const commandeResponse = await axios.post(import.meta.env.VITE_HOST+"/api/Commande/", {
         clientId: user.id,
         items: orderItems,
-        status: 'pending',
+        status: "pending",
         totalPrice: totalAmount,
       });
 
       const newCommande = commandeResponse.data.newCommande;
 
-      // Step 2: Initialize payment process with payment gateway
-      const paymentResponse = await axios.post('http://localhost:4000/create-payment', {
+      const paymentResponse = await axios.post(import.meta.env.VITE_HOST+"/create-payment", {
         amount: totalAmount,
-        currency: 'TND',
-        description: 'User buy item',
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
-        email: user.email,
-        orderId: newCommande.id
+        currency: "TND",
+        description: "User buy item",
+        firstName: user.firstName || "Unknown",
+        lastName: user.lastName || "Unknown",
+        phoneNumber: user.phoneNumber || "00000000",
+        email: user.email || "unknown@example.com",
+        orderId: newCommande.id,
       });
+console.log(("user",user));
 
       const { payUrl } = paymentResponse.data;
-
-      // Step 3: Redirect user to payment gateway
       window.location.href = payUrl;
     } catch (error) {
-      console.error('Error during payment:', error);
-      alert('Failed to initiate payment. Please try again.');
+      console.error("Error during payment:", error);
+      alert("Failed to initiate payment. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -75,37 +78,30 @@ const Cart = () => {
     }
   };
 
-  // Render cart UI
   return (
     <div className="cart">
       <h2>Shopping Cart</h2>
-      {/* Show empty cart message if no items, otherwise show cart contents */}
       {orderItems.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
         <div>
-          {/* List of cart items */}
           <ul>
             {orderItems.map((item) => (
               <li key={item.productId} className="cart-item">
-                {/* Item image */}
                 <img src={item.product.imageUrl} alt={item.product.name} />
-                {/* Item details section */}
                 <div className="cart-item-details">
                   <h4>{item.product.name}</h4>
                   <p>Price: ${item.price}</p>
-                  {/* Quantity control input */}
                   <div className="quantity-control">
                     <label>Quantity:</label>
-                    <input 
-                      type="number" 
-                      value={item.quantity} 
-                      onChange={(e) => handleQuantityChange(item.productId, parseInt(e.target.value))} 
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) => handleQuantityChange(item.productId, parseInt(e.target.value))}
                       min="1"
                     />
                   </div>
                 </div>
-                {/* Item action buttons */}
                 <div className="cart-item-actions">
                   <button onClick={() => moveToWishlist(item)}>Move to Wishlist</button>
                   <button onClick={() => removeFromCart(item.productId)}>Remove</button>
@@ -113,9 +109,10 @@ const Cart = () => {
               </li>
             ))}
           </ul>
-          {/* Cart total and buy button */}
           <h3>Total: {getTotal()}</h3>
-          <button onClick={handleBuy} disabled={isProcessing}>Buy</button>
+          <button onClick={handleBuy} disabled={isProcessing}>
+            {isProcessing ? "Processing..." : "Buy"}
+          </button>
         </div>
       )}
     </div>
