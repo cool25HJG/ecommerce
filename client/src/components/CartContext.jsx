@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from 'react-redux';
 
 // Create a context
 export const CartContext = createContext();
@@ -9,10 +10,11 @@ export const CartProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
+  const { user: authUser } = useSelector((state) => state.auth);
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/Products/");
+      const response = await axios.get(import.meta.env.VITE_HOST+"/api/Products/");
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -21,9 +23,26 @@ export const CartProvider = ({ children }) => {
 
   const fetchFavorites = () => {
     axios
-      .get("http://localhost:4000/api/Products/favorites")
+      .get(import.meta.env.VITE_HOST+"/api/Products/favorites")
       .then((resp) => setFavorites(resp.data))
       .catch((error) => console.error("Error fetching favorites:", error));
+  };
+
+  const fetchUserData = async () => {
+    try {
+      if (!authUser?.id) {
+        console.log("No authenticated user found");
+        setUser({ id: null });
+        return;
+      }
+
+      const response = await axios.get(`${import.meta.env.VITE_HOST}/api/user/${authUser.id}`);
+      setUser(response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setUser({ id: null });
+    }
   };
 
   useEffect(() => {
@@ -41,18 +60,7 @@ export const CartProvider = ({ children }) => {
     } else {
       fetchUserData();
     }
-  }, []);
-
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get(import.meta.env.VITE_HOST+"/api/user/1");
-      setUser(response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      setUser({ id: null });
-    }
-  };
+  }, [authUser]);
 
   useEffect(() => {
     localStorage.setItem("orderItems", JSON.stringify(orderItems));

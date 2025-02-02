@@ -9,7 +9,6 @@ import Register from './components/Register';
 import Listofproducts from './components/seller/Listofproducts';
 import Updateproduct from './components/seller/updateproduct';
 import Addproduct from './components/seller/addproduct';
-// import MainSeller from './components/seller/MainSeller';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from './components/CartContext';
 import Cart from './components/cart';
@@ -22,6 +21,7 @@ import ReviewList from './components/ReviewList'
 import About from './components/about';
 import Contact from './components/contact';
 
+import ScrollToTop from './components/ScrollToTop';
 function App() {
   const [product, setProduct] = useState([]);
 
@@ -40,7 +40,9 @@ function App() {
       <BrowserRouter>
         <div className="app-container">
           <Navbar />
+          
           <main className="main-content">
+         
             <Routes>
               <Route path="/" element={<Main />} />
               {/* pages */}
@@ -61,13 +63,13 @@ function App() {
               <Route path="/main/seller/add" element={<Addproduct fetch={fetch} />} />
               <Route path="/update" element={<Updateproduct fetch={fetch} />} />
               <Route path="/review" element={<ReviewList  />} />
-              {/* <Route
-                path="/main/seller"
-                element={<MainSeller product={product} fetch={fetch} />}
-              /> */}
+            
             </Routes>
+           
           </main>
+          
           <Footer />
+          <ScrollToTop />
         </div>
       </BrowserRouter>
     </CartProvider>

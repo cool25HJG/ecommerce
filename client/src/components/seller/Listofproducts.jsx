@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function ListOfProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchProducts();
@@ -24,7 +26,10 @@ function ListOfProducts() {
         sellerName: 'Unknown Seller' // Default seller name
       }));
 
-      setProducts(productsWithDefaultSeller);
+      // Filter products for the current user
+      const userProducts = productsWithDefaultSeller.filter(el => String(el.sellerId) === String(user?.id));
+
+      setProducts(userProducts);
       setError(null);
     } catch (err) {
       console.error('Error fetching products:', err);
@@ -67,47 +72,105 @@ function ListOfProducts() {
     );
   }
 
+  const containerStyle = {
+    padding: '20px',
+    maxWidth: '1200px',
+    margin: '0 auto',
+  };
+
+  const tableContainerStyle = {
+    background: 'white',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    overflowX: 'auto',
+  };
+
+  const tableStyle = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    minWidth: '800px',
+  };
+
+  const thStyle = {
+    padding: '12px',
+    textAlign: 'left',
+    borderBottom: '1px solid #eee',
+    backgroundColor: '#f8f9fa',
+    fontWeight: '600',
+    color: '#333',
+  };
+
+  const tdStyle = {
+    padding: '12px',
+    textAlign: 'left',
+    borderBottom: '1px solid #eee',
+  };
+
+  const actionButtonStyle = {
+    display: 'flex',
+    gap: '10px',
+  };
+
+  const editButtonStyle = {
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s',
+  };
+
+  const deleteButtonStyle = {
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  };
+
   return (
-    <div className="admin-products-container">
+    <div style={containerStyle}>
       <h2>All Products</h2>
-      <div className="products-table-container">
-        <table className="products-table">
+      <div style={tableContainerStyle}>
+        <table style={tableStyle}>
           <thead>
             <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Category</th>
-              <th>Actions</th>
+              <th style={thStyle}>Image</th>
+              <th style={thStyle}>Name</th>
+              <th style={thStyle}>Description</th>
+              <th style={thStyle}>Price</th>
+              <th style={thStyle}>Stock</th>
+              <th style={thStyle}>Category</th>
+              <th style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
-                <td>
+                <td style={tdStyle}>
                   <img 
                     src={product.imageUrl} 
                     alt={product.name} 
                     style={{ width: '50px', height: '50px', objectFit: 'cover' }}
                   />
                 </td>
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-                <td>${product.price}</td>
-                <td>{product.stock}</td>
-                <td>{product.categoryId}</td>
-                <td>
-                  <div className="action-buttons">
+                <td style={tdStyle}>{product.name}</td>
+                <td style={tdStyle}>{product.description}</td>
+                <td style={tdStyle}>${product.price}</td>
+                <td style={tdStyle}>{product.stock}</td>
+                <td style={tdStyle}>{product.categoryId}</td>
+                <td style={tdStyle}>
+                  <div style={actionButtonStyle}>
                     <button 
-                      className="edit-button"
+                      style={editButtonStyle}
                       onClick={() => handleEdit(product.id)}
                     >
                       <FaEdit />
                     </button>
                     <button 
-                      className="delete-button"
+                      style={deleteButtonStyle}
                       onClick={() => handleDelete(product.id)}
                     >
                       <FaTrash />

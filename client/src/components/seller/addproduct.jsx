@@ -12,7 +12,7 @@ export default function Addproduct({ fetch }) {
     const [price, setPrice] = useState("");
     const [stock, setStock] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-    const [categoryId, setCategoryId] = useState(""); // Category Selection
+    const [categoryId, setCategoryId] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -26,8 +26,8 @@ export default function Addproduct({ fetch }) {
         setLoading(true);
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', 'Ghassen123'); 
-        formData.append('cloud_name', 'dqh6arave'); 
+        formData.append('upload_preset', 'Ghassen123');
+        formData.append('cloud_name', 'dqh6arave');
 
         try {
             const response = await axios.post(
@@ -46,6 +46,12 @@ export default function Addproduct({ fetch }) {
     const handleAddProduct = async () => {
         if (!categoryId) {
             alert("Please select a category.");
+            return;
+        }
+
+        if (!user || !user.id) {
+            alert("Please log in to add a product.");
+            navigate('/login');
             return;
         }
 
@@ -87,35 +93,65 @@ export default function Addproduct({ fetch }) {
     }, [user, navigate]);
 
     return (
-        <div>
-            <h2>Add Product</h2>
+        <div className="add-product-container">
+            <h2 className="add-product-title">Add New Product</h2>
+            
+            <div className="add-product-form">
+             
 
-            <label>Category</label>
-            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-                <option value="">Select Category</option>
-                {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                ))}
-            </select>
+                <div className="form-group">
+                    <label>Name</label>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                </div>
 
-            <label>Name</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="form-group">
+                    <label>Description</label>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                </div>
+                <div className="form-group">
+                    <label>Category</label>
+                    <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                        <option value="">Select Category</option>
+                        {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>Price</label>
+                    <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+                </div>
 
-            <label>Description</label>
-            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                <div className="form-group">
+                    <label>Stock</label>
+                    <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
+                </div>
 
-            <label>Price</label>
-            <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+                <div className="form-group">
+                    <div className="image-upload-container">
+                        <label className="upload-label">
+                            {imageUrl ? 'Change Image' : 'Upload Product Image'}
+                            <input 
+                                type="file" 
+                                onChange={(e) => handleImageUpload(e.target.files[0])}
+                                accept="image/*"
+                            />
+                        </label>
+                        {imageUrl && <img src={imageUrl} alt="Preview" style={{ maxWidth: '200px' }} />}
+                    </div>
+                </div>
 
-            <label>Stock</label>
-            <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
+                {loading && <p className="loading-message">Uploading image...</p>}
+                {message && <p className="error-message">{message}</p>}
 
-            <label>Image Upload</label>
-            <input type="file" onChange={(e) => handleImageUpload(e.target.files[0])} />
-            {loading && <p>Uploading...</p>}
-            {message && <p>{message}</p>}
-
-            <button onClick={handleAddProduct}>Add Product</button>
+                <button 
+                    className="add-product-button"
+                    onClick={handleAddProduct}
+                    disabled={loading || !name || !description || !price || !stock || !imageUrl || !categoryId}
+                >
+                    Add Product
+                </button>
+            </div>
         </div>
     );
 }
