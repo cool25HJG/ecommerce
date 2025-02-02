@@ -33,10 +33,11 @@ db.Commande.belongsToMany(db.Products, { through: db.OrderItem });
  db.OrderItem.belongsTo(db.Commande);
  db.Products.hasMany(db.OrderItem);
  db.Commande.hasMany(db.OrderItem);
- db.Review.belongsTo(db.Products);
- db.Products.hasMany(db.Review);
- db.User.hasMany(db.Review);
- db.Review.belongsTo(db.User);
+ db.Review.belongsTo(db.Products, { foreignKey: "productId" });
+ db.Products.hasMany(db.Review, { foreignKey: "productId" });
+ 
+ db.Review.belongsTo(db.User, { foreignKey: "userId" });
+ db.User.hasMany(db.Review, { foreignKey: "userId" });
   // connection
   // .sync({ force: true })
   // .then(() => console.log("tables are created"))

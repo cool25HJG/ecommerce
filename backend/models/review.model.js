@@ -1,4 +1,3 @@
-// review.model.js
 module.exports = (connection, DataTypes) => {
   const Review = connection.define("Review", {
     id: {
@@ -17,14 +16,6 @@ module.exports = (connection, DataTypes) => {
     comment: {
       type: DataTypes.TEXT,
       allowNull: true,
-    },
-    productId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,

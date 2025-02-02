@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 export default function Addproduct({ fetch }) {
     const navigate = useNavigate();
+    const { user } = useSelector((state) => state.auth);
     const [categories, setCategories] = useState([]);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -43,7 +45,19 @@ export default function Addproduct({ fetch }) {
 
     const handleAddProduct = async () => {
         if (!categoryId) {
-            setMessage("Please select a category.");
+            alert("Please select a category.");
+            return;
+        }
+
+        if (!user || !user.id) {
+            alert("Please log in to add a product.");
+            navigate('/login');
+            return;
+        }
+
+        if (!user || !user.id) {
+            alert("Please log in to add a product.");
+            navigate('/login');
             return;
         }
 
@@ -51,20 +65,32 @@ export default function Addproduct({ fetch }) {
             const newProduct = {
                 name,
                 description,
-                price,
-                stock,
+                price: parseFloat(price),
+                stock: parseInt(stock),
                 imageUrl,
-                categoryId
+                categoryId: parseInt(categoryId),
+                sellerId: parseInt(user.id),
+                userId: parseInt(user.id)
             };
+
+            console.log('Sending product data:', newProduct);
 
             await axios.post(import.meta.env.VITE_HOST+"/api/Products/", newProduct);
             navigate("/main/seller");
             fetch();
         } catch (error) {
-            console.error("Error adding product:", error);
-            setMessage("Failed to add product. Please try again.");
+            console.error("Error adding product:", error.response?.data || error);
+            alert("Failed to add product. Please try again.");
         }
     };
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        } else if (user.role !== 'seller') {
+            navigate('/');
+        }
+    }, [user, navigate]);
 
     return (
         <div className="add-product-container">
