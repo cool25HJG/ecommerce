@@ -5,6 +5,8 @@ import axios from "axios";
 import { CartContext } from "./CartContext";
 import ReviewList from './ReviewList';
 import ReviewForm from './Reviewform';
+import Header from './header';
+import Lastsection from './lastsection';
 
 function Main() {
   const navigate = useNavigate();
@@ -37,10 +39,10 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    if (location.state?.searchQuery) {
+    if (location.state?.searchQuery !== undefined) {
       setSearchQuery(location.state.searchQuery);
     }
-  }, [location]);
+  }, [location.state?.searchQuery]);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId === selectedCategory ? null : categoryId);
@@ -75,17 +77,7 @@ function Main() {
 
   return (
     <div>
-      {searchQuery ? (
-        <div className="search-results-header">
-          <h2>Search Results for "{searchQuery}"</h2>
-          <p>({filteredProducts.length} Products found)</p>
-        </div>
-      ) : (
-        <div className="search-results-header">
-          <h2>All Products</h2>
-          <p>({data.length} Products available)</p>
-        </div>
-      )}
+      <Header />
 
       <div className="container">
         <aside className="sidebar">
@@ -111,6 +103,17 @@ function Main() {
         </aside>
 
         <div className="main-content">
+        {searchQuery ? (
+        <div className="search-results-header">
+          <h2>Search Results for "{searchQuery}"</h2>
+          <p>({filteredProducts.length} Products found)</p>
+        </div>
+      ) : (
+        <div className="search-results-header">
+          <h2>All Products</h2>
+          <p>({data.length} Products available)</p>
+        </div>
+      )}
           <div className="products-grid">
             {filteredProducts
               .slice(0, visibleProducts)
@@ -122,7 +125,7 @@ function Main() {
                       <div className="icon-circle">
                         <CiShoppingCart onClick={() => addToCart(el)} style={{ 
                            
-                            strokeWidth: "1",
+                            strokeWidth: "0.7",
                             cursor: "pointer",
                             fontSize: "1.5em"
                           }}  />
@@ -132,9 +135,9 @@ function Main() {
                           onClick={() => toggleFavorite(el.id)}
                           style={{
                             color: isFavorite(el.id) ? "#00ff00" : "#333333",
-                            fill: isFavorite(el.id) ? "#00ff00" : "transparent",
+                            fill: isFavorite(el.id) ? "#00ff00" : "#0c0c0c",
                             stroke: isFavorite(el.id) ? "#00ff00" : "#333333",
-                            strokeWidth: "1",
+                            strokeWidth: "0.7",
                             cursor: "pointer",
                             fontSize: "1.5em"
                           }}
@@ -160,6 +163,7 @@ function Main() {
           )}
         </div>
       </div>
+      <Lastsection />
     </div>
   );
 }

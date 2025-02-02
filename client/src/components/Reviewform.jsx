@@ -5,11 +5,10 @@ import { useSelector } from 'react-redux';
 import { CartContext } from './CartContext';
 
 function ReviewForm({ productId, onReviewSubmitted }) {
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState('');
-  const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [showForm, setShowForm] = useState(false);
+
   const handleRatingClick = (value) => {
     setRating(value);
   };
@@ -44,42 +43,43 @@ function ReviewForm({ productId, onReviewSubmitted }) {
         }
       }
     } catch (error) {
-      console.error('Error submitting review:', error);
-      if (error.response?.status === 400) {
-        setError('You have already reviewed this product');
-      } else {
-        setError('Failed to submit review. Please try again.');
-      }
-    } finally {
-      setIsSubmitting(false);
+      console.error("Error submitting review:", error); // Debugging line
+      alert("Error submitting review!");
     }
+    setShowForm(false); // Hide form after submission
   };
 
-  if (!user) {
-    return <p>Please log in to submit a review.</p>;
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Leave a Review</h3>
-      <div className="star-rating">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            onClick={() => handleRatingClick(star)}
-            style={{ cursor: "pointer", color: star <= rating ? "gold" : "gray" }}
-          >
-            &#9733;
-          </span>
-        ))}
-      </div>
-      <textarea className='review-form'
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        placeholder="Write your review here..."
-      />
-      <button  className='submit-review-button'type="submit">Submit Review</button>
-    </form>
+    <div>
+      <button onClick={() => setShowForm(!showForm)} className='review-button'>
+        {showForm ? "Cancel Review" : "Leave a Review"}
+      </button>
+      {showForm && (
+        <form onSubmit={handleSubmit} className="review-form-container">
+          <h3>Leave a Review</h3>
+          <div className="star-rating">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                onClick={() => handleRatingClick(star)}
+                style={{ cursor: "pointer", color: star <= rating ? "gold" : "gray" }}
+              >
+                &#9733;
+              </span>
+            ))}
+          </div>
+          <textarea
+            className='review-textarea'
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Write your review here..."
+          />
+          <div className="review-submit-container">
+            <button type="submit" className="submit-review-button">Submit Review</button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 }
 

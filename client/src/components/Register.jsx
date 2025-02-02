@@ -180,6 +180,7 @@ function Register() {
                 type="file"
                 accept="image/*"
                 onChange={handleImageFileChange}
+                style={{paddingLeft:"40px"}}
               />
             </div>
           </div>
