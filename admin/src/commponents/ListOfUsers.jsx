@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "../App.css"
 function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -9,6 +9,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
   const [show, setShow] = useState(0);
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" }); // State for sorting
+ 
 
   // Toggle edit mode
   const toggle = (action) => {
@@ -53,7 +54,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
 
   return (
     <div>
-      {/* Search Bar */}
+      {/* Search Bar */}<div className="search-div"> 
       <div className="mb-3 d-flex justify-content-center ">
         <input
           type="text"
@@ -62,6 +63,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
           onChange={handleSearch}
           className="form-control w-50"
         />
+      </div>
       </div>
 
       <table className="table">

@@ -141,3 +141,6 @@ tr:hover {
 .center-placeholder::placeholder {
   text-align: center;
 } 
+.search-div{
+  margin-top: 50px;
+}

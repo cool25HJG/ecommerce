@@ -67,7 +67,7 @@ function ListOfProducts({ product, DeleteProducts, updateProducts, changeView, c
             <tr key={el.id}>
               <td>{el.id}</td>
               <td>{show !== el.id ? el.name : <input type="text" defaultValue={el.name} className="form-control" onChange={(e) => setName(e.target.value)} />}</td>
-              <td>{show !== el.id ? truncateText(el.description, 20) : <input type="text" defaultValue={el.description} className="form-control" onChange={(e) => setDescription(e.target.value)} />}</td>
+              <td>{show !== el.id ? truncateText(el.description, 24) : <input type="text" defaultValue={el.description} className="form-control" onChange={(e) => setDescription(e.target.value)} />}</td>
               <td>{show !== el.id ? el.price : <input type="text" defaultValue={el.price} className="form-control" onChange={(e) => setPrice(e.target.value)} />}</td>
               <td>{show !== el.id ? el.stock : <input type="text" defaultValue={el.stock} className="form-control" onChange={(e) => setStock(e.target.value)} />}</td>
               <td>{el.User.firstName}</td>
