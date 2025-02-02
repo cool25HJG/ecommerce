@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authenticateJWT = require("../middleware/authMiddleware");
 const { where } = require("sequelize");
-
+const { Op } = require("sequelize");
 let refreshTokens = {
   users: {},
   sellers: {},
@@ -241,4 +241,5 @@ module.exports = {
   updateUser,
   getAllUser,
   getUserByEmail,
+  
 };

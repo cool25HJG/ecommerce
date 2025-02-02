@@ -61,7 +61,7 @@ function App() {
 
               <Route path="/main/seller" element={<Listofproducts  product={product} fetch={fetch} />} />
               <Route path="/main/seller/add" element={<Addproduct fetch={fetch} />} />
-              <Route path="/update" element={<Updateproduct fetch={fetch} />} />
+              <Route path="/update/:id" element={<Updateproduct fetch={fetch} />} />
               <Route path="/review" element={<ReviewList  />} />
             
             </Routes>
