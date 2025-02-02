@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 function Sidebar({ changeView, addCategory }) {
   const [name, setName] = useState("");
   const [show, setShow] = useState("");
-  const [activeLink, setActiveLink] = useState("home"); // State to track the active link
-
+  const [activeLink, setActiveLink] = useState("home"); 
   const toggle = (action) => {
     if (show === action) {
       setShow("");
@@ -15,20 +14,13 @@ function Sidebar({ changeView, addCategory }) {
 
   const handleLinkClick = (view, link) => {
     changeView(view);
-    setActiveLink(link); // Update active link when a sidebar link is clicked
-    setShow(""); // Close any open submenu if the link is clicked
+    setActiveLink(link); 
+    setShow("");
   };
 
   return (
     <div>
       <div className="sidebar">
-      <a
-          className={activeLink === "dashboard" ? "active" : ""}
-          href="#dashboard"
-          onClick={() => handleLinkClick("dashboard", "dashboard")}
-        >
-          Dashboard
-        </a>
         <a
           className={activeLink === "user" ? "active" : ""}
           href="#user"

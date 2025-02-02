@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 
-function ListOfUsers({ clientsellers, DeleteUser, updateUser, changeView }) {
+function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(0);
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState(""); // Manage role state
+  const [role, setRole] = useState("");
   const [show, setShow] = useState(0);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" }); // State for sorting
 
+  // Toggle edit mode
   const toggle = (action) => {
     if (show === action) {
       setShow(0);
@@ -16,22 +19,107 @@ function ListOfUsers({ clientsellers, DeleteUser, updateUser, changeView }) {
     }
   };
 
+  // Handle search input
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Filter users based on search term
+  const filteredUsers = users.filter((user) =>
+    user.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Handle sorting
+  const requestSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Sort users
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    if (sortConfig.key) {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === "asc" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === "asc" ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+
   return (
     <div>
+      {/* Search Bar */}
+      <div className="mb-3 d-flex justify-content-center ">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="form-control w-50"
+        />
+      </div>
+
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">Users_id</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Phone Number</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
+            <th scope="col" onClick={() => requestSort("id")}>
+              Users_id{" "}
+              {sortConfig.key === "id"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th scope="col" onClick={() => requestSort("firstName")}>
+              First Name{" "}
+              {sortConfig.key === "firstName"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th scope="col" onClick={() => requestSort("lastName")}>
+              Last Name{" "}
+              {sortConfig.key === "lastName"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th scope="col" onClick={() => requestSort("phoneNumber")}>
+              Phone Number{" "}
+              {sortConfig.key === "phoneNumber"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th scope="col" onClick={() => requestSort("email")}>
+              Email{" "}
+              {sortConfig.key === "email"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
+            <th scope="col" onClick={() => requestSort("role")}>
+              Role{" "}
+              {sortConfig.key === "role"
+                ? sortConfig.direction === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
+            </th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {clientsellers.map((el) => {
+          {sortedUsers.map((el) => {
             return (
               <tr key={el.id}>
                 <th scope="row">{el.id}</th>
@@ -86,7 +174,7 @@ function ListOfUsers({ clientsellers, DeleteUser, updateUser, changeView }) {
                   </td>
                 )}
 
-                {/* Dropdown for Role (Seller or Client) */}
+                {/* Dropdown for Role (Seller or Client or Admin) */}
                 {show === el.id && (
                   <td>
                     <select
@@ -96,6 +184,7 @@ function ListOfUsers({ clientsellers, DeleteUser, updateUser, changeView }) {
                     >
                       <option value="Client">Client</option>
                       <option value="Seller">Seller</option>
+                      <option value="admin">Admin</option>
                     </select>
                   </td>
                 )}

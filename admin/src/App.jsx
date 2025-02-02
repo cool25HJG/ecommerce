@@ -15,7 +15,6 @@ function App() {
   const [product, setproduct] = useState([]);
   const [category, setcategory] = useState([]);
   const [admin, setadmin] = useState([]);
-  const [clientsellers , setclientsellers ] = useState([])
 
   const changeView = (view) => {
     setView(view);
@@ -25,14 +24,6 @@ function App() {
       .get(import.meta.env.VITE_HOST + "/api/user")
       .then((res) => {
         setusers(res.data);
-      })
-      .catch((err) => console.error("err fetching user", err));
-  };
-  const fetchClientSellers = () => {
-    axios
-      .get(import.meta.env.VITE_HOST + "/api/user/cs/users")
-      .then((res) => {
-        setclientsellers(res.data);
       })
       .catch((err) => console.error("err fetching user", err));
   };
@@ -54,44 +45,65 @@ function App() {
   };
 
   const DeleteUser = (id) => {
-    axios
-      .delete(import.meta.env.VITE_HOST + `/api/user/${id}`)
-      .then(() => {
-        console.log("deleted");
-        fetchUsers();
-      })
-      .catch((err) => {
-        console.err("err delete", err);
-      });
+    // Confirmation alert before deletion
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    
+    if (confirmDelete) {
+      axios
+        .delete(import.meta.env.VITE_HOST + `/api/user/${id}`)
+        .then(() => {
+          console.log("deleted");
+          fetchUsers(); // Refresh the user list after deletion
+        })
+        .catch((err) => {
+          console.error("Error deleting user:", err); // Fixed typo in console.error
+        });
+    } else {
+      console.log("Deletion canceled."); // Optional: Log if the user cancels
+    }
   };
   const DeleteProducts = (id) => {
-    axios
-      .delete(import.meta.env.VITE_HOST + `/api/Products/${id}`)
-      .then(() => {
-        console.log("deleted");
-        fetchProducts();
-      })
-      .catch((err) => {
-        console.err("err delete", err);
-      });
+    // Confirmation alert before deletion
+    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+    
+    if (confirmDelete) {
+      axios
+        .delete(import.meta.env.VITE_HOST + `/api/Products/${id}`)
+        .then(() => {
+          console.log("deleted");
+          fetchProducts(); // Refresh the product list after deletion
+        })
+        .catch((err) => {
+          console.error("Error deleting product:", err); // Fixed typo in console.error
+        });
+    } else {
+      console.log("Deletion canceled."); // Optional: Log if the user cancels
+    }
   };
   const DeleteCategory = (id) => {
-    axios
-      .delete(import.meta.env.VITE_HOST + `/api/Category/${id}`)
-      .then(() => {
-        console.log("deleted");
-        fetchCategory();
-      })
-      .catch((err) => {
-        console.err("err delete", err);
-      });
+    
+    const confirmDelete = window.confirm("Are you sure you want to delete this category?");
+    
+    if (confirmDelete) {
+      axios
+        .delete(import.meta.env.VITE_HOST + `/api/Category/${id}`)
+        .then(() => {
+          console.log("deleted");
+          fetchCategory(); 
+        })
+        .catch((err) => {
+          console.error("Error deleting:", err); // Fixed typo in console.error
+        });
+    } else {
+      console.log("Deletion canceled."); // Optional: Log if the user cancels
+    }
   };
 
   const updateUser = (id, body) => {
     axios
       .put(import.meta.env.VITE_HOST + `/api/user/${id}`, body)
       .then(() => {
-        console.log("updated"), fetchUsers() ,fetchClientSellers()
+        console.log("updated"), fetchUsers(), fetchClientSellers();
       })
       .catch((err) => console.error("err updating", err));
   };
@@ -136,16 +148,18 @@ function App() {
     fetchUsers();
     fetchProducts();
     fetchCategory();
-    fetchClientSellers()
   }, []);
-console.log("clientsellers",clientsellers)
+
   return (
     <div>
-      {View !=="login" && <Navbar changeView={changeView} admin={admin} />}
-      {View !=="login" &&<Sidebar changeView={changeView} addCategory={addCategory} />}
+      {View !== "login" && <Navbar changeView={changeView} admin={admin} />}
+      {View !== "login" && (
+        <Sidebar changeView={changeView} addCategory={addCategory} />
+      )}
 
-
-      {View === "login"&&<LoginAdmin changeView={changeView} getAdmin={getAdmin} />}
+      {View === "login" && (
+        <LoginAdmin changeView={changeView} getAdmin={getAdmin} />
+      )}
       <div className="viewdiv">
         {View === "product" ? (
           <ListOfProducts
@@ -153,11 +167,12 @@ console.log("clientsellers",clientsellers)
             DeleteProducts={DeleteProducts}
             product={product}
             changeView={changeView}
+            category={category}
           />
         ) : View === "user" ? (
           <ListOfUsers
             updateUser={updateUser}
-            clientsellers={clientsellers}
+            users={users}
             changeView={changeView}
             DeleteUser={DeleteUser}
           />
@@ -169,19 +184,17 @@ console.log("clientsellers",clientsellers)
             addCategory={addCategory}
             changeView={changeView}
           />
-        ) : 
-        View ==="profile" ?
+        ) : View === "profile" ? (
           <AdminProfile
             admin={admin}
             updateUser={updateUser}
             changeView={changeView}
           />
-        : 
-        View ==="dashboard" ?
-       <Dashbord users={users}/>
-          :
+        ) : View === "dashboard" ? (
+          <Dashbord users={users} />
+        ) : (
           ""
-        }
+        )}
       </div>
     </div>
   );

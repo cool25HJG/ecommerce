@@ -20,7 +20,7 @@ function Navbar({ changeView, admin }) {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse d-flex justify-content-between" id="navbarTogglerDemo01">
-            <a className="navbar-brand" href="#">Dashbord</a>
+            <a className="navbar-brand"  onClick={() => { changeView("dashboard") }} href="#dashboard">Dashboard</a>
 
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0" style={{ marginRight: "100px" }}>
               <li className="nav-item dropdown">

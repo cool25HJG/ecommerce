@@ -138,3 +138,6 @@ tr {
 tr:hover {
   background-color: #f9f9f9;
 }
+.center-placeholder::placeholder {
+  text-align: center;
+} 
