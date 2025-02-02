@@ -142,39 +142,81 @@ function Navbar() {
         </div>
 
         <div className="navbar-right">
-          <div className="cart-icon-wrapper">
+          <div className="cart-icon-wrapper" style={{ position: 'relative' }}>
             <CiShoppingCart
               onClick={() => navigate("/cart")}
               size={25}
               className="icon"
             />
             {cartCount > 0 && (
-              <span className="cart-notification">{cartCount}</span>
+              <span 
+                className="cart-notification"
+                style={{ 
+                  position: 'absolute',
+                  top: '-8px',
+                  right: '-8px',
+                  backgroundColor: '#ff4444',
+                  color: 'white',
+                  borderRadius: '50%',
+                  padding: '2px 6px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  minWidth: '18px',
+                  textAlign: 'center',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                  zIndex: 1
+                }}
+              >
+                {cartCount}
+              </span>
             )}
           </div>
-          <div className="wishlist-icon-wrapper">
+          
+          <div className="wishlist-icon-wrapper" style={{ position: 'relative' }}>
             <CiHeart
               onClick={() => navigate("/wishlist")}
               size={25}
               className="icon"
             />
             {wishlistCount > 0 && (
-              <span className="wishlist-notification">{wishlistCount}</span>
+              <span 
+                className="wishlist-notification"
+                style={{ 
+                  position: 'absolute',
+                  top: '-8px',
+                  right: '-8px',
+                  backgroundColor: '#ff4444',
+                  color: 'white',
+                  borderRadius: '50%',
+                  padding: '2px 6px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  minWidth: '18px',
+                  textAlign: 'center',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                  zIndex: 1
+                }}
+              >
+                {wishlistCount}
+              </span>
             )}
           </div>
-          <div
+
+          <div 
             className="icon dropdown"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             ref={dropdownRef}
+            style={{ position: 'relative' }}
           >
             <CiUser size={25} />
             {showDropdown && (
-              <div
+              <div 
                 className="dropdown-menu"
                 onClick={(e) => e.stopPropagation()}
                 onMouseEnter={clearCloseTimer}
                 onMouseLeave={startCloseTimer}
+               
               >
                 {getDropdownItems().map((item, index) => (
                   <button
@@ -185,6 +227,7 @@ function Navbar() {
                       setShowDropdown(false);
                       clearCloseTimer();
                     }}
+                  
                   >
                     {item.label}
                   </button>

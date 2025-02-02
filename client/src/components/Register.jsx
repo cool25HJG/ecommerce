@@ -5,6 +5,7 @@ import { register } from "../store/reducer/login";
 import { CiUser, CiLock, CiMail, CiPhone, CiLocationOn, CiImageOn } from "react-icons/ci";
 import axios from "axios";
 import "./Login.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Register() {
   const navigate = useNavigate();
@@ -23,9 +24,14 @@ function Register() {
   });
 
   const [imageFile, setImageFile] = useState(null); // For storing selected image file
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleImageFileChange = (e) => {
@@ -143,19 +149,25 @@ function Register() {
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="form-group password-group">
             <label htmlFor="password">Password</label>
-            <div className="input-icon">
-              <CiLock className="icon" />
+            <div className="password-input-container">
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
           </div>
 

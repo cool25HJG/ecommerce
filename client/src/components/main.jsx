@@ -50,7 +50,9 @@ function Main() {
     setSelectedCategory(null);
   };
 
-  const isFavorite = (productId) => favorites.includes(productId);
+  const isFavorite = (productId) => {
+    return favorites.some(fav => fav.id === productId);
+  };
 
   const filteredProducts = data.filter((product) => {
     const matchSearchQuery = product.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -118,8 +120,12 @@ function Main() {
                     <img src={el.imageUrl} alt={el.name} />
                     <div className="product-overlay-icons">
                       <div className="icon-circle">
-                        <CiShoppingCart onClick={() => addToCart(el)}
-                          style={{ strokeWidth: "1", cursor: "pointer", fontSize: "1.5em" }} />
+                        <CiShoppingCart onClick={() => addToCart(el)} style={{ 
+                           
+                            strokeWidth: "1",
+                            cursor: "pointer",
+                            fontSize: "1.5em"
+                          }}  />
                       </div>
                       <div className="icon-circle">
                         <CiHeart

@@ -105,7 +105,7 @@ function Profile() {
       const userId = decoded.id;
 
       const response = await axios.put(
-        process.env.HOST+`/api/user/${userId}`,
+        import.meta.env.VITE_HOST+`/api/user/${userId}`,
         {
           firstName: updateForm.firstName,
           lastName: updateForm.lastName,
