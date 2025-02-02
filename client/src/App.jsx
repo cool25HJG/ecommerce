@@ -22,6 +22,7 @@ import ReviewList from './components/ReviewList'
 import About from './components/about';
 import Contact from './components/contact';
 
+import ScrollToTop from './components/ScrollToTop';
 function App() {
   const [product, setProduct] = useState([]);
 
@@ -40,7 +41,9 @@ function App() {
       <BrowserRouter>
         <div className="app-container">
           <Navbar />
+          
           <main className="main-content">
+         
             <Routes>
               <Route path="/" element={<Main />} />
               {/* pages */}
@@ -66,8 +69,11 @@ function App() {
                 element={<MainSeller product={product} fetch={fetch} />}
               /> */}
             </Routes>
+           
           </main>
+          
           <Footer />
+          <ScrollToTop />
         </div>
       </BrowserRouter>
     </CartProvider>

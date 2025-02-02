@@ -18,9 +18,9 @@ function Profile() {
     confirmPassword: "",
     role: "",
     adresse: "",
-    image: "", // Cloudinary image URL
+    image: "",
   });
-  const [imageFile, setImageFile] = useState(null); // For storing selected image file
+  const [imageFile, setImageFile] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function Profile() {
           phoneNumber: response.data.phoneNumber,
           role: response.data.role,
           adresse: response.data.adresse,
-          image: response.data.image || "", // Set Cloudinary image URL from user data
+          image: response.data.image || "", 
         });
       })
       .catch((error) => {
@@ -74,8 +74,8 @@ function Profile() {
 
     const formData = new FormData();
     formData.append("file", imageFile);
-    formData.append("upload_preset", "Ghassen123"); // Replace with your Cloudinary upload preset
-    formData.append("cloud_name", "dqh6arave"); // Replace with your Cloudinary cloud name
+    formData.append("upload_preset", "Ghassen123");
+    formData.append("cloud_name", "dqh6arave"); 
 
     try {
       const response = await axios.post(
@@ -94,7 +94,7 @@ function Profile() {
     e.preventDefault();
     setError("");
 
-    if (updateForm.password !== updateForm.confirmPassword) {
+    if (updateForm.password && updateForm.password !== updateForm.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
@@ -104,18 +104,24 @@ function Profile() {
       const decoded = jwtDecode(token);
       const userId = decoded.id;
 
+
+      const updateData = {
+        firstName: updateForm.firstName,
+        lastName: updateForm.lastName,
+        email: updateForm.email,
+        phoneNumber: updateForm.phoneNumber,
+        role: updateForm.role,
+        adresse: updateForm.adresse,
+        image: updateForm.image,
+      };
+
+      if (updateForm.password) {
+        updateData.password = updateForm.password;
+      }
+
       const response = await axios.put(
         import.meta.env.VITE_HOST+`/api/user/${userId}`,
-        {
-          firstName: updateForm.firstName,
-          lastName: updateForm.lastName,
-          email: updateForm.email,
-          phoneNumber: updateForm.phoneNumber,
-          password: updateForm.password || undefined,
-          role: updateForm.role,
-          adresse: updateForm.adresse,
-          image: updateForm.image, // Include Cloudinary image URL in the update request
-        },
+        updateData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -123,17 +129,13 @@ function Profile() {
 
       setUser({
         ...user,
-        firstName: updateForm.firstName,
-        lastName: updateForm.lastName,
-        email: updateForm.email,
-        phoneNumber: updateForm.phoneNumber,
-        role: updateForm.role,
-        adresse: updateForm.adresse,
-        image: updateForm.image, // Update image in the user state
+        ...updateData
       });
+      
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch (error) {
+      console.error("Update error:", error);
       setError(error.response?.data?.message || "Error updating profile");
     }
   };
@@ -149,11 +151,9 @@ function Profile() {
 
       {!isEditing ? (
         <div className="profile-info">
-          {user.image && (
-            <div className="profile-image">
-              <Image cloudName="your_cloud_name" publicId={user.image} />
-            </div>
-          )}
+          <div className="profile-image">
+            {user.image && <img src={user.image} alt="Profile" />}
+          </div>
           <h3>First Name: {user.firstName}</h3>
           <h3>Last Name: {user.lastName}</h3>
           <h4>Email: {user.email}</h4>
@@ -169,11 +169,9 @@ function Profile() {
         <form onSubmit={handleUpdate} className="profile-form">
           <div className="form-group">
             <label>Profile Image:</label>
-            {updateForm.image && (
-              <div className="current-image">
-                <Image cloudName="your_cloud_name" publicId={updateForm.image} />
-              </div>
-            )}
+            <div className="current-image">
+              {updateForm.image && <img src={updateForm.image} alt="Profile" />}
+            </div>
             <input
               type="file"
               accept="image/*"
@@ -231,6 +229,16 @@ function Profile() {
           </div>
 
           <div className="form-group">
+            <label>Address:</label>
+            <input
+              type="text"
+              name="adresse"
+              value={updateForm.adresse}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
             <label>New Password:</label>
             <input
               type="password"
@@ -249,17 +257,6 @@ function Profile() {
               value={updateForm.confirmPassword}
               onChange={handleChange}
               placeholder="Confirm new password"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Address:</label>
-            <input
-              type="text"
-              name="address"
-              value={updateForm.adresse}
-              onChange={handleChange}
-              placeholder="Enter your address"
             />
           </div>
 

@@ -20,7 +20,7 @@ const generateAccessToken = (user) => {
 
 const generateRefreshToken = (user) => {
   return jwt.sign(
-    { id: user.id, role: user.role }, // Include role in refresh token
+    { id: user.id, role: user.role },
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: "7d" }
   );
@@ -71,7 +71,7 @@ const login = async (req, res) => {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
-    // Store refresh token based on user role
+
     if (user.role === "seller") {
       refreshTokens.sellers[user.id] = refreshToken;
     } else {
@@ -175,26 +175,23 @@ const updateUser = async (req, res) => {
       adresse,
     } = req.body;
 
-    // Find the user by ID
     const user = await User.findOne({ where: { id } });
     if (!user) {
       return res.status(404).send({ message: "User not found" });
     }
 
-    // Hash the new password if it's provided
-    let hashedPassword = user.password; // Keep the old password by default
+    let hashedPassword = user.password;
     if (password) {
-      hashedPassword = await bcrypt.hash(password, 10); // Hash the new password
+      hashedPassword = await bcrypt.hash(password, 10);
     }
 
-    // Update the user's details
     const updatedUser = await User.update(
       {
         firstName: firstName || user.firstName,
         lastName: lastName || user.lastName,
         email: email || user.email,
         phoneNumber: phoneNumber || user.phoneNumber,
-        password: hashedPassword, // Use the hashed password
+        password: hashedPassword,
         role: role || user.role,
         image: image || user.image,
         adresse: adresse || user.adresse,

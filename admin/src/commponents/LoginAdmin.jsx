@@ -35,7 +35,6 @@ function LoginAdmin({changeView,getAdmin}) {
   
         dispatch({ type: "AUTH_SUCCESS", payload: response.data });
   
-        // Redirect based on role
         if (user.role === "admin") {
             getAdmin(formData.email)
          changeView("profile")

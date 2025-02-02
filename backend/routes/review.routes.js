@@ -3,7 +3,7 @@ const { Review } = require('../models');
 
 const router = express.Router();
 
-// Create a new review
+
 router.post('/reviews', async (req, res) => {
   const { rating, comment, productId, userId } = req.body;
 
@@ -13,7 +13,7 @@ router.post('/reviews', async (req, res) => {
 
   try {
     const review = await Review.create({ rating, comment, productId, userId });
-    res.status(201).json(review); // Respond with the created review
+    res.status(201).json(review); 
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

@@ -29,7 +29,6 @@ const PaymentForm = () => {
       const response = await axios.post(import.meta.env.VITE_HOST+'/create-payment', formData);
       const { payUrl } = response.data;
 
-      // Redirect to the payment URL
       window.location.href = payUrl;
     } catch (error) {
       console.error('Error creating payment:', error);

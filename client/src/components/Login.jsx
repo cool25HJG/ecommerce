@@ -27,11 +27,10 @@ function Login() {
       .then((response) => {
         const userRole = response?.user?.role;
 
-        // ✅ Save user info to localStorage for persistence
         localStorage.setItem("user", JSON.stringify(response?.user));
 
         if (userRole === "admin") {
-          window.location.href = "http://localhost:5173/";
+          window.location.href = "http://localhost:5174/";
         } else {
           navigate("/");
         }

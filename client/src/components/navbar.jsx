@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiHeart, CiUser, CiShoppingCart } from "react-icons/ci";
+import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
 import { CartContext } from "./CartContext";
 import { logout } from "../store/reducer/login";
@@ -16,8 +17,8 @@ function Navbar() {
   const timeoutRef = useRef(null);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // ✅ Load user from localStorage on refresh
   useEffect(() => {
     if (!user) {
       const storedUser = localStorage.getItem("user");
@@ -27,69 +28,59 @@ function Navbar() {
     }
   }, [user]);
 
-  // ✅ Update cart and wishlist item counts
   useEffect(() => {
     setCartCount(orderItems.reduce((sum, item) => sum + item.quantity, 0));
     setWishlistCount(favorites.length);
   }, [orderItems, favorites]);
 
-  // Handle search form submission
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate("/", { state: { searchQuery } });
-  };
-
-  // Handle search input change
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-
+ 
     if (value.trim() === "") {
-      navigate("/", { replace: true, state: { searchQuery: "" } });
+      navigate("/", { state: { searchQuery: "" } });
     }
   };
 
-  // Handle home click
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate("/", { state: { searchQuery: searchQuery.trim() } });
+  };
+
   const handleHomeClick = () => {
     setSearchQuery("");
     navigate("/", { state: { searchQuery: "" } });
   };
 
-  // Handle logout
+
   const handleLogout = () => {
-    dispatch(logout()); // Dispatch the logout action
-    localStorage.removeItem("user"); // ✅ Remove user from localStorage
-    navigate("/login"); // Redirect to login page
+    dispatch(logout());
+    localStorage.removeItem("user"); 
+    navigate("/login");
   };
 
-  // Handle dropdown close timer
   const startCloseTimer = () => {
     timeoutRef.current = setTimeout(() => {
       setShowDropdown(false);
     }, 1000);
   };
 
-  // Clear dropdown close timer
   const clearCloseTimer = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   };
 
-  // Handle mouse enter for dropdown
   const handleMouseEnter = () => {
     clearCloseTimer();
     setShowDropdown(true);
   };
 
-  // Handle mouse leave for dropdown
   const handleMouseLeave = () => {
     startCloseTimer();
   };
 
-  // Get dropdown items based on user role
   const getDropdownItems = () => {
-    // Define common items for all authenticated users
     const commonItems = [
       { label: "Manage My Account", action: () => navigate("/profile") },
       { label: "Logout", action: handleLogout },
@@ -115,6 +106,15 @@ function Navbar() {
     return commonItems;
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleNavigation = (path) => {
+    setIsMobileMenuOpen(false);
+    navigate(path);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -122,13 +122,21 @@ function Navbar() {
           <h1 onClick={handleHomeClick} className="navbar-logo">
             CoolStore
           </h1>
-          <ul className="navbar-links">
-            <li onClick={handleHomeClick}>Home</li>
-            <li onClick={() => navigate("/about")}>About</li>
-            <li onClick={() => navigate("/contact")}>Contact</li>
+          
+          {/* Desktop Navigation */}
+          <ul className="navbar-links desktop-nav">
+            <li onClick={() => handleNavigation("/")}>Home</li>
+            <li onClick={() => handleNavigation("/about")}>About</li>
+            <li onClick={() => handleNavigation("/contact")}>Contact</li>
           </ul>
+          
+          {/* Mobile Menu Button */}
+          <button className="mobile-menu-button" onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? <RiCloseLine size={24} /> : <RiMenu3Line size={24} />}
+          </button>
         </div>
 
+        {/* Search Bar */}
         <div className="navbar-center">
           <form className="navbar-search" onSubmit={handleSearch}>
             <input
@@ -141,64 +149,27 @@ function Navbar() {
           </form>
         </div>
 
+        {/* Icons Section */}
         <div className="navbar-right">
-          <div className="cart-icon-wrapper" style={{ position: 'relative' }}>
+          <div className="cart-icon-wrapper">
             <CiShoppingCart
-              onClick={() => navigate("/cart")}
+              onClick={() => handleNavigation("/cart")}
               size={25}
               className="icon"
             />
             {cartCount > 0 && (
-              <span 
-                className="cart-notification"
-                style={{ 
-                  position: 'absolute',
-                  top: '-8px',
-                  right: '-8px',
-                  backgroundColor: '#ff4444',
-                  color: 'white',
-                  borderRadius: '50%',
-                  padding: '2px 6px',
-                  fontSize: '12px',
-                  fontWeight: 'bold',
-                  minWidth: '18px',
-                  textAlign: 'center',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  zIndex: 1
-                }}
-              >
-                {cartCount}
-              </span>
+              <span className="cart-notification">{cartCount}</span>
             )}
           </div>
           
-          <div className="wishlist-icon-wrapper" style={{ position: 'relative' }}>
+          <div className="wishlist-icon-wrapper">
             <CiHeart
-              onClick={() => navigate("/wishlist")}
+              onClick={() => handleNavigation("/wishlist")}
               size={25}
               className="icon"
             />
             {wishlistCount > 0 && (
-              <span 
-                className="wishlist-notification"
-                style={{ 
-                  position: 'absolute',
-                  top: '-8px',
-                  right: '-8px',
-                  backgroundColor: '#ff4444',
-                  color: 'white',
-                  borderRadius: '50%',
-                  padding: '2px 6px',
-                  fontSize: '12px',
-                  fontWeight: 'bold',
-                  minWidth: '18px',
-                  textAlign: 'center',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                  zIndex: 1
-                }}
-              >
-                {wishlistCount}
-              </span>
+              <span className="wishlist-notification">{wishlistCount}</span>
             )}
           </div>
 
@@ -207,7 +178,6 @@ function Navbar() {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             ref={dropdownRef}
-            style={{ position: 'relative' }}
           >
             <CiUser size={25} />
             {showDropdown && (
@@ -216,7 +186,6 @@ function Navbar() {
                 onClick={(e) => e.stopPropagation()}
                 onMouseEnter={clearCloseTimer}
                 onMouseLeave={startCloseTimer}
-               
               >
                 {getDropdownItems().map((item, index) => (
                   <button
@@ -227,7 +196,6 @@ function Navbar() {
                       setShowDropdown(false);
                       clearCloseTimer();
                     }}
-                  
                   >
                     {item.label}
                   </button>
@@ -237,6 +205,17 @@ function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu">
+          <ul className="mobile-nav-links">
+            <li onClick={() => handleNavigation("/")}>Home</li>
+            <li onClick={() => handleNavigation("/about")}>About</li>
+            <li onClick={() => handleNavigation("/contact")}>Contact</li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

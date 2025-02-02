@@ -6,6 +6,9 @@ import lilia from "../assets/image/lilia01.jpg"
 import nour from "../assets/image/nour.jpg"
 import anas from "../assets/image/anas.jpg"
 import about from "../assets/image/aboutus.jpg"
+import { MdLocalShipping } from "react-icons/md";
+import { BiSupport } from "react-icons/bi";
+import { RiSecurePaymentLine } from "react-icons/ri";
 
 function About() {
   const teamMembers = [
@@ -109,6 +112,34 @@ function About() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="service-features">
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">
+              <MdLocalShipping />
+            </div>
+            <h3>FREE AND FAST DELIVERY</h3>
+            <p>Free delivery for all orders over $140</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">
+              <BiSupport />
+            </div>
+            <h3>24/7 CUSTOMER SERVICE</h3>
+            <p>Friendly 24/7 customer support</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">
+              <RiSecurePaymentLine />
+            </div>
+            <h3>MONEY BACK GUARANTEE</h3>
+            <p>We return money within 30 days</p>
+          </div>
         </div>
       </section>
     </div>

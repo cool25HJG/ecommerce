@@ -11,8 +11,7 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
-    // Reset form
+ 
     setFormData({
       name: "",
       email: "",

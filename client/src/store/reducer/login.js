@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// ✅ Async thunk for login
+
 export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
@@ -13,7 +13,7 @@ export const login = createAsyncThunk(
 
       const { user, accessToken, refreshToken } = response.data;
 
-      // ✅ Store user and tokens in localStorage for persistence
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(user));
@@ -27,7 +27,7 @@ export const login = createAsyncThunk(
   }
 );
 
-// ✅ Async thunk for registration (unchanged)
+
 export const register = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
@@ -46,10 +46,10 @@ export const register = createAsyncThunk(
 );
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null, // ✅ Load user from localStorage
+  user: JSON.parse(localStorage.getItem("user")) || null,
   accessToken: localStorage.getItem("accessToken") || null,
   refreshToken: localStorage.getItem("refreshToken") || null,
-  isAuthenticated: !!localStorage.getItem("accessToken"), // ✅ Check if user is logged in
+  isAuthenticated: !!localStorage.getItem("accessToken"),
   loading: false,
   error: null,
 };
@@ -63,8 +63,6 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.refreshToken = null;
       state.isAuthenticated = false;
-
-      // ✅ Remove user and tokens from localStorage on logout
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
@@ -72,7 +70,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // ✅ Handle login cases
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -93,7 +90,6 @@ const authSlice = createSlice({
         state.refreshToken = null;
         state.isAuthenticated = false;
       })
-      // ✅ Handle registration cases (unchanged)
       .addCase(register.pending, (state) => {
         state.loading = true;
         state.error = null;
