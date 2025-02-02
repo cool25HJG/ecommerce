@@ -7,7 +7,7 @@ export default function Oneproduct({ product, fetch }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(import.meta.env.VITE_HOST+`/api/Products/products/${id}`);
+      await axios.delete(`${import.meta.env.VITE_HOST}/api/Products/${id}`);
       fetch(); // Refresh the product list
     } catch (error) {
       console.error("Error deleting product:", error);

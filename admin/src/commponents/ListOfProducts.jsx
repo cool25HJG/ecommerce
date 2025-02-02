@@ -17,6 +17,7 @@ function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
 
   }
   const truncateText = (text, maxLength) => {
+    if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + "...";
   };
@@ -44,8 +45,8 @@ function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
             {show!==el.id && <td>{truncateText(el.description,20)}</td>}
             {show!==el.id && <td>{el.price}</td>}
             {show!==el.id && <td>{el.stock}</td>}
-            {show!==el.id && <td>{el.User.firstName}</td>}
-            {show!==el.id && <td>{el.Category.name}</td>}
+            {show!==el.id && <td>{el.User?.firstName || 'Unknown'}</td>}
+            {show!==el.id && <td>{el.Category?.name || 'Uncategorized'}</td>}
             {show === el.id && <td><input  type="text"
                     id="name"
                     defaultValue={el.name}
@@ -82,7 +83,7 @@ function ListOfProducts({product,DeleteProducts,updateProducts,changeView}) {
                       setsellerId(e.target.value)}}/></td>}
                       {show === el.id && <td><input  type="text"
                     id="categoryId"
-                    defaultValue={el.Category.name}
+                    defaultValue={el.Category?.name}
                     className="form-control"
                     onChange={(e) => {
                       setcategoryId(e.target.value)}}/></td>}
