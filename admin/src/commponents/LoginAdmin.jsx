@@ -37,7 +37,7 @@ function LoginAdmin({changeView,getAdmin}) {
   
         if (user.role === "admin") {
             getAdmin(formData.email)
-         changeView("profile")
+         changeView("dashboard")
         } else {
           alert ("you dont have the access")
         }
