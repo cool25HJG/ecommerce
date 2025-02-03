@@ -16,7 +16,6 @@ const Cart = () => {
   };
 
   const handleBuy = async () => {
-    // ✅ Check if user exists before making a purchase
     if (!user || !user.id) {
       alert("You must be logged in to make a purchase.");
       return;
@@ -28,7 +27,6 @@ const Cart = () => {
     const totalAmount = getTotal();
 
     try {
-      // ✅ Ensure orderItems are valid before proceeding
       if (!Array.isArray(orderItems) || orderItems.length === 0) {
         alert("Your cart is empty.");
         setIsProcessing(false);
@@ -66,12 +64,9 @@ console.log(("user",user));
     }
   };
 
-  // Handler for moving items from cart to wishlist
   const moveToWishlist = async (item) => {
     try {
-      // First add to wishlist
       await toggleFavorite(item.productId);
-      // Then remove from cart
       removeFromCart(item.productId);
     } catch (error) {
       console.error("Error moving item to wishlist:", error);

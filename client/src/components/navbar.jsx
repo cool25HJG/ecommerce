@@ -19,7 +19,6 @@ function Navbar() {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // ✅ Load user from localStorage on refresh
   useEffect(() => {
     if (!user) {
       const storedUser = localStorage.getItem("user");
@@ -29,70 +28,59 @@ function Navbar() {
     }
   }, [user]);
 
-  // ✅ Update cart and wishlist item counts
   useEffect(() => {
     setCartCount(orderItems.reduce((sum, item) => sum + item.quantity, 0));
     setWishlistCount(favorites.length);
   }, [orderItems, favorites]);
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-    
-    // Navigate immediately when search is empty
+ 
     if (value.trim() === "") {
       navigate("/", { state: { searchQuery: "" } });
     }
   };
 
-  // Handle search form submission
   const handleSearch = (e) => {
     e.preventDefault();
     navigate("/", { state: { searchQuery: searchQuery.trim() } });
   };
 
-  // Handle home click
   const handleHomeClick = () => {
     setSearchQuery("");
     navigate("/", { state: { searchQuery: "" } });
   };
 
-  // Handle logout
+
   const handleLogout = () => {
-    dispatch(logout()); // Dispatch the logout action
-    localStorage.removeItem("user"); // ✅ Remove user from localStorage
-    navigate("/login"); // Redirect to login page
+    dispatch(logout());
+    localStorage.removeItem("user"); 
+    navigate("/login");
   };
 
-  // Handle dropdown close timer
   const startCloseTimer = () => {
     timeoutRef.current = setTimeout(() => {
       setShowDropdown(false);
     }, 1000);
   };
 
-  // Clear dropdown close timer
   const clearCloseTimer = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   };
 
-  // Handle mouse enter for dropdown
   const handleMouseEnter = () => {
     clearCloseTimer();
     setShowDropdown(true);
   };
 
-  // Handle mouse leave for dropdown
   const handleMouseLeave = () => {
     startCloseTimer();
   };
 
-  // Get dropdown items based on user role
   const getDropdownItems = () => {
-    // Define common items for all authenticated users
     const commonItems = [
       { label: "Manage My Account", action: () => navigate("/profile") },
       { label: "Logout", action: handleLogout },
@@ -118,12 +106,10 @@ function Navbar() {
     return commonItems;
   };
 
-  // Toggle mobile menu
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Close mobile menu when navigating
   const handleNavigation = (path) => {
     setIsMobileMenuOpen(false);
     navigate(path);

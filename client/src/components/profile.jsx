@@ -18,9 +18,9 @@ function Profile() {
     confirmPassword: "",
     role: "",
     adresse: "",
-    image: "", // Cloudinary image URL
+    image: "",
   });
-  const [imageFile, setImageFile] = useState(null); // For storing selected image file
+  const [imageFile, setImageFile] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function Profile() {
           phoneNumber: response.data.phoneNumber,
           role: response.data.role,
           adresse: response.data.adresse,
-          image: response.data.image || "", // Set Cloudinary image URL from user data
+          image: response.data.image || "", 
         });
       })
       .catch((error) => {
@@ -74,8 +74,8 @@ function Profile() {
 
     const formData = new FormData();
     formData.append("file", imageFile);
-    formData.append("upload_preset", "Ghassen123"); // Replace with your Cloudinary upload preset
-    formData.append("cloud_name", "dqh6arave"); // Replace with your Cloudinary cloud name
+    formData.append("upload_preset", "Ghassen123");
+    formData.append("cloud_name", "dqh6arave"); 
 
     try {
       const response = await axios.post(
@@ -104,7 +104,7 @@ function Profile() {
       const decoded = jwtDecode(token);
       const userId = decoded.id;
 
-      // Only include password if it's been changed
+
       const updateData = {
         firstName: updateForm.firstName,
         lastName: updateForm.lastName,
@@ -115,7 +115,6 @@ function Profile() {
         image: updateForm.image,
       };
 
-      // Only add password to update data if it's been entered
       if (updateForm.password) {
         updateData.password = updateForm.password;
       }

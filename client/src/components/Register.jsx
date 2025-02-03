@@ -18,12 +18,12 @@ function Register() {
     phoneNumber: "",
     email: "",
     password: "",
-    image: "", // For storing Cloudinary image URL
+    image: "",
     adresse: "",
     role: "client",
   });
 
-  const [imageFile, setImageFile] = useState(null); // For storing selected image file
+  const [imageFile, setImageFile] = useState(null); 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -43,8 +43,8 @@ function Register() {
 
     const formData = new FormData();
     formData.append("file", imageFile);
-    formData.append("upload_preset", "Ghassen123"); // Replace with your Cloudinary upload preset
-    formData.append("cloud_name", "dqh6arave"); // Replace with your Cloudinary cloud name
+    formData.append("upload_preset", "Ghassen123");
+    formData.append("cloud_name", "dqh6arave"); 
 
     try {
       const response = await axios.post(
@@ -72,7 +72,7 @@ function Register() {
         image: imageUrl,
       })).unwrap();
 
-      navigate("/login"); // Redirect to login after successful registration
+      navigate("/login"); 
     } catch (error) {
       console.error("Registration error:", error);
     }

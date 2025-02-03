@@ -8,7 +8,7 @@ module.exports = {
         { model: User },
         { model: Category }
       ],
-      order: [['createdAt', 'DESC']] // Order by createdAt in descending order
+      order: [['createdAt', 'DESC']] 
     });
     res.send(products);
   } catch (error) {

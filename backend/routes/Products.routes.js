@@ -13,8 +13,8 @@ const {
 Router.get("/", getAllProducts);
 Router.post("/", addProducts);
 Router.put("/:id", updateProducts);
-Router.put("/toggle-favorite/:id", toggleFavorite); // Add this route
-Router.get("/favorites", getFavoriteProducts); // Add this route
+Router.put("/toggle-favorite/:id", toggleFavorite); 
+Router.get("/favorites", getFavoriteProducts); 
 Router.delete("/:id", deleteProducts);
 
 Router.get('/products/:id', async (req, res) => {

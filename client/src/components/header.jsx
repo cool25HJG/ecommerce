@@ -58,7 +58,6 @@ function Header() {
     return () => clearInterval(timer);
   }, []);
 
-  // Handle touch events for mobile swipe
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
   };

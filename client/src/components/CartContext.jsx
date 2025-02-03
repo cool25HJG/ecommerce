@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux';
 
-// Create a context
+
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -66,7 +66,6 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("orderItems", JSON.stringify(orderItems));
   }, [orderItems]);
 
-  // ✅ Define `addToCart` function BEFORE using it in the provider
   const addToCart = (product) => {
     setOrderItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.productId === product.id);
@@ -140,7 +139,7 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider value={{ 
       favorites, 
       orderItems, 
-      addToCart,  // ✅ Now `addToCart` is properly included
+      addToCart,  
       updateQuantity, 
       removeFromCart, 
       getTotal,
