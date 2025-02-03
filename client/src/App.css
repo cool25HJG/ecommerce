@@ -1528,7 +1528,7 @@ svg:hover {
 }
 
 .product-details-info {
-  flex: 1;
+  flex: 1.5;
   display: flex;
   flex-direction: column;
 }
@@ -1541,10 +1541,10 @@ svg:hover {
 }
 
 .product-details-image img {
-  width: 100%;
-  height: 100%;
+  /* width: 600px; */
+  height: 380px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 88ypx;
 }
 
 .product-details-title {
@@ -1862,7 +1862,7 @@ svg:hover {
 
 .product-details-content {
   display: flex;
-  gap: 40px;
+  gap: 100px;
   padding: 2rem;
   max-height: 80vh;
   overflow-y: auto;
