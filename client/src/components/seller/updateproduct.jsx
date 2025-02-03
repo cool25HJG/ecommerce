@@ -1,31 +1,49 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-function Updateproduct({ fetch }) {
+function UpdateProduct({ fetchProducts }) {
     const navigate = useNavigate();
-    const { state } = useLocation();
-    const product = state?.product;
-
+    const { id } = useParams();
+    const [product, setProduct] = useState(null);
     const [categories, setCategories] = useState([]);
-    const [name, setName] = useState(product?.name || "");
-    const [description, setDescription] = useState(product?.description || "");
-    const [price, setPrice] = useState(product?.price || "");
-    const [stock, setStock] = useState(product?.stock || "");
-    const [imageUrl, setImageUrl] = useState(product?.imageUrl || "");
-    const [categoryId, setCategoryId] = useState(product?.categoryId || ""); 
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [price, setPrice] = useState("");
+    const [stock, setStock] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+    const [categoryId, setCategoryId] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+    const [isProductLoading, setIsProductLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(import.meta.env.VITE_HOST+"/api/Category/")
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_HOST}/api/Products/products/${id}`);
+                setProduct(response.data);
+                setName(response.data.name);
+                setDescription(response.data.description);
+                setPrice(response.data.price);
+                setStock(response.data.stock);
+                setImageUrl(response.data.imageUrl);
+                setCategoryId(response.data.categoryId);
+            } catch (error) {
+                console.error("Error fetching product:", error);
+                setMessage("Failed to load product data.");
+            } finally {
+                setIsProductLoading(false);
+            }
+        };
+
+        fetchProduct();
+    }, [id]);
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_HOST}/api/Category/`)
             .then((resp) => setCategories(resp.data))
             .catch((error) => console.error("Error fetching categories:", error));
-
-        if (product?.categoryId) {
-            setCategoryId(product.categoryId);
-        }
-    }, [product]);
+    }, []);
 
     const handleImageUpload = async (file) => {
         setLoading(true);
@@ -57,30 +75,31 @@ function Updateproduct({ fetch }) {
         const updatedProduct = {
             name,
             description,
-            price,
-            stock,
+            price: parseFloat(price),
+            stock: parseInt(stock),
             imageUrl,
-            categoryId: Number(categoryId), 
+            categoryId: parseInt(categoryId),
         };
 
-        console.log("Updating product with:", updatedProduct);
-
         try {
-            await axios.put(import.meta.env.VITE_HOST+`/api/Products/${product.id}`, updatedProduct);
+            await axios.put(`${import.meta.env.VITE_HOST}/api/Products/${id}`, updatedProduct);
             navigate("/main/seller");
-            fetch();
+            fetchProducts();
         } catch (error) {
             console.error("Error updating product:", error);
+            setMessage("Failed to update product.");
         }
     };
+
+    if (isProductLoading) {
+        return <p>Loading product data...</p>;
+    }
 
     return (
         <div className="update-product-container">
             <h2 className="update-product-title">Update Product</h2>
             
             <div className="update-product-form">
-             
-
                 <div className="form-group">
                     <label>Name</label>
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -90,9 +109,10 @@ function Updateproduct({ fetch }) {
                     <label>Description</label>
                     <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
+
                 <div className="form-group">
                     <label>Category</label>
-                    <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))}>
+                    <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
                         <option value="">Select Category</option>
                         {categories.map((cat) => (
                             <option key={cat.id} value={cat.id}>
@@ -101,6 +121,7 @@ function Updateproduct({ fetch }) {
                         ))}
                     </select>
                 </div>
+
                 <div className="form-group">
                     <label>Price</label>
                     <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
@@ -140,4 +161,4 @@ function Updateproduct({ fetch }) {
     );
 }
 
-export default Updateproduct;
+export default UpdateProduct;
