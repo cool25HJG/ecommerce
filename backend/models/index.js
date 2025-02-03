@@ -19,7 +19,7 @@ connection
   db.Commande=require("./commande.model")(connection,DataTypes)
   db.OrderItem=require("./orderitems.model")(connection,DataTypes)
   db.Review=require("./review.model")(connection,DataTypes)
-
+  db.connection = connection;
 
   db.User.hasMany(db.Products, { onDelete:"CASCADE" , onUpdate:"CASCADE", foreignKey: "sellerId" });
 db.Products.belongsTo(db.User, {  foreignKey: "sellerId" }); 
