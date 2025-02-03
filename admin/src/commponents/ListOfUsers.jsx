@@ -75,7 +75,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col" onClick={() => requestSort("firstName")}>
               First Name{" "}
@@ -83,7 +83,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col" onClick={() => requestSort("lastName")}>
               Last Name{" "}
@@ -91,7 +91,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col" onClick={() => requestSort("phoneNumber")}>
               Phone Number{" "}
@@ -99,7 +99,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col" onClick={() => requestSort("email")}>
               Email{" "}
@@ -107,7 +107,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col" onClick={() => requestSort("role")}>
               Role{" "}
@@ -115,7 +115,7 @@ function ListOfUsers({ users, DeleteUser, updateUser, changeView }) {
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col">Action</th>
           </tr>

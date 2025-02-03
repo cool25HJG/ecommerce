@@ -73,7 +73,7 @@ function ListOfCategory({
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col" onClick={() => requestSort("name")}>
               Name{" "}
@@ -81,7 +81,7 @@ function ListOfCategory({
                 ? sortConfig.direction === "asc"
                   ? "↑"
                   : "↓"
-                : ""}
+                : "↑↓"}
             </th>
             <th scope="col">Action</th>
           </tr>
